@@ -1,17 +1,9 @@
 import 'package:flutter/foundation.dart';
 
-extension UpdateRxObject<T> on ValueNotifier<T> {
-  void update(void Function(T) callback) {
-    print(this.value);
-    var v = this;
-    final newValue = v;
-    callback(newValue.value);
-    value = newValue.value;
-
-    this.notifyListeners();
+extension UpdateExtension<T> on ValueNotifier<T> {
+  void update(void Function(T) updateCallback) {
+    T newValue = value;
+    updateCallback(newValue);
+    value = newValue;
   }
-}
-
-abstract class Copyable<T> {
-  T copy();
 }

@@ -1,17 +1,13 @@
 import 'package:flutter/widgets.dart';
-import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 import 'package:minimals_state_manager/app/state_manager/provider/min_provider.dart';
 
-class MinView extends StatelessWidget {
-  dynamic controller;
-  MinView({Key? key, @required this.controller}) : super(key: key) {}
-
+class MinView<T> extends StatelessWidget {
+  final Widget Function(BuildContext, T) builder;
+  const MinView({Key? key, required this.builder}) : super(key: key);
+  T getController(BuildContext context) =>
+      MinProvider.of(context).controller as T;
   @override
   Widget build(BuildContext context) {
-    controller = MinProvider.of(context).controller;
-    controller!.onInit();
-
-    // TODO: implement build
-    throw UnimplementedError();
+    return builder(context, getController(context));
   }
 }

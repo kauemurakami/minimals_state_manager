@@ -5,6 +5,7 @@ import 'package:minimals_state_manager/app/state_manager/extensions/update_objec
 
 class MyController extends MinController {
   final count = 0.minx;
+  final countFloat = 0.0.minx;
   final user = User().minx;
 
   @override

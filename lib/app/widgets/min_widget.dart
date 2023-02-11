@@ -3,10 +3,10 @@ import 'package:minimals_state_manager/app/state_manager/controller/min_controll
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
 import 'package:minimals_state_manager/app/provider/min_provider.dart';
 
-class MinWidget<T extends MinController> extends StatelessWidget {
+class MinX<T extends MinController> extends StatelessWidget {
   final Widget Function(BuildContext context, T controller) builder;
 
-  const MinWidget({
+  const MinX({
     Key? key,
     required this.builder,
   }) : super(key: key);

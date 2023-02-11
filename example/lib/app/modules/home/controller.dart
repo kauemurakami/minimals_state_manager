@@ -1,7 +1,6 @@
 import 'package:example/app/data/models/user.dart';
 import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 import 'package:minimals_state_manager/app/state_manager/extensions/min_listen.dart';
-import 'package:minimals_state_manager/app/state_manager/extensions/update_object.dart';
 
 class MyController extends MinController {
   final count = 0.minx;
@@ -15,7 +14,7 @@ class MyController extends MinController {
   increment() => count.value++;
   decrement() => count.value--;
 
-  onChangedName(_) => user.update((val) => val.name = _);
+  onChangedName(_) => user.value.name = _;
   validateName(_) => null;
   onSavedName(_) => user.value.name = _;
   onChangedEmail(_) => user.value.email = _;

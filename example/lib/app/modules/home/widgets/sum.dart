@@ -8,27 +8,26 @@ class Sum extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-            child: Column(
+    return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            MinWidget<MyController>(
-              builder: (context, controller) => $(
-                  () => Text(
-                        '${controller.count.value}',
-                        style: const TextStyle(fontSize: 100.0),
-                      ),
-                  listener: controller.count),
+            MinX<MyController>(
+              builder: (context, controller) => $<int>(
+                (value) => Text(
+                  '${value}',
+                  style: const TextStyle(fontSize: 100.0),
+                ),
+                listener: controller.count,
+              ),
             ),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            MinWidget<MyController>(
+            MinX<MyController>(
                 builder: (context, controller) => TextButton(
                     onPressed: () => controller.increment(),
                     child: const Text(
@@ -36,7 +35,7 @@ class Sum extends StatelessWidget {
                       style: TextStyle(fontSize: 32.0),
                     ))),
             const Spacer(),
-            MinWidget<MyController>(
+            MinX<MyController>(
                 builder: (context, controller) => TextButton(
                     onPressed: () => controller.decrement(),
                     child: const Text(
@@ -46,6 +45,6 @@ class Sum extends StatelessWidget {
           ],
         ),
       ],
-    )));
+    );
   }
 }

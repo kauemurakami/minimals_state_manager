@@ -6,7 +6,7 @@ class MyController2 extends MinController {
 
   @override
   onInit() {
-    print('ola');
+    print('ola controller 2');
   }
 
   final text = 'abc'.minx;

@@ -17,49 +17,51 @@ class MyPage extends StatelessWidget {
     return MinX<MyController>(
       builder: (context, controller) => Scaffold(
           resizeToAvoidBottomInset: false,
-          body: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      // MinX<MyController2>(
-                      //   builder: (context, controller) => $(
-                      //     (text) => Text(text),
-                      //     listener: controller.text,
-                      //   ),
-                      // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MinX<MyController>(
-                            builder: (context, controller) => $<User>(
-                              (user) => Text(
-                                '${user.name}',
-                                style: const TextStyle(fontSize: 100.0),
-                              ),
-                              listener: controller.user,
-                            ),
+          body: SafeArea(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        MinX<MyController2>(
+                          builder: (context, controller) => $(
+                            (text) => Text(text),
+                            listener: controller.text,
                           ),
-                        ],
-                      ),
-                      Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                onChanged: (_) => controller.onChangedName(_),
-                                validator: (_) => controller.validateName(_),
-                                onSaved: (_) => controller.onSavedName(_),
-                              )
-                            ],
-                          )),
-                    ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            MinX<MyController>(
+                              builder: (context, controller) => $<User>(
+                                (user) => Text(
+                                  '${user.name}',
+                                  style: const TextStyle(fontSize: 100.0),
+                                ),
+                                listener: controller.user,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  onChanged: (_) => controller.onChangedName(_),
+                                  validator: (_) => controller.validateName(_),
+                                  onSaved: (_) => controller.onSavedName(_),
+                                )
+                              ],
+                            )),
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(child: Sum())
-              ])),
+                  Expanded(child: Sum())
+                ]),
+          )),
     );
   }
 }

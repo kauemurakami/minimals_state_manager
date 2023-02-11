@@ -15,8 +15,8 @@ class Sum extends StatelessWidget {
           children: [
             MinX<MyController>(
               builder: (context, controller) => $<int>(
-                (value) => Text(
-                  '${value}',
+                (count) => Text(
+                  '$count',
                   style: const TextStyle(fontSize: 100.0),
                 ),
                 listener: controller.count,

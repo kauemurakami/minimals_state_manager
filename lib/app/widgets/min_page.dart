@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:minimals_state_manager/app/state_manager/provider/min_provider.dart';
+import 'package:minimals_state_manager/app/provider/min_provider.dart';
 
 class MinPage<T> extends StatelessWidget {
   final Widget Function(BuildContext context, T controller) builder;

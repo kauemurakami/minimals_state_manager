@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
-import 'package:minimals_state_manager/app/state_manager/provider/min_multi_provider.dart';
-import 'package:minimals_state_manager/app/state_manager/provider/min_provider.dart';
+import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
+import 'package:minimals_state_manager/app/provider/min_provider.dart';
 
 class MinWidget<T extends MinController> extends StatelessWidget {
   final Widget Function(BuildContext context, T controller) builder;

@@ -2,8 +2,8 @@ import 'package:example/app/modules/home/controller.dart';
 import 'package:example/app/modules/home/controller2.dart';
 import 'package:example/app/modules/home/widgets/sum.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/state_manager/widgets/min_widget.dart';
-import 'package:minimals_state_manager/app/state_manager/widgets/minx_widget.dart';
+import 'package:minimals_state_manager/app/widgets/min_widget.dart';
+import 'package:minimals_state_manager/app/widgets/minx_widget.dart';
 // import 'package:minimals_state_manager/app/state_manager/widgets/page.dart';
 
 class MyPage extends StatelessWidget {

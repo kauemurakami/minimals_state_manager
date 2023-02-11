@@ -1,5 +1,7 @@
 import 'package:example/app/modules/home/controller.dart';
 import 'package:flutter/material.dart';
+import 'package:minimals_state_manager/app/widgets/min_widget.dart';
+import 'package:minimals_state_manager/app/widgets/minx_widget.dart';
 
 class Sum extends StatelessWidget {
   const Sum({super.key});

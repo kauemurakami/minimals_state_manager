@@ -4,7 +4,7 @@ import 'package:minimals_state_manager/app/state_manager/controller/min_controll
 class MinMultiProvider extends InheritedWidget {
   final List<MinController> controllers;
 
-  MinMultiProvider({
+  const MinMultiProvider({
     Key? key,
     required Widget child,
     required this.controllers,
@@ -28,6 +28,6 @@ class MinMultiProvider extends InheritedWidget {
       throw Exception("Controller of type $type not found");
     }
 
-    return controller!;
+    return controller;
   }
 }

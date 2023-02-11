@@ -16,11 +16,9 @@ class MyController extends MinController {
   decrement() => count.value--;
 
   onChangedName(_) => user.update((val) => val.name = _);
-  // onChangedName(_) => user.update((val) => val.name = _);
-  // onChangedName(_) => user.value.name = _;
   validateName(_) => null;
-  onSavedName(_) => user.value.name = _;
-  onChangedEmail(_) => user.value.email = _;
+  onSavedName(_) => user.update((val) => val.name = _);
+  onChangedEmail(_) => user.update((val) => val.email = _);
   validateEmail(_) => null;
-  onSavedEmail(_) => user.value.email = _;
+  onSavedEmail(_) => user.update((val) => val.email = _);
 }

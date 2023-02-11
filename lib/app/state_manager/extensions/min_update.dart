@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 
 extension ValueNotifierUpdater<T> on ValueNotifier<T> {
   void update(Function(T) update) {

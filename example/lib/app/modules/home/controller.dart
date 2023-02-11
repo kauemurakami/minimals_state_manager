@@ -5,7 +5,6 @@ import 'package:minimals_state_manager/app/state_manager/extensions/update_objec
 
 class MyController extends MinController {
   final count = 0.minx;
-  final countFloat = 0.0.minx;
   final user = User().minx;
 
   @override
@@ -16,9 +15,9 @@ class MyController extends MinController {
   increment() => count.value++;
   decrement() => count.value--;
 
-  onChangedName(_) => user.value.name = _;
+  onChangedName(_) => user.update((val) => val.name = _);
   validateName(_) => null;
-  onSavedName(_) => user.update((val) => val.name = _);
+  onSavedName(_) => user.value.name = _;
   onChangedEmail(_) => user.value.email = _;
   validateEmail(_) => null;
   onSavedEmail(_) => user.value.email = _;

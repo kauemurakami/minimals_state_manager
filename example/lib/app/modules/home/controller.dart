@@ -8,8 +8,9 @@ class MyController extends MinController {
   final user = User().minx;
 
   @override
-  onInit() {
-    print('ola');
+  onInit() async {
+    await Future.delayed(const Duration(seconds: 5));
+    print('ola controller 1');
   }
 
   increment() => count.value++;

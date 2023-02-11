@@ -14,10 +14,14 @@ class $ extends StatefulWidget {
 class _$State extends State<$> {
   @override
   void initState() {
-    // if (widget.listener != null && !widget.listener!.hasListeners) {
-    //   throw """
-    //     Adicione um listener ao widget
-    //   """;
+    if (widget.listener == null) {
+      throw Exception("Listener is null");
+    }
+    if (widget.builder == null) {
+      throw Exception("builder is null");
+    }
+    // if (widget.listener.runtimeType != ValueNotifier) {
+    //   throw Exception("Improper use listener type");
     // }
     super.initState();
   }

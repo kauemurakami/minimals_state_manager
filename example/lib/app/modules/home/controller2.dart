@@ -9,5 +9,6 @@ class MyController2 extends MinController {
     print('ola');
   }
 
-  final text = 'abc'.minx;
+  // final text = 'abc'.minx;
+  // changeText() => text.value == 'abc' ? text.value = 'def' : text.value = 'abc';
 }

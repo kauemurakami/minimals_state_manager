@@ -19,9 +19,9 @@ class MyPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                MinWidget<MyController2>(
-                    builder: (context, controller) =>
-                        Text(controller.text.value)),
+                // MinWidget<MyController2>(
+                //     builder: (context, controller) =>
+                //         Text(controller.text.value)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

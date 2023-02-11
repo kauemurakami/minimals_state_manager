@@ -17,7 +17,7 @@ and the Flutter guide for
 O Minimal State Manager é um projeto de estudos em versão alpha sobre o gerenciamento de estado em aplicativos Flutter. É uma implementação do que já é oferecido pelo próprio framework do Flutter, como o InheritedWidget, ValueNotifier, ChangeNotifier e ValueListenableBuilder.
 
 ## Features
-Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui as seguintes características:
+Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui as seguintes características:  
     - Provedores de controllers MinProvider e MinMultiProvider.  
     - Widgets Observáveis.  
     - Widgets para uso dos controllers, podendo utilizar diferentes controllers no mesmo contexto.  

@@ -1,4 +1,4 @@
-minimals_state_manager is a study implementation of state management using Flutter's ValueNotifier and InheritedWidget, simplifying their usage. This package is in alpha version and is being developed to provide a simplified way of managing the state of Flutter applications with dependency injection and control of the life cycle of its widgets.
+
 
 <!--
 This README describes the package. If you publish this package to pub.dev,
@@ -13,17 +13,26 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+
+O Minimal State Manager é um projeto de estudos em versão alpha sobre o gerenciamento de estado em aplicativos Flutter. É uma implementação do que já é oferecido pelo próprio framework do Flutter, como o InheritedWidget, ValueNotifier, ChangeNotifier e ValueListenableBuilder.
 
 ## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui as seguintes características:  
+    - Provedores de controllers MinProvider e MinMultiProvider.  
+    - Widgets Observáveis.  
+    - Widgets para uso dos controllers, podendo utilizar diferentes controllers no mesmo contexto.  
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+```
+$ flutter pub add minimals_state_manager
+```
+or add in your dependencies
+```
+dependencies:
+  minimals_state_manager: <latest>
+```
+
 
 ## Usage
 

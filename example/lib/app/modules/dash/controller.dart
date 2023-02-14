@@ -7,24 +7,6 @@ class DashController extends MinController {
   var index = 0.minx;
   void changePage(int _, BuildContext context) async {
     index.value = _;
-    switch (_) {
-      case 0:
-        await MyRouterDelegate(pages: [])
-            .navigatorKey!
-            .currentState!
-            .pushNamed('/home');
-        // await Navigator.of(context).pushNamed('/home');
-        break;
-      case 1:
-        await MyRouterDelegate(pages: [])
-            .navigatorKey!
-            .currentState!
-            .pushNamed('/profile');
-        // await Navigator.of(context).pushNamed('/profile');
-        break;
-      default:
-    }
-
     // notifyListeners();
   }
 }

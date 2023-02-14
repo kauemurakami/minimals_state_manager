@@ -4,6 +4,7 @@ import 'package:example/app/modules/home/controller.dart';
 import 'package:example/app/modules/home/page.dart';
 import 'package:example/app/modules/profile/controller.dart';
 import 'package:example/app/modules/profile/page.dart';
+import 'package:example/app/my_app.dart';
 import 'package:example/routes/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
@@ -19,28 +20,36 @@ class DashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        final appState = context
+            .findAncestorStateOfType<MyAppState>()!
+            .delegate
+            .setNewRoutePath(
+              Uri.parse('/profile'),
+            );
+      }),
       body: Navigator(
         key: navigatorKey,
         initialRoute: '/home',
-        pages: [
-          MaterialPage(
-            name: '/home',
-            child: MinMultiProvider(
-              controllers: [
-                MyController(),
-                CartController(),
-              ],
-              child: MyPage(),
-            ),
-          ),
-          MaterialPage(
-            name: '/profile',
-            child: MinProvider(
-              controller: ProfileController(),
-              child: ProfilePage(),
-            ),
-          )
-        ],
+        // pages: [
+        //   MaterialPage(
+        //     name: '/home',
+        //     child: MinMultiProvider(
+        //       controllers: [
+        //         MyController(),
+        //         CartController(),
+        //       ],
+        //       child: MyPage(),
+        //     ),
+        //   ),
+        //   MaterialPage(
+        //     name: '/profile',
+        //     child: MinProvider(
+        //       controller: ProfileController(),
+        //       child: ProfilePage(),
+        //     ),
+        //   )
+        // ],
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case Routes.HOME:

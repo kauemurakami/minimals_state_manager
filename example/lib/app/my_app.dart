@@ -29,11 +29,11 @@ class MyAppState extends State<MyApp> {
         path: '/'),
     AppPage(
         (_) => MinMultiProvider(
-            controllers: [MyController(), CartController()], child: MyPage()),
+            controllers: [HomeController(), CartController()], child: MyPage()),
         path: '/home'),
     AppPage(
-        (_) =>
-            MinProvider(controller: ProfileController(), child: ProfilePage()),
+        (_) => MinProvider(
+            controller: ProfileController(), child: const ProfilePage()),
         path: '/profile')
   ]);
 

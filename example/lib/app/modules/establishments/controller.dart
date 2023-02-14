@@ -1,9 +1,9 @@
 import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 
-class ProfileController extends MinController {
+class EstablishmentsController extends MinController {
   @override
   void onInit() {
-    print('profile controller');
+    print('establishment controller');
     super.onInit();
   }
 }

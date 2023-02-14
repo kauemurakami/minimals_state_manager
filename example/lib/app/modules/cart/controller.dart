@@ -5,6 +5,12 @@ import 'package:minimals_state_manager/app/state_manager/extensions/min_listen.d
 class CartController extends MinController {
   final items = Cart().minx;
 
+  @override
+  void onInit() {
+    print('cart controller');
+    super.onInit();
+  }
+
   addItem() {}
   removeItem() {}
 

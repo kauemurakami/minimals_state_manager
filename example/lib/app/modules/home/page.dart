@@ -25,7 +25,7 @@ class MyPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
-                child: MinX<MyController>(
+                child: MinX<HomeController>(
               builder: (context, controller) => ListView.builder(
                   itemCount: controller.items.value.length,
                   itemBuilder: (context, index) => Container(

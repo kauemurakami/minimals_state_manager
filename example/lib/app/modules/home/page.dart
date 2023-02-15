@@ -1,24 +1,27 @@
 import 'package:example/app/modules/home/controller.dart';
+import 'package:example/app/modules/home/widgets/app_bar.dart';
+import 'package:example/app/modules/home/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/widgets/min_widget.dart';
+import 'package:minimals_state_manager/app/widgets/minx_widget.dart';
 // import 'package:minimals_state_manager/app/state_manager/widgets/page.dart';
 
 class MyPage extends StatelessWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   MyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
-        preferredSize: Size(MediaQuery.of(context).size.width, 50.0),
-        child: AppBar(
-          title: const Text('Items'),
-          automaticallyImplyLeading: false,
-        ),
-      ),
+          preferredSize: Size(MediaQuery.of(context).size.width, 50.0),
+          child: HomeAppBar(
+            scaffoldKey: scaffoldKey,
+          )),
+      endDrawer: HomeDrawer(),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -27,6 +30,7 @@ class MyPage extends StatelessWidget {
             Flexible(
                 child: MinX<HomeController>(
               builder: (context, controller) => ListView.builder(
+                  controller: controller.scrollController,
                   itemCount: controller.items.value.length,
                   itemBuilder: (context, index) => Container(
                         margin: const EdgeInsets.all(6.0),

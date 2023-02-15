@@ -16,7 +16,7 @@ class MinX<T extends MinController> extends StatelessWidget {
     // final T controller = MinProvider.of(context).controller as T;
     T controller;
     try {
-      controller = MinProvider.of(context).controller as T;
+      controller = MinProvider.of<T>(context);
     } catch (e) {
       controller = MinMultiProvider.of<T>(context);
       if (controller == null) {

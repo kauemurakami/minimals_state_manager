@@ -15,6 +15,8 @@ import 'package:minimals_state_manager/app/widgets/min_widget.dart';
 import 'package:minimals_state_manager/app/provider/min_provider.dart';
 
 class DashPage extends StatelessWidget {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   DashPage({super.key});
 
   @override
@@ -30,7 +32,8 @@ class DashPage extends StatelessWidget {
       }),
       body: MinX<DashController>(builder: (context, controller) {
         return Navigator(
-          key: controller.navigatorKey,
+          key: navigatorKey,
+          // key: controller.navigatorKey,
           initialRoute: '/home',
           onGenerateRoute: (RouteSettings settings) {
             print(settings.name);
@@ -49,16 +52,16 @@ class DashPage extends StatelessWidget {
               case Routes.PROFILE:
                 return MaterialPageRoute(
                   settings: const RouteSettings(name: '/profile'),
-                  builder: (_) => MinProvider(
-                    controller: ProfileController(),
+                  builder: (_) => MinProvider<ProfileController>(
+                    create: () => ProfileController(),
                     child: const ProfilePage(),
                   ),
                 );
               case Routes.ESTABLISHMENTS:
                 return MaterialPageRoute(
                   settings: const RouteSettings(name: '/establishments'),
-                  builder: (_) => MinProvider(
-                    controller: EstablishmentsController(),
+                  builder: (_) => MinProvider<EstablishmentsController>(
+                    create: () => EstablishmentsController(),
                     child: EstablishmentsPage(),
                   ),
                 );
@@ -76,12 +79,15 @@ class DashPage extends StatelessWidget {
       bottomNavigationBar: MinX<DashController>(
         builder: (context, controller) => $(
           (index) => BottomNavigationBar(
-              onTap: (_) => controller.changePage(_, context),
+              // onTap: (_) => navigatorKey.currentState?.pushNamed('/profile'),
+              onTap: (_) => navigatorKey.currentState!.pushReplacementNamed(
+                    controller.changePage(_)!,
+                  ),
               currentIndex: index,
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.settings), label: 'setttings'),
+                    icon: Icon(Icons.person), label: 'profile'),
               ]),
           listener: controller.index,
         ),

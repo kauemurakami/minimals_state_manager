@@ -64,16 +64,31 @@ class MyRouterDelegate extends RouterDelegate<Uri>
     );
     print(configuration.path);
     // print(configuration.queryParameters);
-    if (index != -1) {
-      _navigatorPages = [
-        ..._navigatorPages,
-        MaterialPage(
-          name: path,
-          child: pages![index].builder(data),
-        ),
-      ];
+    // if (index != -1) {
+    //   _navigatorPages = [
+    //     ..._navigatorPages,
+    //     MaterialPage(
+    //       name: path,
+    //       child: pages![index].builder(data),
+    //     ),
+    //   ];
 
-      notifyListeners();
+    if (index != -1) {
+      final routeAlreadyExists = _navigatorPages.firstWhere(
+            (element) => element.name == path,
+          ) !=
+          null;
+
+      if (!routeAlreadyExists) {
+        _navigatorPages = [
+          ..._navigatorPages,
+          MaterialPage(
+            name: path,
+            child: pages![index].builder(data),
+          ),
+        ];
+        notifyListeners();
+      }
     }
   }
 

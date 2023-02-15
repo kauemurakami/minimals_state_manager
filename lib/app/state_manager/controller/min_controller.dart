@@ -2,9 +2,9 @@ import 'package:flutter/widgets.dart';
 
 abstract class MinController with WidgetsBindingObserver {
   // bool loaded = false;
-  MinController() {
-    onInit();
-  }
+  // MinController() {
+  //   onInit();
+  // }
   void onInit() {
     // loaded = true;
   }

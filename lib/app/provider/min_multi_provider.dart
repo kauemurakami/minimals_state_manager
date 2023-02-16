@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 
-class MinMultiProvider extends InheritedWidget {
+class MinMultiProvider<T extends MinController> extends InheritedWidget {
   final List<MinController> controllers;
 
   const MinMultiProvider({
@@ -15,19 +15,19 @@ class MinMultiProvider extends InheritedWidget {
     return controllers != oldWidget.controllers;
   }
 
-  static T of<T>(BuildContext context) {
+  static T of<T extends MinController>(BuildContext context) {
     final Type type = T;
     final MinMultiProvider provider =
         context.dependOnInheritedWidgetOfExactType<MinMultiProvider>()!;
-    final T? controller = provider.controllers.firstWhere(
-            (element) => element.runtimeType == type,
-            orElse: () => throw Exception("Controller of type $type not found"))
+    T? controller = provider.controllers.firstWhere((element) {
+      return element.runtimeType == type;
+    }, orElse: () => throw Exception("Controller of type $type not found"))
         as T?;
-
+    controller!.setContext(context);
+    print(controller.context.hashCode);
     if (controller == null) {
       throw Exception("Controller of type $type not found");
     }
-
     return controller;
   }
 }

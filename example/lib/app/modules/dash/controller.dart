@@ -5,12 +5,14 @@ import 'package:minimals_state_manager/app/state_manager/controller/min_controll
 import 'package:minimals_state_manager/app/state_manager/extensions/min_listen.dart';
 
 class DashController extends MinController with ChangeNotifier {
-  GlobalKey<NavigatorState>? navigatorKey;
-  final pages = [Routes.HOME, Routes.PROFILE, Routes.ESTABLISHMENTS];
+  final pages = [
+    Routes.HOME,
+    Routes.CART,
+    Routes.PROFILE,
+  ];
   @override
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      navigatorKey = GlobalKey<NavigatorState>();
       // Executa após o widget ser renderizado
       //na tela
       print('Widget foi renderizado');

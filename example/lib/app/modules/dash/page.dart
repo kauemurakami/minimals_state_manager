@@ -11,8 +11,8 @@ import 'package:example/routes/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
 import 'package:minimals_state_manager/app/widgets/minx_widget.dart';
-import 'package:minimals_state_manager/app/widgets/min_widget.dart';
 import 'package:minimals_state_manager/app/provider/min_provider.dart';
+import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
 
 class DashPage extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -22,18 +22,17 @@ class DashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        final appState = context
-            .findAncestorStateOfType<MyAppState>()!
-            .delegate
-            .setNewRoutePath(
-              Uri.parse('/profile'),
-            );
-      }),
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   final appState = context
+      //       .findAncestorStateOfType<MyAppState>()!
+      //       .delegate
+      //       .setNewRoutePath(
+      //         Uri.parse('/profile'),
+      //       );
+      // }),
       body: MinX<DashController>(builder: (context, controller) {
         return Navigator(
           key: navigatorKey,
-          // key: controller.navigatorKey,
           initialRoute: '/home',
           onGenerateRoute: (RouteSettings settings) {
             print(settings.name);
@@ -49,6 +48,14 @@ class DashPage extends StatelessWidget {
                     child: MyPage(),
                   ),
                 );
+              case Routes.CART:
+                return MaterialPageRoute(
+                  settings: const RouteSettings(name: Routes.CART),
+                  builder: (_) => MinProvider<CartController>(
+                    create: () => CartController(),
+                    child: EstablishmentsPage(),
+                  ),
+                );
               case Routes.PROFILE:
                 return MaterialPageRoute(
                   settings: const RouteSettings(name: '/profile'),
@@ -57,14 +64,7 @@ class DashPage extends StatelessWidget {
                     child: const ProfilePage(),
                   ),
                 );
-              case Routes.ESTABLISHMENTS:
-                return MaterialPageRoute(
-                  settings: const RouteSettings(name: '/establishments'),
-                  builder: (_) => MinProvider<EstablishmentsController>(
-                    create: () => EstablishmentsController(),
-                    child: EstablishmentsPage(),
-                  ),
-                );
+
               default:
                 return MaterialPageRoute(
                     builder: (_) => Scaffold(
@@ -79,6 +79,8 @@ class DashPage extends StatelessWidget {
       bottomNavigationBar: MinX<DashController>(
         builder: (context, controller) => $(
           (index) => BottomNavigationBar(
+              selectedItemColor: Colors.amber,
+              backgroundColor: Colors.white,
               // onTap: (_) => navigatorKey.currentState?.pushNamed('/profile'),
               onTap: (_) => navigatorKey.currentState!.pushReplacementNamed(
                     controller.changePage(_)!,

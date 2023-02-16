@@ -1,13 +1,18 @@
 import 'package:flutter/widgets.dart';
 
 abstract class MinController with WidgetsBindingObserver {
+  BuildContext? _context;
+
   // bool loaded = false;
-  // MinController() {
-  //   onInit();
-  // }
+  MinController() {
+    onInit();
+  }
   void onInit() {
     // loaded = true;
   }
+
+  BuildContext get context => _context!;
+  setContext(c) => _context = c;
 
   @override
   void onClose() {

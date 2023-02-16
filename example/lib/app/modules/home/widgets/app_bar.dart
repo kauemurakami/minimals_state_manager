@@ -1,7 +1,8 @@
 import 'package:example/app/modules/home/controller.dart';
+import 'package:example/app/modules/home/widgets/filters.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/widgets/min_widget.dart';
 import 'package:minimals_state_manager/app/widgets/minx_widget.dart';
+import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
 
 class HomeAppBar extends StatelessWidget {
   final GlobalKey<ScaffoldState>? scaffoldKey;
@@ -28,7 +29,7 @@ class HomeAppBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                  flex: 8,
+                  flex: 6,
                   child: Row(
                     children: [
                       Flexible(
@@ -45,6 +46,15 @@ class HomeAppBar extends StatelessWidget {
                     ],
                   ),
                 ),
+                Flexible(
+                    child: InkWell(
+                  child: const Icon(Icons.filter_list),
+                  onTap: () => showBottomSheet(
+                    enableDrag: true,
+                    context: context,
+                    builder: (context) => BSFilters(),
+                  ),
+                )),
                 Flexible(
                     child: InkWell(
                         child: const Icon(Icons.menu),

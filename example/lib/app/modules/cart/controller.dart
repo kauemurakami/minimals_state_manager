@@ -1,4 +1,3 @@
-import 'package:example/app/data/models/cart.dart';
 import 'package:example/app/data/models/item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
@@ -28,5 +27,8 @@ class CartController extends MinController {
     }
   }
 
-  removeItem(item) => items.value.removeWhere((element) => element == item);
+  removeItem(item) {
+    items.value.removeWhere((element) => element == item);
+    return true;
+  }
 }

@@ -23,8 +23,8 @@ class MinMultiProvider<T extends MinController> extends InheritedWidget {
       return element.runtimeType == type;
     }, orElse: () => throw Exception("Controller of type $type not found"))
         as T?;
-    controller!.setContext(context);
-    print(controller.context.hashCode);
+    // controller!.setContext(context);
+    // print(controller.context.hashCode);
     if (controller == null) {
       throw Exception("Controller of type $type not found");
     }

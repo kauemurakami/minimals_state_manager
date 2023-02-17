@@ -8,14 +8,22 @@ import 'package:minimals_state_manager/app/state_manager/extensions/min_listen.d
 
 class HomeController extends MinController {
   final repository = HomeRepository(FakeApi());
-  ValueNotifier<bool> openned = true.minx;
   TextEditingController textController = TextEditingController();
 
   ValueNotifier<List<Item>> items = <Item>[].minx;
   ValueNotifier<int> filter = 0.minx;
+  ValueNotifier<bool> openned = true.minx;
+  /*
+  or it can also be declared final
+  final items = <Item>[].minx; -> ValueNotifier<List<Item>> 
+  final filter = 0.minx;       -> ValueNotifier<int>
+  final openned = true.minx;   ->  ValueNotifier<bool>
+  */
+
   @override
   onInit() async {
     print('home controller');
+    scrollListener();
     await getItems();
   }
 
@@ -24,26 +32,27 @@ class HomeController extends MinController {
     filterItems(type);
   }
 
-  filterItems(type) {
+  filterItems(type) async {
+    items.value = [];
+    await getItems();
     items.value = items.value.where((item) => item.type == type).toList();
   }
 
   removeFilters() async {
+    items.value = [];
     filter.value = 0;
     await getItems();
   }
 
   getItems() async =>
-      await repository.getItems().then((data) => items!.value = data);
+      await repository.getItems().then((data) => items.value = data);
 
   //remover scrol controller no dispose
   ScrollController scrollController = ScrollController();
-  // HomeController() {
-  //   scrollListener();
-  // }
-
-  double getHeight(context) {
-    return 0.0;
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
   }
 
   scrollListener() {

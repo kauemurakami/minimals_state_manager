@@ -25,7 +25,7 @@ class _$State<T> extends State<$<T>> {
 
   @override
   void dispose() {
-    widget.listener!.dispose();
+    // widget.listener!.dispose();
     super.dispose();
   }
 

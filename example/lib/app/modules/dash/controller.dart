@@ -7,7 +7,6 @@ import 'package:minimals_state_manager/app/state_manager/extensions/min_listen.d
 class DashController extends MinController with ChangeNotifier {
   final pages = [
     Routes.HOME,
-    Routes.CART,
     Routes.PROFILE,
   ];
   @override

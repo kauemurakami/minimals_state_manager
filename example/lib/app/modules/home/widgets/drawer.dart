@@ -9,20 +9,20 @@ class HomeDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-            child: Text('Drawer Header'),
+          const DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
+            child: Text('Drawer Header'),
           ),
           ListTile(
-            title: Text('Item 1'),
+            title: const Text('Item 1'),
             onTap: () {
               // ação do item 1
             },
           ),
           ListTile(
-            title: Text('Item 2'),
+            title: const Text('Item 2'),
             onTap: () {
               // ação do item 2
             },

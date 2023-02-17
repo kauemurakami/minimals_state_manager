@@ -1,5 +1,3 @@
-import 'package:example/app/modules/cart/controller.dart';
-import 'package:example/app/modules/dash/controller.dart';
 import 'package:example/app/modules/home/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/widgets/minx_widget.dart';
@@ -13,7 +11,7 @@ class BSFilters extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: const BoxDecoration(
-        color: Colors.grey,
+        // color: Colors.grey,
         borderRadius: BorderRadius.all(
           Radius.circular(6.0),
         ),
@@ -37,7 +35,7 @@ class BSFilters extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.5,
               child: MinX<HomeController>(
                 builder: (context, controller) => $(
-                  (items) => ListView.builder(
+                  (filter) => ListView.builder(
                     // scrollDirection: Axis.horizontal,
                     itemCount: 3,
                     itemBuilder: (context, index) => InkWell(
@@ -47,7 +45,8 @@ class BSFilters extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.06,
                         decoration: BoxDecoration(
                           border: Border.all(
-                              color: controller.filter.value != 0
+                              color: controller.filter.value != 0 &&
+                                      (index + 1 == filter)
                                   ? Colors.green
                                   : Colors.amber),
                           borderRadius: const BorderRadius.all(
@@ -58,7 +57,7 @@ class BSFilters extends StatelessWidget {
                       ),
                     ),
                   ),
-                  listener: controller.items,
+                  listener: controller.filter,
                 ),
               ),
             ),
@@ -78,7 +77,10 @@ class BSFilters extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     minWidth: MediaQuery.of(context).size.width * 0.3,
                     color: Colors.amberAccent,
-                    onPressed: () => controller.removeFilters(),
+                    onPressed: () async {
+                      await controller.removeFilters();
+                      // Navigator.pop(context);
+                    },
                     child: const Text('REMOVE FILTERS'),
                   ),
                 ),

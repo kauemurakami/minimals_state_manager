@@ -19,9 +19,9 @@ class MinX<T extends MinController> extends StatelessWidget {
       controller = MinProvider.of<T>(context);
     } catch (e) {
       controller = MinMultiProvider.of<T>(context);
-      if (controller == null) {
-        throw Exception("Controller of type $T not found");
-      }
+      // if (controller == null) {
+      //   throw Exception("Controller of type $T not found");
+      // }
     }
     return Builder(
       builder: (BuildContext context) => builder(context, controller),

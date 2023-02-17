@@ -1,4 +1,5 @@
 import 'package:example/app/modules/cart/controller.dart';
+import 'package:example/app/modules/cart/page.dart';
 import 'package:example/app/modules/dash/controller.dart';
 import 'package:example/app/modules/establishments/controller.dart';
 import 'package:example/app/modules/establishments/page.dart';
@@ -48,17 +49,10 @@ class DashPage extends StatelessWidget {
                     child: MyPage(),
                   ),
                 );
-              case Routes.CART:
-                return MaterialPageRoute(
-                  settings: const RouteSettings(name: Routes.CART),
-                  builder: (_) => MinProvider<CartController>(
-                    create: () => CartController(),
-                    child: EstablishmentsPage(),
-                  ),
-                );
+
               case Routes.PROFILE:
                 return MaterialPageRoute(
-                  settings: const RouteSettings(name: '/profile'),
+                  settings: const RouteSettings(name: Routes.PROFILE),
                   builder: (_) => MinProvider<ProfileController>(
                     create: () => ProfileController(),
                     child: const ProfilePage(),

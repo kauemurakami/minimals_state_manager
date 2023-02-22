@@ -16,19 +16,11 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   final delegate = MyRouterDelegate(pages: [
     AppPage(
-        (_) => MinProvider<DashController>(
+        (_) => MinProvider(
               controller: DashController(),
               child: DashPage(),
             ),
         path: '/'),
-    // AppPage(
-    //     (_) => MinMultiProvider(
-    //         controllers: [HomeController(), CartController()], child: MyPage()),
-    //     path: '/home'),
-    // AppPage(
-    //     (_) => MinProvider(
-    //         controller: ProfileController(), child: const ProfilePage()),
-    //     path: '/profile')
   ]);
 
   @override

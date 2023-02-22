@@ -1,4 +1,4 @@
 library minimals_state_manager;
 
-/// A Calculator.
+//minimal state manager main
 class Min {}

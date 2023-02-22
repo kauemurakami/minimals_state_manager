@@ -8,10 +8,10 @@ import 'package:minimals_state_manager/app/widgets/minx_widget.dart';
 import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
 // import 'package:minimals_state_manager/app/state_manager/widgets/page.dart';
 
-class MyPage extends StatelessWidget {
+class HomePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  MyPage({super.key});
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {

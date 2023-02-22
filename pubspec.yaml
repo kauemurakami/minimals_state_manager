@@ -1,7 +1,7 @@
 name: minimals_state_manager
 description: "The minimals_state_manager package is a study project on state management, observables, lifecycle, and best practices for Flutter applications. It provides a minimalist implementation of state management using only native Flutter packages such as InheritedWidget, ChangeNotifier, ValueNotifier, ValueNotifierBuilder, and WidgetsBindingObserver. Please note that it is not recommended for production use as it is still in an alpha version."
 
-version: 0.0.1-alpha
+version: 0.0.1-alpha.0.0.1
 # author: Kauê Tomaz Murakami<kauetmurakami@gmail.com>
 homepage: https://github.com/kauemurakami/minimals_state_manager
 

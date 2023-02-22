@@ -15,12 +15,12 @@
     you can simplify the process of managing state and reduce boilerplate code in your  
     Flutter projects.  
 
-    ```dart
+   
     MinProvider(
       controller: YourController(),
       child: YourPage()
     )
-    ```
+   
 
     or
 

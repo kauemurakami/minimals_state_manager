@@ -1,40 +1,30 @@
 import 'package:flutter/widgets.dart';
+import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
+import 'package:minimals_state_manager/app/provider/min_provider.dart';
+import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 
-class $<T> extends StatefulWidget {
-  ValueNotifier<T>? listener;
-  Widget Function(T)? builder;
-  Widget? child;
-  $(this.builder, {@required this.listener, this.child, Key? key})
-      : super(key: key);
+class MinX<T extends MinController> extends StatelessWidget {
+  final Widget Function(BuildContext context, T controller) builder;
 
-  @override
-  State<$<T>> createState() => _$State<T>();
-}
-
-class _$State<T> extends State<$<T>> {
-  @override
-  void initState() {
-    if (widget.listener == null) {
-      throw Exception("Listener is null");
-    }
-    if (widget.builder == null) {
-      throw Exception("builder is null");
-    }
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.listener!.dispose();
-    super.dispose();
-  }
+  const MinX({
+    Key? key,
+    required this.builder,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: widget.listener!,
-      builder: (context, value, child) => widget.builder!(value),
-      child: widget.child,
+    // final T controller = MinProvider.of(context).controller as T;
+    T controller;
+    try {
+      controller = MinProvider.of<T>(context) as T;
+    } catch (e) {
+      controller = MinMultiProvider.of<T>(context);
+      // if (controller == null) {
+      //   throw Exception("Controller of type $T not found");
+      // }
+    }
+    return Builder(
+      builder: (BuildContext context) => builder(context, controller),
     );
   }
 }

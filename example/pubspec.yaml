@@ -31,7 +31,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  go_router:
+  url_strategy:
   minimals_state_manager: 
     path: ../
 

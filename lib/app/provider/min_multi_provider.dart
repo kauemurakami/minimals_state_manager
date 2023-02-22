@@ -15,19 +15,18 @@ class MinMultiProvider extends InheritedWidget {
     return controllers != oldWidget.controllers;
   }
 
-  static T of<T>(BuildContext context) {
+  static T of<T extends MinController>(BuildContext context) {
     final Type type = T;
-    final MinMultiProvider provider =
-        context.dependOnInheritedWidgetOfExactType<MinMultiProvider>()!;
-    final T? controller = provider.controllers.firstWhere(
-            (element) => element.runtimeType == type,
-            orElse: () => throw Exception("Controller of type $type not found"))
-        as T?;
-
+    final MinMultiProvider? provider =
+        context.dependOnInheritedWidgetOfExactType<MinMultiProvider>();
+    if (provider == null) {
+      throw Exception("Provider not found");
+    }
+    T? controller =
+        provider.controllers.whereType<T>().firstWhere((element) => true);
     if (controller == null) {
       throw Exception("Controller of type $type not found");
     }
-
     return controller;
   }
 }

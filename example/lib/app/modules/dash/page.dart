@@ -8,8 +8,8 @@ import 'package:example/routes/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
 import 'package:minimals_state_manager/app/widgets/minx_widget.dart';
-import 'package:minimals_state_manager/app/widgets/min_widget.dart';
 import 'package:minimals_state_manager/app/provider/min_provider.dart';
+import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
 
 class DashPage extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -19,60 +19,67 @@ class DashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Navigator(
-        key: navigatorKey,
-        initialRoute: '/home',
-        pages: [
-          MaterialPage(
-            name: '/home',
-            child: MinMultiProvider(
-              controllers: [
-                MyController(),
-                CartController(),
-              ],
-              child: MyPage(),
-            ),
-          ),
-          MaterialPage(
-            name: '/profile',
-            child: MinProvider(
-              controller: ProfileController(),
-              child: ProfilePage(),
-            ),
-          )
-        ],
-        onGenerateRoute: (RouteSettings settings) {
-          switch (settings.name) {
-            case Routes.HOME:
-              return MaterialPageRoute(
-                  settings: RouteSettings(name: '/home'),
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   final appState = context
+      //       .findAncestorStateOfType<MyAppState>()!
+      //       .delegate
+      //       .setNewRoutePath(
+      //         Uri.parse('/profile'),
+      //       );
+      // }),
+      body: MinX<DashController>(builder: (context, controller) {
+        return Navigator(
+          key: navigatorKey,
+          initialRoute: '/home',
+          onGenerateRoute: (RouteSettings settings) {
+            print(settings.name);
+            switch (settings.name) {
+              case Routes.HOME:
+                return MaterialPageRoute(
+                  settings: const RouteSettings(name: '/home'),
                   builder: (_) => MinMultiProvider(
-                      controllers: [MyController(), CartController()],
-                      child: MyPage()));
-            case Routes.PROFILE:
-              return MaterialPageRoute(
-                  settings: RouteSettings(name: '/profile'),
-                  builder: (_) => MinProvider(
-                      controller: ProfileController(), child: ProfilePage()));
-            default:
-              return MaterialPageRoute(
-                  builder: (_) => Scaffold(
-                      body: Center(
-                          child:
-                              Text('No route defined for ${settings.name}'))));
-          }
-        },
-        onPopPage: (route, result) => route.didPop(result),
-      ),
+                    controllers: [
+                      HomeController(),
+                      CartController(),
+                    ],
+                    child: MyPage(),
+                  ),
+                );
+
+              case Routes.PROFILE:
+                return MaterialPageRoute(
+                  settings: const RouteSettings(name: Routes.PROFILE),
+                  builder: (_) => MinProvider<ProfileController>(
+                    controller: ProfileController(),
+                    child: const ProfilePage(),
+                  ),
+                );
+
+              default:
+                return MaterialPageRoute(
+                    builder: (_) => Scaffold(
+                        body: Center(
+                            child: Text(
+                                'No route defined for ${settings.name}'))));
+            }
+          },
+          onPopPage: (route, result) => route.didPop(result),
+        );
+      }),
       bottomNavigationBar: MinX<DashController>(
         builder: (context, controller) => $(
           (index) => BottomNavigationBar(
-              onTap: (_) => controller.changePage(_, context),
+              selectedItemColor: Colors.amber,
+              backgroundColor: Colors.white,
+              // onTap: (_) => navigatorKey.currentState?.pushNamed('/profile'),
+              onTap: (_) => navigatorKey.currentState!.pushReplacementNamed(
+                    controller.changePage(_)!,
+                  ),
               currentIndex: index,
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.settings), label: 'setttings'),
+                    icon: Icon(Icons.person), label: 'profile'),
               ]),
           listener: controller.index,
         ),

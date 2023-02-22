@@ -1,13 +1,19 @@
 import 'package:flutter/widgets.dart';
+import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 
-class MinProvider extends InheritedWidget {
-  final controller;
+class MinProvider<T extends MinController> extends InheritedWidget {
+  final T? controller;
 
-  MinProvider({Key? key, @required Widget? child, this.controller})
-      : super(key: key, child: child!);
+  const MinProvider({
+    Key? key,
+    required Widget child,
+    this.controller,
+  }) : super(key: key, child: child);
 
-  static MinProvider of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<MinProvider>()!;
+  static T? of<T extends MinController>(BuildContext context) {
+    final provider =
+        context.dependOnInheritedWidgetOfExactType<MinProvider<T>>();
+    return provider?.controller;
   }
 
   @override

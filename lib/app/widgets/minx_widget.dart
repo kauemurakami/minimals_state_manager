@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
 import 'package:minimals_state_manager/app/provider/min_provider.dart';
+import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 
 class MinX<T extends MinController> extends StatelessWidget {
   final Widget Function(BuildContext context, T controller) builder;
@@ -16,7 +16,7 @@ class MinX<T extends MinController> extends StatelessWidget {
     // final T controller = MinProvider.of(context).controller as T;
     T controller;
     try {
-      controller = MinProvider.of<T>(context);
+      controller = MinProvider.of<T>(context) as T;
     } catch (e) {
       controller = MinMultiProvider.of<T>(context);
       // if (controller == null) {

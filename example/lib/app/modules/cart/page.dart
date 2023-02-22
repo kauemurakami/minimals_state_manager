@@ -14,8 +14,10 @@ class CartPage extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.5,
         width: MediaQuery.of(context).size.width,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             MinX<CartController>(
+              // resolver com rootcontext
               builder: (context, controller) => Flexible(
                 child: $(
                   (items) => items.isEmpty
@@ -67,6 +69,11 @@ class CartPage extends StatelessWidget {
                   listener: controller.items,
                 ),
               ),
+            ),
+            MaterialButton(
+              color: Colors.red,
+              onPressed: () => Navigator.pop(context),
+              child: const Text('CLOSE'),
             )
           ],
         ),

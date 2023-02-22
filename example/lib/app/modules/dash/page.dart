@@ -1,13 +1,9 @@
 import 'package:example/app/modules/cart/controller.dart';
-import 'package:example/app/modules/cart/page.dart';
 import 'package:example/app/modules/dash/controller.dart';
-import 'package:example/app/modules/establishments/controller.dart';
-import 'package:example/app/modules/establishments/page.dart';
 import 'package:example/app/modules/home/controller.dart';
 import 'package:example/app/modules/home/page.dart';
 import 'package:example/app/modules/profile/controller.dart';
 import 'package:example/app/modules/profile/page.dart';
-import 'package:example/app/my_app.dart';
 import 'package:example/routes/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
@@ -54,7 +50,7 @@ class DashPage extends StatelessWidget {
                 return MaterialPageRoute(
                   settings: const RouteSettings(name: Routes.PROFILE),
                   builder: (_) => MinProvider<ProfileController>(
-                    create: () => ProfileController(),
+                    controller: ProfileController(),
                     child: const ProfilePage(),
                   ),
                 );

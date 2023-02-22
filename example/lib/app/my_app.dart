@@ -17,7 +17,7 @@ class MyAppState extends State<MyApp> {
   final delegate = MyRouterDelegate(pages: [
     AppPage(
         (_) => MinProvider<DashController>(
-              create: () => DashController(),
+              controller: DashController(),
               child: DashPage(),
             ),
         path: '/'),

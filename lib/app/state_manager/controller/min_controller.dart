@@ -26,26 +26,26 @@ abstract class MinController extends ChangeNotifier
   setContext(c) => _context = c;
 
   /// Executes code on close.
-  @override
+  // @override
   void onClose() {
     // executa o código do onClose aqui
     // loaded = false;
   }
 
   /// Executes code when the application is in the inactive state.
-  @override
+  // @override
   void onInactived() {
     // executa o código do onClose aqui
   }
 
   /// Executes code when the application is in the paused state.
-  @override
+  // @override
   void onPaused() {
     // executa o código do onClose aqui
   }
 
   /// Executes code when the application is in the resumed state.
-  @override
+  // @override
   void onResumed() {
     // loaded = true;
     // executa o código do onClose aqui

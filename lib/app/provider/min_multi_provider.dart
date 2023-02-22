@@ -22,7 +22,7 @@ class MinMultiProvider extends InheritedWidget {
   /// Returns the instance of T from the closest ancestor MinMultiProvider
   /// widget that matches the type T.
   static T of<T extends MinController>(BuildContext context) {
-    final Type type = T;
+    // final Type type = T;
     final MinMultiProvider? provider =
         context.dependOnInheritedWidgetOfExactType<MinMultiProvider>();
     if (provider == null) {

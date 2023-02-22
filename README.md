@@ -225,3 +225,8 @@ class User {
 
 Package is a work of studies about life cycles, dependency injection, objects and observable classes.  
 Not recommended and not ready for production.
+
+Next steps:
+  - Fix navigation 2.0
+  - Provide controller for every page
+  - Add more complex usage examples

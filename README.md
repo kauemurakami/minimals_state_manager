@@ -9,7 +9,12 @@
 ## Features
 Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui as seguintes características:  
 
-    MinProvider and MinMultiProvider are state management providers that allow you to easily manage and share the state of your Flutter application between different components. MinProvider is used for single state management, while MinMultiProvider is used for managing multiple states in a single provider. By using MinProvider and MinMultiProvider, you can simplify the process of managing state and reduce boilerplate code in your Flutter projects.  
+    MinProvider and MinMultiProvider are state management providers that allow you to easily  
+    manage and share the state of your Flutter application between different components.  
+    MinProvider is used for single state management, while MinMultiProvider is used for  
+    managing multiple states in a single provider. By using MinProvider and MinMultiProvider,   
+    you can simplify the process of managing state and reduce boilerplate code in your  
+    Flutter projects.  
 
     ```dart
     MinProvider(
@@ -27,7 +32,15 @@ Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui
     )
     ```
 
-    Observable widget $(), this is a generic observable widget that can be used to listen for changes to a value notifier and update the UI accordingly. It takes in a value notifier and a builder function that defines how the UI should be updated based on the current value of the notifier. This widget is useful for cases where you want to decouple the UI from the data source, allowing for changes in the data to automatically update the UI without having to manually manage state. It can be used in a variety of scenarios such as form input fields, status indicators, or progress bars.  
+    Observable widget $(), this is a generic observable widget that  
+    can be used to listen for changes to a value notifier and update  
+    the UI accordingly. It takes in a value notifier and a builder  
+    function that defines how the UI should be updated based on the  
+    current value of the notifier. This widget is useful for cases where  
+    you want to decouple the UI from the data source, allowing for changes  
+    in the data to automatically update the UI without having to manually  
+    manage state. It can be used in a variety of scenarios such as form  
+    input fields, status indicators, or progress bars.  
 
     ```dart
     $(
@@ -36,7 +49,14 @@ Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui
     )
     ```
 
-    MinController, this class is an abstraction for creating state controllers that use Flutter's ChangeNotifier class and implement the WidgetsBindingObserver mixin. This allows controllers to react to changes in the application lifecycle, as well as notify observers when state changes occur. The class has methods to handle application lifecycle and other startup and shutdown operations. It is useful for creating reactive and observable controllers that can be used throughout an application.  
+    MinController, this class is an abstraction for creating state  
+    controllers that use Flutter's ChangeNotifier class and implement  
+    the WidgetsBindingObserver mixin. This allows controllers to react  
+    to changes in the application lifecycle, as well as notify observers  
+    when state changes occur. The class has methods to handle application  
+    lifecycle and other startup and shutdown operations. It is useful for  
+    creating reactive and observable controllers that can be used  
+    throughout an application.  
 
     ```dart
     class YourController extends MinController {
@@ -64,7 +84,13 @@ Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui
     }
     ```
 
-    MinX<Controller> MinX is a widget that provides a generic way to obtain a MinController and rebuild the widget tree when the controller's state changes. It uses the MinProvider and MinMultiProvider classes to retrieve the controller from the widget tree, depending on its type. The controller is then passed to a builder function that returns the widget tree to be built.  
+    MinX<Controller> MinX is a widget that provides a generic  
+    way to obtain a MinController and rebuild the widget  
+    tree when the controller's state changes. It uses the  
+    MinProvider and MinMultiProvider classes to retrieve  
+    the controller from the widget tree, depending on its  
+    type. The controller is then passed to a builder function  
+    that returns the widget tree to be built.  
 
     ```dart
     MinX<YourController>(

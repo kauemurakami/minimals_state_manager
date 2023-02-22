@@ -10,6 +10,7 @@ import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 // with 2.0 navigation
+// COMPLEX EXAMPLE
 // void main() {
 //   setPathUrlStrategy();
 //   runApp(const MyApp());

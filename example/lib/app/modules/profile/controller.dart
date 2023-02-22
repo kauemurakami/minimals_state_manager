@@ -3,7 +3,7 @@ import 'package:minimals_state_manager/app/state_manager/controller/min_controll
 class ProfileController extends MinController {
   @override
   void onInit() {
-    print('profile controller');
+    print('profile controller init');
     super.onInit();
   }
 }

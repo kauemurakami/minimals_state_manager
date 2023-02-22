@@ -41,7 +41,7 @@ class DashPage extends StatelessWidget {
                       HomeController(),
                       CartController(),
                     ],
-                    child: MyPage(),
+                    child: HomePage(),
                   ),
                 );
 

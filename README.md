@@ -230,3 +230,5 @@ Next steps:
   - Fix navigation 2.0
   - Provide controller for every page
   - Add more complex usage examples
+  - Fix folders
+  - Fix imports

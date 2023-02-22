@@ -1,4 +1,5 @@
 import 'package:example/routes/page.dart';
+import 'package:example/routes/pages.dart';
 import 'package:flutter/material.dart';
 
 class MyRouterDelegate extends RouterDelegate<Uri>
@@ -9,10 +10,10 @@ class MyRouterDelegate extends RouterDelegate<Uri>
     // if (pages == null) {
     //   throw Exception('pages cannot be null');
     // }
-    final initial = pages!.firstWhere((page) => page.path == '/');
+    final initial = pages!.firstWhere((page) => page.path == Routes.DASH);
     _navigatorPages = [
       MaterialPage(
-        name: '/',
+        name: Routes.DASH,
         child: initial.builder(
           {},
         ),

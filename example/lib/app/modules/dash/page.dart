@@ -30,13 +30,12 @@ class DashPage extends StatelessWidget {
       body: MinX<DashController>(builder: (context, controller) {
         return Navigator(
           key: navigatorKey,
-          initialRoute: '/home',
+          initialRoute: Routes.HOME,
           onGenerateRoute: (RouteSettings settings) {
-            print(settings.name);
             switch (settings.name) {
               case Routes.HOME:
                 return MaterialPageRoute(
-                  settings: const RouteSettings(name: '/home'),
+                  settings: const RouteSettings(name: Routes.HOME),
                   builder: (_) => MinMultiProvider(
                     controllers: [
                       HomeController(),

@@ -1,9 +1,14 @@
 import 'package:flutter/widgets.dart';
 
+/// A widget that listens to changes of a [ValueNotifier] and rebuilds its child
+/// widget accordingly.
 class $<T> extends StatefulWidget {
   ValueNotifier<T>? listener;
   Widget Function(T)? builder;
   Widget? child;
+
+  /// Creates a new instance of $ widget with the provided [builder] function and
+  /// [ValueNotifier] listener.
   $(this.builder, {@required this.listener, this.child, Key? key})
       : super(key: key);
 

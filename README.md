@@ -24,12 +24,12 @@
 
     or
 
-    ```dart
+    
     MinMultiProvider(
       controllers: [YourController1(), YourController2()],
       child: YourPage()
     )
-    ```
+    
 
   Observable widget $(), this is a generic observable widget that  
     can be used to listen for changes to a value notifier and update  
@@ -41,12 +41,12 @@
     manage state. It can be used in a variety of scenarios such as form  
     input fields, status indicators, or progress bars.  
 
-    ```dart
+    
     $(
       (count) => Text('Count $count'), // function returns real value as int
       listener: controller.count // count is ValueNotifier<int> 
     )
-    ```
+    
 
   MinController, this is an abstraction for creating state  
     controllers that use Flutter ChangeNotifier class and implement  
@@ -57,7 +57,7 @@
     creating reactive and observable controllers that can be used  
     throughout an application.  
 
-    ```dart
+    
     class YourController extends MinController {
       @override
       void onInit() {
@@ -81,7 +81,7 @@
       User({this.name});
       String? name;
     }
-    ```
+    
 
   `MinX<Controller>` MinX is a widget that provides a generic  
     way to obtain a MinController and rebuild the widget  
@@ -91,11 +91,11 @@
     type. The controller is then passed to a builder function  
     that returns the widget tree to be built.  
 
-    ```dart
+    
     MinX<YourController>(
       builder: (context, controller) => Text(controller.name)
     )
-    ```
+    
 
 ## Getting started
 

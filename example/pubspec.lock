@@ -110,9 +110,9 @@ packages:
   minimals_state_manager:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      name: minimals_state_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.7-alpha.0.0.7.2+build.2"
   path:
     dependency: transitive

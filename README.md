@@ -1,20 +1,22 @@
+[![Star on GitHub](https://img.shields.io/github/stars/kauemurakami/minimals_state_manager.svg?style=flat&logo=github&colorB=deeppink&label=stars)](https://github.com/kauemurakami/minimals_state_manager)  
+
+  The minimals_state_manager package is a minimalist implementation of state management for Flutter apps, using only native Flutter packages. The goal is to simplify the process of managing states in your projects by providing an easy-to-use framework that takes full advantage of Flutter's native functionality.  
+
+  For this, the package uses important packages such as InheritedWidget, ChangeNotifier, ValueNotifier, ValueNotifierBuilder and WidgetsBindingObserver to control the lifecycle of the application in its controllers.  
+
+  With minimals_state_manager, you will have a minimal state management implementation that is easy to understand and that speeds up Flutter application development. **However, it is important to point out that this package is intended for study about state management, observables, lifecycle and best practices only and is not recommended for production as it is still in alpha version.**  
 
 
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+## Getting Started
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-
-O Minimal State Manager é um projeto de estudos em versão alpha sobre o gerenciamento de estado em aplicativos Flutter. É uma implementação do que já é oferecido pelo próprio framework do Flutter, como o InheritedWidget, ValueNotifier, ChangeNotifier e ValueListenableBuilder.
+```
+$ flutter pub add minimals_state_manager
+```
+or add in your dependencies
+```
+dependencies:
+  minimals_state_manager: <latest>
+```
 
 ## Features
 Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui as seguintes características:  

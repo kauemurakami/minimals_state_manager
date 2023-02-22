@@ -7,9 +7,8 @@
   With minimals_state_manager, you will have a minimal state management implementation that is easy to understand and that speeds up Flutter application development. **However, it is important to point out that this package is intended for study about state management, observables, lifecycle and best practices only and is not recommended for production as it is still in alpha version.**  
 
 ## Features
-Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui as seguintes características:  
 
-    MinProvider and MinMultiProvider are state management providers that allow you to easily  
+  MinProvider and MinMultiProvider are state management providers that allow you to easily  
     manage and share the state of your Flutter application between different components.  
     MinProvider is used for single state management, while MinMultiProvider is used for  
     managing multiple states in a single provider. By using MinProvider and MinMultiProvider,   
@@ -32,7 +31,7 @@ Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui
     )
     ```
 
-    Observable widget $(), this is a generic observable widget that  
+  Observable widget $(), this is a generic observable widget that  
     can be used to listen for changes to a value notifier and update  
     the UI accordingly. It takes in a value notifier and a builder  
     function that defines how the UI should be updated based on the  
@@ -49,8 +48,8 @@ Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui
     )
     ```
 
-    MinController, this class is an abstraction for creating state  
-    controllers that use Flutter's ChangeNotifier class and implement  
+  MinController, this is an abstraction for creating state  
+    controllers that use Flutter ChangeNotifier class and implement  
     the WidgetsBindingObserver mixin. This allows controllers to react  
     to changes in the application lifecycle, as well as notify observers  
     when state changes occur. The class has methods to handle application  
@@ -84,7 +83,7 @@ Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui
     }
     ```
 
-    MinX<Controller> MinX is a widget that provides a generic  
+  `MinX<Controller>` MinX is a widget that provides a generic  
     way to obtain a MinController and rebuild the widget  
     tree when the controller's state changes. It uses the  
     MinProvider and MinMultiProvider classes to retrieve  
@@ -97,6 +96,7 @@ Embora ainda esteja em sua versão alpha, este gerenciador de estados já possui
       builder: (context, controller) => Text(controller.name)
     )
     ```
+
 ## Getting started
 
 ```

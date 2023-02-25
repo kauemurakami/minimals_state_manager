@@ -11,129 +11,129 @@ import 'package:url_strategy/url_strategy.dart';
 
 // with 2.0 navigation
 
-// void main() {
-//   setPathUrlStrategy();
-//   runApp(const MyApp());
-//   // runApp(const MaterialApp()); //normal navigation
-// }
-
 void main() {
-  runApp(MaterialApp(
-    home: MinProvider(controller: MyController(), child: MyPage()),
-  ));
+  setPathUrlStrategy();
+  runApp(const MyApp());
   // runApp(const MaterialApp()); //normal navigation
 }
 
-class MyController extends MinController {
-  @override
-  void onInit() {
-    print('init controller');
-    super.onInit();
-  }
+// void main() {
+//   runApp(MaterialApp(
+//     home: MinProvider(controller: MyController(), child: MyPage()),
+//   ));
+//   // runApp(const MaterialApp()); //normal navigation
+// }
 
-  final count = 0.minx;
-  ValueNotifier<User> user = User().minx;
+// class MyController extends MinController {
+//   @override
+//   void onInit() {
+//     print('init controller');
+//     super.onInit();
+//   }
 
-  increment() => count.value++;
-  decrement() => count.value--;
-  refresh() => count.value = 0;
+//   final count = 0.minx;
+//   ValueNotifier<User> user = User().minx;
 
-  onChangedName(str) => user.update((val) => val.name = str);
-  onSaveName(str) => user.update((val) => val.name = str);
-  validateName(str) => str.length < 2 ? 'insert valid name' : null;
-}
+//   increment() => count.value++;
+//   decrement() => count.value--;
+//   refresh() => count.value = 0;
 
-class MyPage extends StatelessWidget {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  MyPage({super.key});
+//   onChangedName(str) => user.update((val) => val.name = str);
+//   onSaveName(str) => user.update((val) => val.name = str);
+//   validateName(str) => str.length < 2 ? 'insert valid name' : null;
+// }
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: MinX<MyController>(
-          builder: (context, controller) => Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FloatingActionButton(
-                backgroundColor: Colors.lightGreen,
-                onPressed: () => controller.increment(),
-                child: const Icon(Icons.add),
-              ),
-              const SizedBox(
-                height: 16.0,
-              ),
-              FloatingActionButton(
-                backgroundColor: Colors.redAccent,
-                onPressed: () => controller.decrement(),
-                child: const Icon(Icons.remove),
-              ),
-              const SizedBox(
-                height: 16.0,
-              ),
-              FloatingActionButton(
-                onPressed: () => controller.refresh(),
-                child: const Icon(Icons.refresh),
-              ),
-            ],
-          ),
-        ),
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('check out the full example in the example folder'),
-              Container(
-                margin: const EdgeInsets.only(
-                    left: 32.0, right: 32.0, bottom: 32.0),
-                child: Form(
-                  key: formKey,
-                  child: MinX<MyController>(
-                    builder: (context, controller) => Column(
-                      children: [
-                        $(
-                          (user) => Text('${user.name}'),
-                          listener: controller.user,
-                        ),
-                        TextFormField(
-                          onChanged: (value) => controller.onChangedName(value),
-                          validator: (value) => controller.validateName(value),
-                          onSaved: (newValue) =>
-                              controller.onSaveName(newValue),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      MinX<MyController>(
-                        builder: (context, controller) => $(
-                          (count) => Text(
-                            'Count $count',
-                            style: const TextStyle(
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          listener: controller.count,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      );
-}
+// class MyPage extends StatelessWidget {
+//   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+//   MyPage({super.key});
 
-class User {
-  User({this.name});
-  String? name;
-}
+//   @override
+//   Widget build(BuildContext context) => Scaffold(
+//         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+//         floatingActionButton: MinX<MyController>(
+//           builder: (context, controller) => Column(
+//             mainAxisAlignment: MainAxisAlignment.end,
+//             children: [
+//               FloatingActionButton(
+//                 backgroundColor: Colors.lightGreen,
+//                 onPressed: () => controller.increment(),
+//                 child: const Icon(Icons.add),
+//               ),
+//               const SizedBox(
+//                 height: 16.0,
+//               ),
+//               FloatingActionButton(
+//                 backgroundColor: Colors.redAccent,
+//                 onPressed: () => controller.decrement(),
+//                 child: const Icon(Icons.remove),
+//               ),
+//               const SizedBox(
+//                 height: 16.0,
+//               ),
+//               FloatingActionButton(
+//                 onPressed: () => controller.refresh(),
+//                 child: const Icon(Icons.refresh),
+//               ),
+//             ],
+//           ),
+//         ),
+//         body: SafeArea(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               const Text('check out the full example in the example folder'),
+//               Container(
+//                 margin: const EdgeInsets.only(
+//                     left: 32.0, right: 32.0, bottom: 32.0),
+//                 child: Form(
+//                   key: formKey,
+//                   child: MinX<MyController>(
+//                     builder: (context, controller) => Column(
+//                       children: [
+//                         $(
+//                           (user) => Text('${user.name}'),
+//                           listener: controller.user,
+//                         ),
+//                         TextFormField(
+//                           onChanged: (value) => controller.onChangedName(value),
+//                           validator: (value) => controller.validateName(value),
+//                           onSaved: (newValue) =>
+//                               controller.onSaveName(newValue),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//               Column(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   Row(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: [
+//                       MinX<MyController>(
+//                         builder: (context, controller) => $(
+//                           (count) => Text(
+//                             'Count $count',
+//                             style: const TextStyle(
+//                               fontSize: 24.0,
+//                               fontWeight: FontWeight.w600,
+//                             ),
+//                           ),
+//                           listener: controller.count,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//       );
+// }
+
+// class User {
+//   User({this.name});
+//   String? name;
+// }

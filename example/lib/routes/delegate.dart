@@ -63,7 +63,7 @@ class MyRouterDelegate extends RouterDelegate<Uri>
         return false;
       },
     );
-    print(configuration.path);
+    // print(configuration.path);
     // print(configuration.queryParameters);
     // if (index != -1) {
     //   _navigatorPages = [

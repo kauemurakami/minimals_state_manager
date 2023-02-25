@@ -15,14 +15,14 @@ class DashController extends MinController {
   @override
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      print('Widget render');
+      print('dash widget render');
     });
     print('dash controller init');
     super.onInit();
   }
 
   changePage(int _) {
-    print('_ $_  index ${index.value}');
+    // print('_ $_  index ${index.value}');
     if (index.value != _) {
       index.value = _;
       return pages[_];

@@ -10,6 +10,7 @@ import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 // with 2.0 navigation
+
 // void main() {
 //   setPathUrlStrategy();
 //   runApp(const MyApp());
@@ -21,6 +22,25 @@ void main() {
     home: MinProvider(controller: MyController(), child: MyPage()),
   ));
   // runApp(const MaterialApp()); //normal navigation
+}
+
+class MyController extends MinController {
+  @override
+  void onInit() {
+    print('init controller');
+    super.onInit();
+  }
+
+  final count = 0.minx;
+  ValueNotifier<User> user = User().minx;
+
+  increment() => count.value++;
+  decrement() => count.value--;
+  refresh() => count.value = 0;
+
+  onChangedName(str) => user.update((val) => val.name = str);
+  onSaveName(str) => user.update((val) => val.name = str);
+  validateName(str) => str.length < 2 ? 'insert valid name' : null;
 }
 
 class MyPage extends StatelessWidget {
@@ -62,20 +82,25 @@ class MyPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('check out the full example in the example folder'),
-              MinX<MyController>(
-                  builder: (context, controller) => $(
-                      (user) => Text('${user.name}'),
-                      listener: controller.user)),
               Container(
                 margin: const EdgeInsets.only(
                     left: 32.0, right: 32.0, bottom: 32.0),
                 child: Form(
                   key: formKey,
                   child: MinX<MyController>(
-                    builder: (context, controller) => TextFormField(
-                      onChanged: (value) => controller.onChangedName(value),
-                      validator: (value) => controller.validateName(value),
-                      onSaved: (newValue) => controller.onSaveName(newValue),
+                    builder: (context, controller) => Column(
+                      children: [
+                        $(
+                          (user) => Text('${user.name}'),
+                          listener: controller.user,
+                        ),
+                        TextFormField(
+                          onChanged: (value) => controller.onChangedName(value),
+                          validator: (value) => controller.validateName(value),
+                          onSaved: (newValue) =>
+                              controller.onSaveName(newValue),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -106,25 +131,6 @@ class MyPage extends StatelessWidget {
           ),
         ),
       );
-}
-
-class MyController extends MinController {
-  @override
-  void onInit() {
-    print('init controller');
-    super.onInit();
-  }
-
-  final count = 0.minx;
-  ValueNotifier<User> user = User().minx;
-
-  increment() => count.value++;
-  decrement() => count.value--;
-  refresh() => count.value = 0;
-
-  onChangedName(str) => user.update((val) => val.name = str);
-  onSaveName(str) => user.update((val) => val.name = str);
-  validateName(str) => str.length < 2 ? 'insert valid name' : null;
 }
 
 class User {

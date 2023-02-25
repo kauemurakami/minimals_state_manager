@@ -179,10 +179,19 @@ class MyPage extends StatelessWidget {
                 child: Form(
                   key: formKey,
                   child: MinX<MyController>(
-                    builder: (context, controller) => TextFormField(
-                      onChanged: (value) => controller.onChangedName(value),
-                      validator: (value) => controller.validateName(value),
-                      onSaved: (newValue) => controller.onSaveName(newValue),
+                    builder: (context, controller) => Column(
+                      children: [
+                        $(
+                          (user) => Text('${user.name}'),
+                          listener: controller.user,
+                        ),
+                        TextFormField(
+                          onChanged: (value) => controller.onChangedName(value),
+                          validator: (value) => controller.validateName(value),
+                          onSaved: (newValue) =>
+                              controller.onSaveName(newValue),
+                        ),
+                      ],
                     ),
                   ),
                 ),

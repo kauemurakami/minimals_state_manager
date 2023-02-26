@@ -32,7 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
   url_strategy:
-  minimals_state_manager: 
+  minimals_state_manager:
     path: ../
 
 

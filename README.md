@@ -260,7 +260,8 @@ Package is a work of studies about life cycles, dependency injection, objects an
 Not recommended and not ready for production.
 
 Next steps:
-  - Fix navigation 2.0
+  - Add option permanent controller to dont reload controller
+  - Fix navigation 2.0 in example
   - Provide controller for every page
   - Add more complex usage examples
   - Fix folders

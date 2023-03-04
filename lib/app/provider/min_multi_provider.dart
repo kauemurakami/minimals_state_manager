@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
+import 'package:minimals_state_manager/app/state_manager/controller/permament_controller.dart';
 
 ///A provider widget that provides multiple instances of [MinController] to its descendants
 ///via [context].
@@ -25,12 +26,16 @@ class MinMultiProvider extends InheritedWidget {
     // final Type type = T;
     final MinMultiProvider? provider =
         context.dependOnInheritedWidgetOfExactType<MinMultiProvider>();
-    if (provider == null) {
-      throw Exception("Provider not found");
-    }
-    T? controller =
-        provider.controllers.whereType<T>().firstWhere((element) => true);
 
+    T? controller =
+        provider?.controllers.whereType<T>().firstWhere((element) => true);
+    if (controller == null) {
+      try {
+        controller = MinService.of<T>();
+      } catch (e) {
+        throw Exception('Controller $T not found');
+      }
+    }
     return controller;
   }
 }

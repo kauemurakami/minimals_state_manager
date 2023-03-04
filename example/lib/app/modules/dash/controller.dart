@@ -1,17 +1,26 @@
-import 'package:example/routes/pages.dart';
+import 'package:example/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 import 'package:minimals_state_manager/app/state_manager/extensions/min_listen.dart';
 
 class DashController extends MinController {
-  ValueNotifier<int> index = 0.minx;
+  final currentIndex = 0.minx;
   // or final index = 0.minx;
 
+  // final pages = [
+  //   DashRoutes.home,
+  //   DashRoutes.profile,
+  //   DashRoutes.other,
+  // ];
+
   final pages = [
-    Routes.HOME,
-    Routes.PROFILE,
+    'home',
+    'profile',
+    'other',
   ];
+
   @override
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -21,11 +30,15 @@ class DashController extends MinController {
     super.onInit();
   }
 
-  changePage(int _) {
-    // print('_ $_  index ${index.value}');
-    if (index.value != _) {
-      index.value = _;
-      return pages[_];
+  goChangePage(int _, BuildContext context) {
+    if (currentIndex.value != _) {
+      print(currentIndex.value);
+      currentIndex.value = _;
+      // print('${pages[_].name}');
+      context.goNamed(
+        // pages[_].name ,
+        pages[_],
+      );
     }
   }
 }

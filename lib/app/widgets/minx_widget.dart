@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
 import 'package:minimals_state_manager/app/provider/min_provider.dart';
 import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
+import 'package:minimals_state_manager/app/state_manager/controller/permament_controller.dart';
 
 /**
  * [MinX<MinController>] is a generic widget that simplifies the process of getting a controller instance and 
@@ -19,17 +20,34 @@ class MinX<T extends MinController> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final T controller = MinProvider.of(context).controller as T;
-    T controller;
+    T? controller;
     try {
-      controller = MinProvider.of<T>(context) as T;
-    } catch (e) {
-      controller = MinMultiProvider.of<T>(context);
-      // if (controller == null) {
-      //   throw Exception("Controller of type $T not found");
-      // }
+      print('try provider');
+
+      controller = MinProvider.of<T>(context);
+    } catch (_) {}
+
+    if (controller == null) {
+      print('try multiprovider');
+
+      try {
+        controller = MinMultiProvider.of<T>(context);
+      } catch (_) {}
     }
+
+    if (controller == null) {
+      print('try service');
+      try {
+        controller = MinService.of<T>();
+      } catch (_) {}
+    }
+
+    if (controller == null) {
+      throw Exception("Controller of type $T not found");
+    }
+
     return Builder(
-      builder: (BuildContext context) => builder(context, controller),
+      builder: (BuildContext context) => builder(context, controller!),
     );
   }
 }

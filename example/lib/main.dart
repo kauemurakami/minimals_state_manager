@@ -1,11 +1,5 @@
-import 'package:example/app/my_app.dart';
+import 'package:example/routes/delegate.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/provider/min_provider.dart';
-import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
-import 'package:minimals_state_manager/app/state_manager/extensions/min_listen.dart';
-import 'package:minimals_state_manager/app/state_manager/extensions/min_update.dart';
-import 'package:minimals_state_manager/app/widgets/minx_widget.dart';
-import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
 
 import 'package:url_strategy/url_strategy.dart';
 
@@ -13,11 +7,16 @@ import 'package:url_strategy/url_strategy.dart';
 //complex example
 void main() {
   setPathUrlStrategy();
-  runApp(const MyApp());
-  // runApp(const MaterialApp()); //normal navigation
+  runApp(MaterialApp.router(
+    routerConfig: GoRootDelegate.router,
+  ));
 }
 
-//simple example
+/******************
+ * uncomment the rest of the file to use this 
+ * simpler example, comment out the previous main
+ * simple example
+******************/
 // void main() {
 //   runApp(MaterialApp(
 //     home: MinProvider(controller: MyController(), child: MyPage()),

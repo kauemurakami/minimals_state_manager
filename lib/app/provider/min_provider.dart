@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
+import 'package:minimals_state_manager/app/state_manager/controller/permament_controller.dart';
 
 // A provider for a [MinController] that allows to access the controller
 /// using [BuildContext]. It inherits from [InheritedWidget].
@@ -15,10 +16,18 @@ class MinProvider<T extends MinController> extends InheritedWidget {
     this.controller,
   }) : super(key: key, child: child);
 
-  static T? of<T extends MinController>(BuildContext context) {
-    final provider =
-        context.dependOnInheritedWidgetOfExactType<MinProvider<T>>();
-    return provider?.controller;
+  static T? of<T extends MinController>(
+    BuildContext context,
+  ) {
+    T? c;
+    c = context
+        .dependOnInheritedWidgetOfExactType<MinProvider<T>>()!
+        .controller;
+
+    if (c == null) {
+      c = MinService.of<T>();
+    }
+    return c;
   }
 
   @override

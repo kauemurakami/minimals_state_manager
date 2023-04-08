@@ -1,4 +1,4 @@
-[PAUSED PROJETC]
+[PAUSED]
 
 [![Star on GitHub](https://img.shields.io/github/stars/kauemurakami/minimals_state_manager.svg?style=flat&logo=github&colorB=deeppink&label=stars)](https://github.com/kauemurakami/minimals_state_manager)  
 

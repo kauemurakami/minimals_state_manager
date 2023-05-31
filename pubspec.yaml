@@ -1,7 +1,7 @@
 name: minimals_state_manager
 description: "A minimalist study project for state management, lifecycle, and observables in Flutter, but not recommended for production due to alpha status."
 
-version: 0.0.7-alpha.0.0.7.9+build.9
+version: 0.1.0-beta
 # author: Kauê Tomaz Murakami<kauetmurakami@gmail.com>
 homepage: https://github.com/kauemurakami/minimals_state_manager
 

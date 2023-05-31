@@ -91,18 +91,18 @@
 
   We can illustrate this as follows:
 
-  MinMultiProvider(
-      controllers: [
-        DashboardController(), 
-        MinService.permanentController(
-          CartController(),
-        ),
-      ],
-      child: DashPage()
-  )
+    MinMultiProvider(
+        controllers: [
+          DashboardController(), 
+          MinService.permanentController(
+            CartController(),
+          ),
+        ],
+        child: DashPage()
+    )
 
   In this way, our CartController() will be available throughout the application until it is removed with the function
-  `MinService.destroy()`.
+    `MinService.destroy()`.
   this example avaible in example, uncomment the complex example part in our example folder `main.dart`
 
   `MinX<Controller>` MinX is a widget that provides a generic  
@@ -118,8 +118,7 @@
       builder: (context, controller) => Text(controller.name)
     )
     
-
-  
+  Combine your `MinX<Controller()>` and observable Widget to get state changes reactively with Value.
 
 ## Getting started
 
@@ -152,46 +151,6 @@ void main() {
   );
 }
 ```
-
-Or 
-
-```dart
-void main() {
-  runApp(
-    MaterialApp(
-      home: MinMultiProvider(
-        controllers: [
-          MyController(), 
-          AnotherController(),
-        ], 
-        child: const MyPage(),
-      ),
-    ),
-  );
-}
-```
-
-You can also permanently inject a controller, which will become a singleton throughout the application.
-Using our `MinService` class used to keep controllers permanently in memory until they are removed with the function `MinService<AnotherController>.destroy()`
-
-```dart
-void main() {
-  runApp(
-    MaterialApp(
-      home: MinMultiProvider(
-        controllers: [
-          MyController(), 
-          MinService.permanentController(
-            AnotherController(),
-          )
-        ], 
-        child: const MyPage(),
-      ),
-    ),
-  );
-}
-```
-
 
 Use `MinX<YourController>()` widget to retrieve the available controller instance to use its methods and attributes in certain parts of the code.
 

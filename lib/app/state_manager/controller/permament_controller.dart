@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 import 'package:minimals_state_manager/app/types/min_type_instance.dart';
 
@@ -82,20 +80,11 @@ class MinService<T extends MinController> with MinInstance<T> {
     return _instances[type]!.controller as T;
   }
 
-  //find or create
-  // static T of<T extends MinController>({T? controller}) {
-  //   final type = T;
-  //   if (!_instances.containsKey(type)) {
-  //     _instances[type] = MinService<T>(controller ?? T());
-  //   }
-  //   return _instances[type]!.controller as T;
-  // }
-
   static MinController permanentController<T extends MinController>(
       T controller) {
     final type = T;
 
-    print('test instance minservice ${_instances[T]?.controller}');
+    // print('test instance minservice ${_instances[T]?.controller}');
     if (!_instances.containsKey(type)) {
       _instances[type] = MinService<T>(controller);
     }

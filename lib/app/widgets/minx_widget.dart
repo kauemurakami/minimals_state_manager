@@ -22,13 +22,11 @@ class MinX<T extends MinController> extends StatelessWidget {
     // final T controller = MinProvider.of(context).controller as T;
     T? controller;
     try {
-      print('try provider');
 
       controller = MinProvider.of<T>(context);
     } catch (_) {}
 
     if (controller == null) {
-      print('try multiprovider');
 
       try {
         controller = MinMultiProvider.of<T>(context);
@@ -36,7 +34,6 @@ class MinX<T extends MinController> extends StatelessWidget {
     }
 
     if (controller == null) {
-      print('try service');
       try {
         controller = MinService.of<T>();
       } catch (_) {}

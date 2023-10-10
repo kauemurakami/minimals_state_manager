@@ -42,6 +42,29 @@
       String? name;
     }
     
+  `MinProvider and MinMultiProvider` are state management providers that allow you to easily  
+    manage and share the state of your Flutter application between different components.  
+    MinProvider is used for single state management, while MinMultiProvider is used for  
+    managing multiple states in a single provider. By using MinProvider and MinMultiProvider,   
+    you can simplify the process of managing state and reduce boilerplate code in your  
+    Flutter projects.  
+
+    MinProvider(
+      controller: YourController(),
+      child: YourPage()
+    )
+  
+    or
+
+    MinMultiProvider(
+      controllers: [YourController1(), YourController2()],
+      child: YourPage()
+    )
+    
+  Your MinProvider will also help you retrieve your controllers if it is in the widget tree and you are using two controllers on the same page. You won't need to use MinX<YourController>(...) for that. Just use something like this in some function, for example:
+  ```dart MinService.of<YourController>().show.value = false;```
+
+
   `MinService`, It inherits all the properties of our MinController, but it is done precisely to keep a MinController alive throughout the application, maintaining its own state, reactive throughout the application.
 
   For example, imagine a context where you have a sales app and you want to create a shopping cart, initially on a dashboard screen, with a bottomNavigator, you want to display a FAB when the cart is no longer empty, and you want this button to be displayed in them of this dashboard.
@@ -78,28 +101,7 @@
     
   Combine your `MinX<Controller()>` and observable Widget to get state changes reactively with Value.
 
-  `MinProvider and MinMultiProvider` are state management providers that allow you to easily  
-    manage and share the state of your Flutter application between different components.  
-    MinProvider is used for single state management, while MinMultiProvider is used for  
-    managing multiple states in a single provider. By using MinProvider and MinMultiProvider,   
-    you can simplify the process of managing state and reduce boilerplate code in your  
-    Flutter projects.  
-
-    MinProvider(
-      controller: YourController(),
-      child: YourPage()
-    )
   
-    or
-
-    MinMultiProvider(
-      controllers: [YourController1(), YourController2()],
-      child: YourPage()
-    )
-    
-  Your MinProvider will also help you retrieve your controllers if it is in the widget tree and you are using two controllers on the same page. You won't need to use MinX<YourController>(...) for that. Just use something like this in some function, for example:
-  ```dart MinService.of<YourController>().show.value = false;```
-
   Observable widget `$(Widget(), listener:Value<Notifier>)`, this is a generic observable widget that  
     can be used to listen for changes to a value notifier and update  
     the UI accordingly. It takes in a value notifier and a builder  

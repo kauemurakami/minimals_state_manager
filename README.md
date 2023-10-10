@@ -8,51 +8,6 @@
 
 ## Features
 
-  `MinProvider and MinMultiProvider` are state management providers that allow you to easily  
-    manage and share the state of your Flutter application between different components.  
-    MinProvider is used for single state management, while MinMultiProvider is used for  
-    managing multiple states in a single provider. By using MinProvider and MinMultiProvider,   
-    you can simplify the process of managing state and reduce boilerplate code in your  
-    Flutter projects.  
-
-    MinProvider(
-      controller: YourController(),
-      child: YourPage()
-    )
-  
-    or
-
-    MinMultiProvider(
-      controllers: [YourController1(), YourController2()],
-      child: YourPage()
-    )
-    
-  Your MinProvider will also help you retrieve your controllers if it is in the widget tree and you are using two controllers on the same page. You won't need to use MinX<YourController>(...) for that. Just use something like this in some function, for example:
-  ```dart MinService.of<YourController>().show.value = false;```
-
-
-
-
-
-
-
-  Observable widget `$(Widget(), listener:Value<Notifier>)`, this is a generic observable widget that  
-    can be used to listen for changes to a value notifier and update  
-    the UI accordingly. It takes in a value notifier and a builder  
-    function that defines how the UI should be updated based on the  
-    current value of the notifier. This widget is useful for cases where  
-    you want to decouple the UI from the data source, allowing for changes  
-    in the data to automatically update the UI without having to manually  
-    manage state. It can be used in a variety of scenarios such as form  
-    input fields, status indicators, or progress bars.  
-
-    
-    $(
-      (count) => Text('Count $count'), // function returns real value as int
-      listener: controller.count // count is ValueNotifier<int> 
-    )
-    
-
   `MinController`, this is an abstraction for creating state  
     controllers that use Flutter ChangeNotifier class and implement  
     the WidgetsBindingObserver mixin. This allows controllers to react  
@@ -122,6 +77,47 @@
     )
     
   Combine your `MinX<Controller()>` and observable Widget to get state changes reactively with Value.
+
+  `MinProvider and MinMultiProvider` are state management providers that allow you to easily  
+    manage and share the state of your Flutter application between different components.  
+    MinProvider is used for single state management, while MinMultiProvider is used for  
+    managing multiple states in a single provider. By using MinProvider and MinMultiProvider,   
+    you can simplify the process of managing state and reduce boilerplate code in your  
+    Flutter projects.  
+
+    MinProvider(
+      controller: YourController(),
+      child: YourPage()
+    )
+  
+    or
+
+    MinMultiProvider(
+      controllers: [YourController1(), YourController2()],
+      child: YourPage()
+    )
+    
+  Your MinProvider will also help you retrieve your controllers if it is in the widget tree and you are using two controllers on the same page. You won't need to use MinX<YourController>(...) for that. Just use something like this in some function, for example:
+  ```dart MinService.of<YourController>().show.value = false;```
+
+  Observable widget `$(Widget(), listener:Value<Notifier>)`, this is a generic observable widget that  
+    can be used to listen for changes to a value notifier and update  
+    the UI accordingly. It takes in a value notifier and a builder  
+    function that defines how the UI should be updated based on the  
+    current value of the notifier. This widget is useful for cases where  
+    you want to decouple the UI from the data source, allowing for changes  
+    in the data to automatically update the UI without having to manually  
+    manage state. It can be used in a variety of scenarios such as form  
+    input fields, status indicators, or progress bars.  
+
+    
+    $(
+      (count) => Text('Count $count'), // function returns real value as int
+      listener: controller.count // count is ValueNotifier<int> 
+    )
+    
+
+  
 
 ## Getting started
 

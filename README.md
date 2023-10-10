@@ -8,30 +8,35 @@
 
 ## Features
 
-  MinProvider and MinMultiProvider are state management providers that allow you to easily  
+  `MinProvider and MinMultiProvider` are state management providers that allow you to easily  
     manage and share the state of your Flutter application between different components.  
     MinProvider is used for single state management, while MinMultiProvider is used for  
     managing multiple states in a single provider. By using MinProvider and MinMultiProvider,   
     you can simplify the process of managing state and reduce boilerplate code in your  
     Flutter projects.  
 
-   
     MinProvider(
       controller: YourController(),
       child: YourPage()
     )
-   
-
+  
     or
 
-    
     MinMultiProvider(
       controllers: [YourController1(), YourController2()],
       child: YourPage()
     )
     
+  Your MinProvider will also help you retrieve your controllers if it is in the widget tree and you are using two controllers on the same page. You won't need to use MinX<YourController>(...) for that. Just use something like this in some function, for example:
+  ```dart MinService.of<YourController>().show.value = false;```
 
-  Observable widget $(), this is a generic observable widget that  
+
+
+
+
+
+
+  Observable widget `$(Widget(), listener:Value<Notifier>)`, this is a generic observable widget that  
     can be used to listen for changes to a value notifier and update  
     the UI accordingly. It takes in a value notifier and a builder  
     function that defines how the UI should be updated based on the  
@@ -48,7 +53,7 @@
     )
     
 
-  MinController, this is an abstraction for creating state  
+  `MinController`, this is an abstraction for creating state  
     controllers that use Flutter ChangeNotifier class and implement  
     the WidgetsBindingObserver mixin. This allows controllers to react  
     to changes in the application lifecycle, as well as notify observers  
@@ -82,6 +87,26 @@
       String? name;
     }
     
+  `MinService`, It inherits all the properties of our MinController, but it is done precisely to keep a MinController alive throughout the application, maintaining its own state, reactive throughout the application.
+
+  For example, imagine a context where you have a sales app and you want to create a shopping cart, initially on a dashboard screen, with a bottomNavigator, you want to display a FAB when the cart is no longer empty, and you want this button to be displayed in them of this dashboard.
+  So we need a MinService, in addition to dashboard controllers and subpages.
+
+  We can illustrate this as follows:
+
+    MinMultiProvider(
+        controllers: [
+          DashboardController(), 
+          MinService.permanentController(
+            CartController(),
+          ),
+        ],
+        child: DashPage()
+    )
+
+  In this way, our CartController() will be available throughout the application until it is removed with the function
+    `MinService.destroy<YourController>()`.
+  this example avaible in example, uncomment the complex example part in our example folder `main.dart`
 
   `MinX<Controller>` MinX is a widget that provides a generic  
     way to obtain a MinController and rebuild the widget  
@@ -96,6 +121,7 @@
       builder: (context, controller) => Text(controller.name)
     )
     
+  Combine your `MinX<Controller()>` and observable Widget to get state changes reactively with Value.
 
 ## Getting started
 
@@ -127,8 +153,8 @@ void main() {
     ),
   );
 }
-
 ```
+
 Use `MinX<YourController>()` widget to retrieve the available controller instance to use its methods and attributes in certain parts of the code.
 
 Use the observable widget `$()` to listen for updates to your controller's observable variable, this widget expects a `ValueNotifier` type listener, and has a function that returns the real value of the object passed, updating whenever necessary.
@@ -251,8 +277,8 @@ class User {
   String? name;
 }
 
-
 ```
+
 
 ## Additional information
 
@@ -260,7 +286,8 @@ Package is a work of studies about life cycles, dependency injection, objects an
 Not recommended and not ready for production.
 
 Next steps:
-  - Fix navigation 2.0
+  - Add option permanent controller to dont reload controller
+  - Fix navigation 2.0 in example
   - Provide controller for every page
   - Add more complex usage examples
   - Fix folders

@@ -5,6 +5,8 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: SafeArea(child: Text('ProfileController')));
+    return const Scaffold(
+        backgroundColor: Colors.red,
+        body: SafeArea(child: Text('ProfileController')));
   }
 }

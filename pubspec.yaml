@@ -8,7 +8,7 @@ homepage: https://github.com/kauemurakami/minimals_state_manager
 repository: https://github.com/kauemurakami/minimals_state_manager
 
 environment:
-  sdk: '>=2.18.6 <3.0.0'
+  sdk: '>=3.0.6 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:

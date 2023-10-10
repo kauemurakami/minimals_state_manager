@@ -15,21 +15,26 @@
     you can simplify the process of managing state and reduce boilerplate code in your  
     Flutter projects.  
 
-   
     MinProvider(
       controller: YourController(),
       child: YourPage()
     )
-   
-
+  
     or
 
-    
     MinMultiProvider(
       controllers: [YourController1(), YourController2()],
       child: YourPage()
     )
     
+  Your MinProvider will also help you retrieve your controllers if it is in the widget tree and you are using two controllers on the same page. You won't need to use MinX<YourController>(...) for that. Just use something like this in some function, for example:
+  ```dart MinService.of<YourController>().show.value = false;```
+
+
+
+
+
+
 
   Observable widget `$(Widget(), listener:Value<Notifier>)`, this is a generic observable widget that  
     can be used to listen for changes to a value notifier and update  
@@ -100,7 +105,7 @@
     )
 
   In this way, our CartController() will be available throughout the application until it is removed with the function
-    `MinService.destroy()`.
+    `MinService.destroy<YourController>()`.
   this example avaible in example, uncomment the complex example part in our example folder `main.dart`
 
   `MinX<Controller>` MinX is a widget that provides a generic  

@@ -11,7 +11,7 @@ extension ValueNotifierUpdater<T> on ValueNotifier<T> {
     T value = this.value;
     update(value);
     this.value = value;
-    notifyListeners();
+    // notifyListeners();
   }
 }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/widgets.dart';
 
 /// A widget that listens to changes of a [ValueNotifier] and rebuilds its child

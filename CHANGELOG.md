@@ -1,3 +1,6 @@
+## 1.0.0
+* Fix pub dev issues
+
 ## 0.2.0-beta
 
 * minimals_State_manager start beta version

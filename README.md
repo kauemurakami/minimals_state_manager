@@ -113,7 +113,7 @@
     input fields, status indicators, or progress bars.  
 
     
-    $(controller.count // our listener provided by MinX<MyController> widget count is ValueNotifier<int> 
+    $(controller.count, // our listener provided by MinX<MyController> widget count is ValueNotifier<int> 
       (count) => Text('Count $count'), // function returns real value as int
        
     )

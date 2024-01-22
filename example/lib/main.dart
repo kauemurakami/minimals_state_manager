@@ -90,9 +90,8 @@ void main() {
 //                   child: MinX<MyController>(
 //                     builder: (context, controller) => Column(
 //                       children: [
-//                         $(
+//                         $(controller.user,
 //                           (user) => Text('${user.name}'),
-//                           listener: controller.user,
 //                         ),
 //                         TextFormField(
 //                           onChanged: (value) => controller.onChangedName(value),
@@ -113,6 +112,7 @@ void main() {
 //                     children: [
 //                       MinX<MyController>(
 //                         builder: (context, controller) => $(
+//                           controller.count,
 //                           (count) => Text(
 //                             'Count $count',
 //                             style: const TextStyle(
@@ -120,7 +120,7 @@ void main() {
 //                               fontWeight: FontWeight.w600,
 //                             ),
 //                           ),
-//                           listener: controller.count,
+//                           
 //                         ),
 //                       ),
 //                     ],

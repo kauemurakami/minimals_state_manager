@@ -9,8 +9,8 @@ class $<T> extends StatefulWidget {
   Widget Function(T)? builder;
   Widget? child;
 
-  /// Creates a new instance of $ widget with the provided [builder] function and
   /// [ValueNotifier] listener.
+  /// Creates a new instance of $ widget with the provided [builder] function and
   $(this.listener, this.builder, {this.child, Key? key}) : super(key: key);
 
   @override

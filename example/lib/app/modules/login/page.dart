@@ -39,6 +39,7 @@ class LoginPage extends StatelessWidget {
             ),
             MinX<LoginController>(
               builder: (context, controller) => $(
+                controller.loading,
                 (loading) => loading
                     ? const CircularProgressIndicator()
                     : MaterialButton(
@@ -61,7 +62,6 @@ class LoginPage extends StatelessWidget {
                         },
                         child: const Text('LOGIN'),
                       ),
-                listener: controller.loading,
               ),
             )
           ],

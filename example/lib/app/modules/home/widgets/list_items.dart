@@ -13,6 +13,7 @@ class ListItems extends Container {
     return Flexible(
       child: MinX<HomeController>(
         builder: (context, controller) => $(
+          controller.items,
           (items) {
             if (items.isNotEmpty) {
               return ListView.builder(
@@ -68,7 +69,6 @@ class ListItems extends Container {
               );
             }
           },
-          listener: controller.items,
         ),
       ),
     );

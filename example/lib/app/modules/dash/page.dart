@@ -27,6 +27,7 @@ class DashPage extends StatelessWidget {
       ),
       bottomNavigationBar: MinX<DashController>(
         builder: (context, controller) => $(
+          controller.currentIndex,
           (index) => BottomNavigationBar(
               selectedItemColor: Colors.amber,
               unselectedItemColor: Colors.grey,
@@ -49,7 +50,6 @@ class DashPage extends StatelessWidget {
                   label: 'Other',
                 ),
               ]),
-          listener: controller.currentIndex,
         ),
       ),
     );

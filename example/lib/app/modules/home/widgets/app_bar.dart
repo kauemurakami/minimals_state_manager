@@ -13,6 +13,7 @@ class HomeAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return MinX<HomeController>(
       builder: (context, controller) => $(
+        controller.openned,
         (_) {
           return AnimatedContainer(
             padding: EdgeInsets.only(
@@ -71,7 +72,6 @@ class HomeAppBar extends StatelessWidget {
             ),
           );
         },
-        listener: controller.openned,
       ),
     );
   }

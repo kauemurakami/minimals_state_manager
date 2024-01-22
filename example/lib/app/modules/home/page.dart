@@ -32,6 +32,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             $(
+              controller.items,
               (items) => items.isEmpty
                   ? const SizedBox.shrink()
                   : Positioned(
@@ -49,7 +50,6 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       )),
-              listener: controller.items,
             )
           ],
         ),

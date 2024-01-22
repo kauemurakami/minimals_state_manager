@@ -20,6 +20,7 @@ class CartPage extends StatelessWidget {
               // resolver com rootcontext
               builder: (context, controller) => Flexible(
                 child: $(
+                  controller.items,
                   (items) => items.isEmpty
                       ? const Center(
                           child: Text('Cart is empty'),
@@ -66,7 +67,6 @@ class CartPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                  listener: controller.items,
                 ),
               ),
             ),

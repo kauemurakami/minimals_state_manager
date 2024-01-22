@@ -35,6 +35,7 @@ class BSFilters extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.5,
               child: MinX<HomeController>(
                 builder: (context, controller) => $(
+                  controller.filter,
                   (filter) => ListView.builder(
                     // scrollDirection: Axis.horizontal,
                     itemCount: 3,
@@ -57,7 +58,6 @@ class BSFilters extends StatelessWidget {
                       ),
                     ),
                   ),
-                  listener: controller.filter,
                 ),
               ),
             ),

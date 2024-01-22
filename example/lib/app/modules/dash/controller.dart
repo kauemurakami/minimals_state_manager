@@ -32,11 +32,8 @@ class DashController extends MinController {
 
   goChangePage(int _, BuildContext context) {
     if (currentIndex.value != _) {
-      print(currentIndex.value);
       currentIndex.value = _;
-      // print('${pages[_].name}');
-      context.goNamed(
-        // pages[_].name ,
+      context.push(
         pages[_],
       );
     }

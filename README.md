@@ -102,15 +102,15 @@
   Combine your `MinX<Controller()>` and observable Widget to get state changes reactively with Value.
 
   
-  Observable widget `$(Widget(), listener:Value<Notifier>)`, this is a generic observable widget that  
-    can be used to listen for changes to a value notifier and update  
-    the UI accordingly. It takes in a value notifier and a builder  
-    function that defines how the UI should be updated based on the  
-    current value of the notifier. This widget is useful for cases where  
-    you want to decouple the UI from the data source, allowing for changes  
-    in the data to automatically update the UI without having to manually  
-    manage state. It can be used in a variety of scenarios such as form  
-    input fields, status indicators, or progress bars.  
+  Observable widget `$(ValueNotifier<T> listener , (value) => Widget())`, this is a generic observable widget that
+    can be used to listen for changes to a value and update notifier
+    the specific user interface. Value notifier and constructor required
+    function that defines how the UI should be updated based on the
+    current value of the notifier, where our ValueNotifier listener is inserted into the build function to pass its primitive value with each update. This widget is useful for cases where
+    you want to decouple the UI from the data source, allowing changes
+    in the data to automatically update the UI without having to manually
+    manage the state. It can be used in a variety of scenarios such as form
+    input fields, status indicators or progress bars.
 
     
     $(controller.count, // our listener provided by MinX<MyController> widget count is ValueNotifier<int> 
@@ -206,8 +206,9 @@ class MyPage extends StatelessWidget {
                     builder: (context, controller) => Column(
                       children: [
                         $(
-                          (user) => Text('${user.name}'),
-                          listener: controller.user,
+                          controller.user,
+                          (User user) => Text(user.name),
+                          ,
                         ),
                         TextFormField(
                           onChanged: (value) => controller.onChangedName(value),

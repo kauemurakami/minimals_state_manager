@@ -15,7 +15,7 @@ class DashController extends MinController {
   //   DashRoutes.other,
   // ];
 
-  final pages = [
+  final pages = <String>[
     'home',
     'profile',
     'other',
@@ -30,10 +30,12 @@ class DashController extends MinController {
     super.onInit();
   }
 
-  goChangePage(int _, BuildContext context) {
+  goChangePage(int _, BuildContext context) async {
     if (currentIndex.value != _) {
       currentIndex.value = _;
-      context.push(
+      print(pages[_]);
+      // await GoRouter.of(context).pushNamed(pages[_]);
+      await context.pushNamed(
         pages[_],
       );
     }

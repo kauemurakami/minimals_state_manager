@@ -32,7 +32,10 @@ class DashPage extends StatelessWidget {
               selectedItemColor: Colors.amber,
               unselectedItemColor: Colors.grey,
               backgroundColor: Colors.white,
-              onTap: (_) => controller.goChangePage(_, context)!,
+              onTap: (_) {
+                print(_);
+                controller.goChangePage(_, context)!;
+              },
               //change go route
 
               currentIndex: index,

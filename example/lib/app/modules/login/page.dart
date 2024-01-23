@@ -26,8 +26,8 @@ class LoginPage extends StatelessWidget {
                         onChanged: (_) => controller.onChangedName(_),
                         validator: (_) => controller.validateName(_),
                         onSaved: (_) => controller.onSaveName(_),
-                        decoration:
-                            const InputDecoration(hintText: 'Escreva seu nome'),
+                        decoration: const InputDecoration(
+                            hintText: 'Enter with your name'),
                       ),
                     ),
                     TextButton(

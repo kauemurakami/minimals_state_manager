@@ -86,7 +86,7 @@ abstract class GoRootDelegate {
             name: 'home',
             path: '/home',
             pageBuilder: (BuildContext context, GoRouterState state) {
-              print('a3 ${state.fullPath}' ?? '');
+              print(' ${state.fullPath}' ?? '');
               return CustomSlideTransition(
                 from: SlideFrom.left,
                 key: state.pageKey,
@@ -96,26 +96,13 @@ abstract class GoRootDelegate {
                 ),
               );
             },
-            // routes: <RouteBase>[
-            //   GoRoute(
-            //       name: 'establishment',
-            //       path: ':id',
-            //       builder: (BuildContext context, GoRouterState state) {
-            //         print('a3-1 ${state.fullPath}' ?? '');
-
-            //         return MinProvider(
-            //           controller: EstablishmentController(),
-            //           child: EstablishmentPage(),
-            //         );
-            //       })
-            // ],
           ),
           GoRoute(
             parentNavigatorKey: _shellNavigatorKey,
             name: 'profile',
             path: '/profile',
             pageBuilder: (BuildContext context, GoRouterState state) {
-              print('a4 ${state.fullPath}' ?? '');
+              print(' ${state.fullPath}' ?? '');
               return CustomVerticalTransition(
                 key: state.pageKey,
                 child: MinProvider(
@@ -132,7 +119,7 @@ abstract class GoRootDelegate {
             // path: DashRoutes.other.path,
 
             pageBuilder: (BuildContext context, GoRouterState state) {
-              print('a4 ${state.fullPath}' ?? '');
+              print(' ${state.fullPath}' ?? '');
               return CustomSlideTransition(
                 from: SlideFrom.right,
                 key: state.pageKey,

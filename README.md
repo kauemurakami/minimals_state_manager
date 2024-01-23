@@ -155,7 +155,7 @@ void main() {
 
 Use `MinX<YourController>()` widget to retrieve the available controller instance to use its methods and attributes in certain parts of the code.
 
-Use the observable widget `$()` to listen for updates to your controller's observable variable, this widget expects a `ValueNotifier` type listener, and has a function that returns the real value of the object passed, updating whenever necessary.
+Use the observable widget `$(ValueNotifier<T> listener, (T listener) => Widget())` to listen for updates to your controller's observable variable, this widget expects a `ValueNotifier` type listener, and has a function that returns the real value of the object passed, updating whenever necessary.
 
 ```dart
 class MyPage extends StatelessWidget {

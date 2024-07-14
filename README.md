@@ -2,124 +2,96 @@
 
   The minimals_state_manager package is a minimalist implementation of state management for Flutter apps, using only native Flutter packages. The goal is to simplify the process of managing states in your projects by providing an easy-to-use framework that takes full advantage of Flutter's native functionality.  
 
-  For this, the package uses important packages such as InheritedWidget, ChangeNotifier, ValueNotifier, ValueNotifierBuilder and WidgetsBindingObserver to control the lifecycle of the application in its controllers.  
+  For this, the package uses important packages such as InheritedWidget, ChangeNotifier, ValueNotifier, ValueListenableBuilder to control the lifecycle of the application in its controllers.  
 
   With minimals_state_manager, you will have a minimal state management implementation that is easy to understand and that speeds up Flutter application development. **However, it is important to point out that this package is intended for study about state management, observables, lifecycle and best practices only and is not recommended for production as it is still in alpha version.**  
 
 ## Features
+#### Providers
+  `MinProvider and MinMultiProvider`are state management providers that allow you to easily manage and share the state of your Flutter application between different components.  
+  `MinProvider` is used for single state management, while `MinMultiProvider` is used for managing multiple states in a single provider.  
+  By using `MinProvider` and `MinMultiProvider`,   
+  you can simplify the process of managing state and reduce boilerplate code in your Flutter projects.  
+  Using `InheritedWidget` to add `controllers` to the widget tree.  
+  In turn, we abandoned `MinController` which extended our `ChangeNotifier` to create, with some changes, our `controllers`, 
+  Now we decided to directly use `ChangeNotifier` in the creation of controllers, avoiding outsourcing and boilerplate of using Flutter, as it is already available in Flutter, example of the expected `Controller`:  
+  ```dart
+    class YourController1 extends ChangeNotifier{
+      ValueNotifier<int> count = 0.minx;
+      //or 
+      //final count = 0.minx;
 
-  `MinController`, this is an abstraction for creating state  
-    controllers that use Flutter ChangeNotifier class and implement  
-    the WidgetsBindingObserver mixin. This allows controllers to react  
-    to changes in the application lifecycle, as well as notify observers  
-    when state changes occur. The class has methods to handle application  
-    lifecycle and other startup and shutdown operations. It is useful for  
-    creating reactive and observable controllers that can be used  
-    throughout an application.  
-
-    
-    class YourController extends MinController {
-      @override
-      void onInit() {
-        print('init controller');
-        super.onInit();
+      increment(){
+        count.value++;  
+        notifyListeners();
       }
-
-      final count = 0.minx;
-      ValueNotifier<User> user = User().minx;
-
-      increment() => count.value++;
-      decrement() => count.value--;
-      refresh() => count.value = 0;
-
-      onChangedName(str) => user.update((val) => val.name = str);
-      onSaveName(str) => user.update((val) => val.name = str);
-      validateName(str) => str.length < 2 ? 'insert valid name' : null;
+      decrement(){
+        count.value;
+        notifyListeners();
+      }
     }
+  ```
+  `minx` helps you avoid boilerplate when assigning values ​​in `ValueNotifier<T>`, you can set an initial value ordeclare using the `.minx` extension to return a value notifier of the same type with the entered value. <br/>
 
-    class User {
-      User({this.name});
-      String? name;
-    }
-    
-  `MinProvider and MinMultiProvider` are state management providers that allow you to easily  
-    manage and share the state of your Flutter application between different components.  
-    MinProvider is used for single state management, while MinMultiProvider is used for  
-    managing multiple states in a single provider. By using MinProvider and MinMultiProvider,   
-    you can simplify the process of managing state and reduce boilerplate code in your  
-    Flutter projects.  
-
+  ```dart
     MinProvider(
       controller: YourController(),
       child: YourPage()
     )
-  
-    or
-
+  ```
+  Or
+  ```dart
     MinMultiProvider(
       controllers: [YourController1(), YourController2()],
       child: YourPage()
     )
-    
-  Your MinProvider will also help you retrieve your controllers if it is in the widget tree and you are using two controllers on the same page. You won't need to use MinX<YourController>(...) for that. Just use something like this in some function, for example:
-  ```dart MinService.of<YourController>().show.value = false;```
+  ```
+  Remember, if you want to keep some controller alive and avoid restarting, create an instance of it before passing it, available in our example on the `dash` route, example:  
+  Create a file in routes > `routes/providers.dart` to define global controllers:
+```dart
+  final yourController1 = YouController1();
+  final yourController2 = YouController2();
+```
+And call this in `MinProvider` or `MinMultiProvider` example with `MinMultiProvider`, the same is valid to `MinProvider`:  
+```dart
+  MinMultiProvider(
+      controllers: [yourController1, yourController2],
+      child: YourPage()
+  )
+```
+  This keeps their state the same throughout the widget tree.<br/><br/>
 
+  You can retrieve the controllers in the widget tree after they are injected with one of the `Providers` with:  
+  ```dart 
+  Widget build(BuildContext context) {
+    final controller = MinProvider.use<YourController>(context);
+    return Widget
+  }
+  ```
+  Or  
+  ```dart 
+  ...
+  final controller = MinMultiProvider.use<YourController1>(context)
+  final controller = MinMultiProvider.use<YourController2>(context)
+  ```
+#### Observable widget
+  This widgets is 
+  Observable widget `$(ValueNotifier<T> listener , (value) => Widget())`, this is a generic observable widget that can be used to listen for changes to a value and update notifier the specific user interface.  
+  Value notifier and constructor required function that defines how the UI should be updated based on the current value of the notifier, where our ValueNotifier listener is inserted into the build function to pass its primitive value with each update.  
+  This widget is useful for cases where you want to decouple the UI from the data source, allowing changes in the data to automatically update the UI without having to manually manage the state.  
+  It can be used in a variety of scenarios such as form input fields, status indicators or progress bars.  
 
-  `MinService`, It inherits all the properties of our MinController, but it is done precisely to keep a MinController alive throughout the application, maintaining its own state, reactive throughout the application.
-
-  For example, imagine a context where you have a sales app and you want to create a shopping cart, initially on a dashboard screen, with a bottomNavigator, you want to display a FAB when the cart is no longer empty, and you want this button to be displayed in them of this dashboard.
-  So we need a MinService, in addition to dashboard controllers and subpages.
-
-  We can illustrate this as follows:
-
-    MinMultiProvider(
-        controllers: [
-          DashboardController(), 
-          MinService.permanentController(
-            CartController(),
-          ),
-        ],
-        child: DashPage()
-    )
-
-  In this way, our CartController() will be available throughout the application until it is removed with the function
-    `MinService.destroy<YourController>()`.
-  this example avaible in example, uncomment the complex example part in our example folder `main.dart`
-
-  `MinX<Controller>` MinX is a widget that provides a generic  
-    way to obtain a MinController and rebuild the widget  
-    tree when the controller's state changes. It uses the  
-    MinProvider and MinMultiProvider classes to retrieve  
-    the controller from the widget tree, depending on its  
-    type. The controller is then passed to a builder function  
-    that returns the widget tree to be built.  
-
-    
-    MinX<YourController>(
-      builder: (context, controller) => Text(controller.name)
-    )
-    
-  Combine your `MinX<Controller()>` and observable Widget to get state changes reactively with Value.
-
-  
-  Observable widget `$(Widget(), listener:Value<Notifier>)`, this is a generic observable widget that  
-    can be used to listen for changes to a value notifier and update  
-    the UI accordingly. It takes in a value notifier and a builder  
-    function that defines how the UI should be updated based on the  
-    current value of the notifier. This widget is useful for cases where  
-    you want to decouple the UI from the data source, allowing for changes  
-    in the data to automatically update the UI without having to manually  
-    manage state. It can be used in a variety of scenarios such as form  
-    input fields, status indicators, or progress bars.  
-
-    
-    $(
-      (count) => Text('Count $count'), // function returns real value as int
-      listener: controller.count // count is ValueNotifier<int> 
-    )
-    
-
-  
+  ```dart
+  $(controller.count, // our listener provided by widget count is ValueNotifier<int> 
+    (count) => Text('Count $count'), // function returns real value as int     
+  )
+  ```
+  This widget use a `ValueListenableBuilder` widget to exist, if you want to be closer to Flutter's native code, nothing prevents you from using it with your controller's `ValueNotifier<T>`, example:  
+  ```dart
+   ValueListenableBuilder(valueListenable: controller.count,
+    builder: (context, count, child) => Text('Count $count'), 
+  )
+  ```  
 
 ## Getting started
 
@@ -155,7 +127,7 @@ void main() {
 
 Use `MinX<YourController>()` widget to retrieve the available controller instance to use its methods and attributes in certain parts of the code.
 
-Use the observable widget `$()` to listen for updates to your controller's observable variable, this widget expects a `ValueNotifier` type listener, and has a function that returns the real value of the object passed, updating whenever necessary.
+Use the observable widget `$(ValueNotifier<T> listener, (T listener) => Widget())` to listen for updates to your controller's observable variable, this widget expects a `ValueNotifier` type listener, and has a function that returns the real value of the object passed, updating whenever necessary.
 
 ```dart
 class MyPage extends StatelessWidget {
@@ -163,10 +135,11 @@ class MyPage extends StatelessWidget {
   const MyPage({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    final controller = MinProvider.use<MyController>(context);
+    return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: MinX<MyController>(
-          builder: (context, controller) => Column(
+        floatingActionButton:  Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               FloatingActionButton(
@@ -191,7 +164,6 @@ class MyPage extends StatelessWidget {
               ),
             ],
           ),
-        ),
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -202,12 +174,12 @@ class MyPage extends StatelessWidget {
                     left: 32.0, right: 32.0, bottom: 32.0),
                 child: Form(
                   key: formKey,
-                  child: MinX<MyController>(
-                    builder: (context, controller) => Column(
+                  child:  Column(
                       children: [
                         $(
-                          (user) => Text('${user.name}'),
-                          listener: controller.user,
+                          controller.user,
+                          (User user) => Text(user.name),
+                          ,
                         ),
                         TextFormField(
                           onChanged: (value) => controller.onChangedName(value),
@@ -217,7 +189,6 @@ class MyPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
                 ),
               ),
               Column(
@@ -226,8 +197,8 @@ class MyPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      MinX<MyController>(
-                        builder: (context, controller) => $(
+                       $(
+                          controller.count,
                           (count) => Text(
                             'Count $count',
                             style: const TextStyle(
@@ -235,8 +206,7 @@ class MyPage extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          listener: controller.count,
-                        ),
+                          
                       ),
                     ],
                   ),
@@ -246,24 +216,31 @@ class MyPage extends StatelessWidget {
           ),
         ),
       );
+  } 
 }
 ```
 
-Extend `MinController` in your controller to get application lifecycles.
+Extend `ChangeNotifier` in your controller to get application lifecycles.
 Add your methods and your observables.
 ```dart
-class MyController extends MinController {
-  @override
-  void onInit() {
-    print('init controller');
-    super.onInit();
+class MyController extends ChangeNotifier {
+  MyController(){
+    print('init controler')    ;
+
   }
 
   final count = 0.minx;
   ValueNotifier<User> user = User().minx;
 
-  increment() => count.value++;
-  decrement() => count.value--;
+  increment() {
+    count.value++;
+    notifyListeners();
+  } 
+  decrement() {
+    count.value--;
+    notifyListeners();
+  }
+
   refresh() => count.value = 0;
 
   onChangedName(str) => user.update((val) => val.name = str);
@@ -274,19 +251,12 @@ class User {
   User({this.name});
   String? name;
 }
-
 ```
-
+The `update()` extension was made to update more complex objects,  but nothing stops you from using `notifyListeners` or `complex.notifyListeners()`  
 
 ## Additional information
 
 Package is a work of studies about life cycles, dependency injection, objects and observable classes.  
 Not recommended and not ready for production.
 
-Next steps:
-  - Add option permanent controller to dont reload controller
-  - Fix navigation 2.0 in example
-  - Provide controller for every page
-  - Add more complex usage examples
-  - Fix folders
-  - Fix imports
+

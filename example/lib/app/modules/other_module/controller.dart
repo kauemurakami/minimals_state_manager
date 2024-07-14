@@ -1,6 +1,10 @@
 import 'package:example/app/modules/other_module/repository.dart';
-import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
+import 'package:flutter/foundation.dart';
 
-class OtherController extends MinController {
+class OtherController extends ChangeNotifier {
   final OtherRepository repository = OtherRepository();
+
+  OtherController() {
+    print('another controller init');
+  }
 }

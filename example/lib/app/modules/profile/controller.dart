@@ -1,9 +1,7 @@
-import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
+import 'package:flutter/foundation.dart';
 
-class ProfileController extends MinController {
-  @override
-  void onInit() {
+class ProfileController extends ChangeNotifier {
+  ProfileController() {
     print('profile controller init');
-    super.onInit();
   }
 }

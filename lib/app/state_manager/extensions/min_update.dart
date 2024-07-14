@@ -7,11 +7,29 @@ import 'package:flutter/foundation.dart';
 /// listeners, and keeps the reference to the same instance of the ValueNotifier.
 
 extension ValueNotifierUpdater<T> on ValueNotifier<T> {
-  void update(Function(T) update) {
+  void update(void Function(T) update) {
     T value = this.value;
     update(value);
     this.value = value;
-    // notifyListeners();
+
+    // Se o notifier é um ChangeNotifier, tentamos notificar os ouvintes
+    if (this is ChangeNotifier) {
+      try {
+        (this as ChangeNotifier).notifyListeners();
+      } catch (e, stackTrace) {
+        // Em caso de erro, tratamos para evitar problemas de runtime
+        FlutterError.reportError(FlutterErrorDetails(
+          exception: e,
+          stack: stackTrace,
+          library: 'Flutter SDK',
+          context: ErrorDescription('during notifyListeners()'),
+        ));
+      }
+    } else {
+      // Lançamos um erro se tentar usar com um ValueNotifier que não é um ChangeNotifier
+      throw FlutterError('ValueNotifier is not a subtype of ChangeNotifier. '
+          'notifyListeners() can only be called on ChangeNotifier or its subclasses.');
+    }
   }
 }
 

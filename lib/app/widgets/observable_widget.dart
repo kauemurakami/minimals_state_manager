@@ -9,10 +9,9 @@ class $<T> extends StatefulWidget {
   Widget Function(T)? builder;
   Widget? child;
 
-  /// Creates a new instance of $ widget with the provided [builder] function and
   /// [ValueNotifier] listener.
-  $(this.builder, {@required this.listener, this.child, Key? key})
-      : super(key: key);
+  /// Creates a new instance of $ widget with the provided [builder] function and
+  $(this.listener, this.builder, {this.child, Key? key}) : super(key: key);
 
   @override
   State<$<T>> createState() => _$State<T>();
@@ -40,7 +39,7 @@ class _$State<T> extends State<$<T>> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: widget.listener!,
-      builder: (context, value, child) => widget.builder!(value),
+      builder: (context, value, child) => widget.builder!(value as T),
       child: widget.child,
     );
   }

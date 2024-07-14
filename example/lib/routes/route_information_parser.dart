@@ -4,15 +4,13 @@ class MyRouteInformationParser extends RouteInformationParser<Uri> {
   @override
   Future<Uri> parseRouteInformation(RouteInformation routeInformation) {
     // print(' --- ${routeInformation.location} --- ');
-    return Future.value(
-      Uri.parse(routeInformation.location ?? ''),
-    );
+    return Future.value(routeInformation.uri);
   }
 
   @override
   RouteInformation? restoreRouteInformation(Uri configuration) {
     return RouteInformation(
-      location: configuration.toString(),
-    );
+        // location: configuration.toString(),
+        uri: configuration);
   }
 }

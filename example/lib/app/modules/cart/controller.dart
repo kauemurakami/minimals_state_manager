@@ -1,14 +1,11 @@
 import 'package:example/app/data/models/item.dart';
 import 'package:flutter/foundation.dart';
-import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 import 'package:minimals_state_manager/app/state_manager/extensions/min_listen.dart';
 import 'package:minimals_state_manager/app/state_manager/extensions/min_update.dart';
 
-class CartController extends MinController {
-  @override
-  void onInit() {
+class CartController extends ChangeNotifier {
+  CartController() {
     print('cart controller init');
-    super.onInit();
   }
 
   ValueNotifier<List<Item>> items = <Item>[].minx;
@@ -22,6 +19,9 @@ class CartController extends MinController {
         return true; // items contains item
       } else {
         items.update((val) => val.add(item));
+        // or
+        // items.value.add(item);
+        // items.notifyListeners();
         return true;
       }
     } catch (e) {

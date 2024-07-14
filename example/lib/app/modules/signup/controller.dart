@@ -1,6 +1,5 @@
-import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
+import 'package:example/routes/delegate_imports.dart';
 
-class SignupController extends MinController {
+class SignupController extends ChangeNotifier {
   //...
-
 }

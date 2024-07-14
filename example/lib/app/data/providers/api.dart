@@ -3,7 +3,7 @@ import 'package:example/app/data/models/item.dart';
 class FakeApi {
   getItems() async {
     final List<Item> items = await Future.delayed(
-      const Duration(seconds: 3),
+      const Duration(seconds: 2),
     ).then((value) => <Item>[
           Item(name: 'Item', value: 10, type: 1, id: 124),
           Item(name: 'Item', value: 24, type: 3, id: 325),

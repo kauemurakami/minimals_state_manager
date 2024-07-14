@@ -83,7 +83,8 @@
     )
 
   In this way, our CartController() will be available throughout the application until it is removed with the function
-    `MinService.destroy<YourController>()`.
+  `MinService.destroy<YourPermanentController>()` with `onClose()` function.  
+  You can also retrieve this Service from anywhere in the code using `MinService.of<YourPermanentController>()` without context    
   this example avaible in example, uncomment the complex example part in our example folder `main.dart`
 
   `MinX<Controller>` MinX is a widget that provides a generic  

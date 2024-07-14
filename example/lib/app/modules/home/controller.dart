@@ -3,10 +3,9 @@ import 'package:example/app/data/providers/api.dart';
 import 'package:example/app/modules/home/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 import 'package:minimals_state_manager/app/state_manager/extensions/min_listen.dart';
 
-class HomeController extends MinController {
+class HomeController extends ChangeNotifier {
   final repository = HomeRepository(FakeApi());
   TextEditingController textController = TextEditingController();
 
@@ -20,11 +19,10 @@ class HomeController extends MinController {
   final openned = true.minx;   ->  ValueNotifier<bool>
   */
 
-  @override
-  onInit() async {
-    print('home controller');
+  HomeController() {
+    print('home controller init');
     scrollListener();
-    await getItems();
+    getItems();
   }
 
   changeFilter(int type) {
@@ -49,10 +47,11 @@ class HomeController extends MinController {
 
   //remover scrol controller no dispose
   ScrollController scrollController = ScrollController();
+
   @override
-  void onClose() {
+  void dispose() {
     scrollController.dispose();
-    super.onClose();
+    super.dispose();
   }
 
   scrollListener() {

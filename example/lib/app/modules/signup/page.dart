@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
 
 class SignupPage extends StatelessWidget {
+  const SignupPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

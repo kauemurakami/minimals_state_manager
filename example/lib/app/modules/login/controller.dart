@@ -1,10 +1,10 @@
 import 'package:example/app/data/models/user.dart';
 import 'package:example/app/modules/login/repository.dart';
-import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
+import 'package:flutter/widgets.dart';
 import 'package:minimals_state_manager/app/state_manager/extensions/min_listen.dart';
 import 'package:minimals_state_manager/app/state_manager/extensions/min_update.dart';
 
-class LoginController extends MinController {
+class LoginController extends ChangeNotifier {
   final LoginRepository repository = LoginRepository();
   final user = User().minx;
   final loading = false.minx;

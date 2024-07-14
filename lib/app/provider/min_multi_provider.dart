@@ -1,41 +1,54 @@
-import 'package:flutter/widgets.dart';
-import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
-import 'package:minimals_state_manager/app/state_manager/controller/permament_controller.dart';
+import 'package:flutter/material.dart';
 
-///A provider widget that provides multiple instances of [MinController] to its descendants
-///via [context].
-///It uses [InheritedWidget] to share the controllers across the widget tree.
-
+/// Provides a way to access multiple controllers from the nearest [MinMultiProvider] ancestor in the widget tree.
 class MinMultiProvider extends InheritedWidget {
-  final List<MinController> controllers;
+  final List<ChangeNotifier> controllers;
 
   const MinMultiProvider({
     Key? key,
-    required Widget child,
     required this.controllers,
+    required Widget child,
   }) : super(key: key, child: child);
 
-  @override
-  bool updateShouldNotify(MinMultiProvider oldWidget) {
-    return controllers != oldWidget.controllers;
+  /// Retrieves the nearest [MinMultiProvider] from the widget tree, if available.
+  static MinMultiProvider? maybeOf(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MinMultiProvider>();
   }
 
-  /// Returns the instance of T from the closest ancestor MinMultiProvider
-  /// widget that matches the type T.
-  static T of<T extends MinController>(BuildContext context) {
-    // final Type type = T;
-    final MinMultiProvider? provider =
-        context.dependOnInheritedWidgetOfExactType<MinMultiProvider>();
-
-    T? controller =
-        provider?.controllers.whereType<T>().firstWhere((element) => true);
-    if (controller == null) {
-      try {
-        controller = MinService.of<T>();
-      } catch (e) {
-        throw Exception('Controller $T not found');
-      }
+  /// Retrieves a specific controller of type [T] from the nearest [MinMultiProvider] ancestor in the widget tree.
+  ///
+  /// Throws a [FlutterError] if no [MinMultiProvider] is found in the widget tree or if the controller of type [T] is not found within it.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// final controller = MinMultiProvider.use<MyController>(context);
+  /// ```
+  static T use<T extends ChangeNotifier>(BuildContext context) {
+    final provider = maybeOf(context);
+    if (provider == null) {
+      throw FlutterError(
+        'MinMultiProvider was not found in the widget tree.\n'
+        'Make sure MinMultiProvider is above the widget that '
+        'is trying to access it.',
+      );
     }
-    return controller;
+
+    final controller = provider.controllers.firstWhere(
+      (c) => c is T,
+      orElse: () => throw FlutterError(
+        'Controller of type $T not found in MinMultiProvider.\n'
+        'Make sure the controller is added to the MinMultiProvider.',
+      ),
+    );
+
+    return controller as T;
+  }
+
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
+    if (oldWidget is MinMultiProvider) {
+      return controllers != oldWidget.controllers;
+    }
+    return true;
   }
 }

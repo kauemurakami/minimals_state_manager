@@ -1,3 +1,11 @@
+## 1.0.5
+  - Remake Providers and recovery methods
+  - Remove unnecessary widgets and functions
+  - Leaving as close as possible to native flutter, removing boilerplate such as `MinX` widget, `MinController`, `MinService` and others
+  - Create providers to maintain the state in widget tree
+  - Remake Complex Examples and Readme
+  - Changing navigation so as not to inject controllers again, even keeping the state and changing only what changed
+
 ## 1.0.4
   - Fixing observable widget warnings $
   Refactoring Complex Examples and Readme

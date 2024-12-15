@@ -1,7 +1,7 @@
 name: minimals_state_manager
 description: "A minimalist study project for state management, lifecycle, and observables in Flutter, but not recommended for production due to alpha status."
 
-version: 1.0.5
+version: 1.0.6
 
 # publish_to: none
 
@@ -20,9 +20,9 @@ dependencies:
 
 # Adicionando suporte para Android e iOS
 platforms:
-  android: 
-  ios: 
-  web: 
+  android:
+  ios:
+  web:
 
 dev_dependencies:
   flutter_test:

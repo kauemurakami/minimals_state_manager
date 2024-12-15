@@ -1,3 +1,6 @@
+## 1.0.6
+ - Adding MinService again
+
 ## 1.0.5
   - Remake Providers and recovery methods
   - Remove unnecessary widgets and functions

@@ -1,3 +1,4 @@
+import 'package:example/app/data/models/item.dart';
 import 'package:example/app/modules/cart/controller.dart';
 import 'package:example/app/modules/cart/page.dart';
 import 'package:example/app/modules/home/widgets/app_bar.dart';
@@ -5,7 +6,7 @@ import 'package:example/app/modules/home/widgets/drawer.dart';
 import 'package:example/app/modules/home/widgets/list_items.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
-import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
+import 'package:minimals_state_manager/app/widgets/min_selector.dart';
 // import 'package:minimals_state_manager/app/state_manager/widgets/page.dart';
 
 class HomePage extends StatelessWidget {
@@ -32,9 +33,10 @@ class HomePage extends StatelessWidget {
               Icons.shopping_cart_checkout_outlined,
             ),
           ),
-          $(
-            cartController.items,
-            (items) => items.isEmpty
+          $<CartController, List<Item>>(
+            notifier: cartController,
+            selector: (notifier) => notifier.items,
+            builder: (context, items) => items.isEmpty
                 ? const SizedBox.shrink()
                 : Positioned(
                     right: .0,

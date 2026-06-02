@@ -1,8 +1,8 @@
 import 'package:example/app/modules/home/controller.dart';
 import 'package:example/app/modules/home/widgets/filters.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/provider/min_provider.dart';
-import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
+import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
+import 'package:minimals_state_manager/app/widgets/min_selector.dart';
 
 class HomeAppBar extends StatelessWidget {
   final GlobalKey<ScaffoldState>? scaffoldKey;
@@ -11,11 +11,12 @@ class HomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = MinProvider.use<HomeController>(context);
+    final controller = context.read<HomeController>();
 
-    return $(
-      controller.openned,
-      (_) {
+    return $<HomeController, bool>(
+      notifier: controller,
+      selector: (notifier) => notifier.openned,
+      builder: (context, openned) {
         return AnimatedContainer(
           padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top + 10.0,
@@ -23,12 +24,12 @@ class HomeAppBar extends StatelessWidget {
               right: 24.0,
               bottom: 14.0),
           color: Colors.amber,
-          height: _
+          height: openned
               ? MediaQuery.of(context).size.height * .4
               : MediaQuery.of(context).padding.top,
           duration: const Duration(milliseconds: 100),
           child: Visibility(
-            visible: controller.openned.value,
+            visible: controller.openned,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

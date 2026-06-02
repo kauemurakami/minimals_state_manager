@@ -1,26 +1,27 @@
 import 'package:example/app/data/models/user.dart';
 import 'package:example/app/modules/login/repository.dart';
-import 'package:flutter/widgets.dart';
-import 'package:minimals_state_manager/app/state_manager/extensions/min_listen.dart';
-import 'package:minimals_state_manager/app/state_manager/extensions/min_update.dart';
+import 'package:minimals_state_manager/app/state/min_notifier.dart';
 
-class LoginController extends ChangeNotifier {
+class LoginController extends MinNotifier {
   final LoginRepository repository = LoginRepository();
-  final user = User().minx;
-  final loading = false.minx;
+  final user = User();
+  bool loading = false;
 
   login() async {
-    loading.value = true;
+    update(user, (u) => u.name = 'Kauê');
+
+    loading = true;
+    notifyListeners();
     await Future.delayed(
       const Duration(seconds: 2),
-      () => loading.value = false,
+      () => loading = false,
     );
+    notifyListeners();
     return true;
   }
 
-  onChangedName(_) => user.update((u) => u.name = _);
-  validateName(_) => user.value.name == null || user.value.name!.length < 2
-      ? 'Insert valid name'
-      : null;
-  onSaveName(_) => user.update((u) => u.name = _);
+  onChangedName(_) => update(user, (u) => u.name = _);
+  validateName(_) =>
+      user.name == null || user.name!.length < 2 ? 'Insert valid name' : null;
+  onSaveName(_) => update(user, (u) => u.name = _);
 }

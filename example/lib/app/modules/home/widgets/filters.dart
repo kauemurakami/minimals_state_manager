@@ -1,14 +1,14 @@
 import 'package:example/app/modules/home/controller.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/provider/min_provider.dart';
-import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
+import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
+import 'package:minimals_state_manager/app/widgets/min_selector.dart';
 
 class BSFilters extends StatelessWidget {
   const BSFilters({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = MinProvider.use<HomeController>(context);
+    final controller = context.read<HomeController>();
 
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -35,9 +35,10 @@ class BSFilters extends StatelessWidget {
             flex: 4,
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
-              child: $(
-                controller.filter,
-                (filter) => ListView.builder(
+              child: $<HomeController, int>(
+                notifier: controller,
+                selector: (notifier) => notifier.filter,
+                builder: (context, filter) => ListView.builder(
                   // scrollDirection: Axis.horizontal,
                   itemCount: 3,
                   itemBuilder: (context, index) => InkWell(
@@ -47,10 +48,10 @@ class BSFilters extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.06,
                       decoration: BoxDecoration(
                         border: Border.all(
-                            color: controller.filter.value != 0 &&
-                                    (index + 1 == filter)
-                                ? Colors.green
-                                : Colors.amber),
+                            color:
+                                controller.filter != 0 && (index + 1 == filter)
+                                    ? Colors.green
+                                    : Colors.amber),
                         borderRadius: const BorderRadius.all(
                           Radius.circular(6.0),
                         ),

@@ -1,7 +1,8 @@
+import 'package:example/app/data/models/item.dart';
 import 'package:example/app/modules/cart/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
-import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
+import 'package:minimals_state_manager/app/widgets/min_selector.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -19,14 +20,15 @@ class CartPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
-              child: $(
-                controller.items,
-                (items) => items.isEmpty
+              child: $<CartController, List<Item>>(
+                notifier: controller,
+                selector: (notifier) => notifier.items,
+                builder: (context, items) => items.isEmpty
                     ? const Center(
                         child: Text('Cart is empty'),
                       )
                     : ListView.builder(
-                        itemCount: controller.items.value.length,
+                        itemCount: controller.items.length,
                         itemBuilder: (context, index) => Container(
                           margin: const EdgeInsets.all(6.0),
                           height: 100.0,

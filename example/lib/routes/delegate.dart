@@ -31,8 +31,8 @@ abstract class GoRootDelegate {
             pageBuilder: (BuildContext context, GoRouterState state) {
               print('going signup ${state.fullPath}');
               return CustomFadeTransition(
-                child: MinProvider(
-                  controller: SignupController(),
+                child: MinProvider<SignupController>(
+                  create: () => SignupController(),
                   child: const SignupPage(),
                 ),
               );
@@ -66,8 +66,8 @@ abstract class GoRootDelegate {
               return CustomSlideTransition(
                 from: SlideFrom.left,
                 key: state.pageKey,
-                child: MinProvider(
-                  controller: HomeController(),
+                child: MinProvider<HomeController>(
+                  create: () => HomeController(),
                   child: HomePage(),
                 ),
               );
@@ -99,9 +99,9 @@ abstract class GoRootDelegate {
               return CustomSlideTransition(
                 from: SlideFrom.right,
                 key: state.pageKey,
-                child: MinProvider(
-                  controller: OtherController(),
-                  child: OtherPage(),
+                child: MinProvider<OtherController>(
+                  create: () => OtherController(),
+                  child: const OtherPage(),
                 ),
               );
             },

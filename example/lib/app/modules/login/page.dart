@@ -1,8 +1,8 @@
 import 'package:example/app/modules/login/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:minimals_state_manager/app/provider/min_provider.dart';
-import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
+import 'package:minimals_state_manager/app/widgets/min_selector.dart';
+import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
 
 class LoginPage extends StatelessWidget {
 // class LoginPage extends MinWidget<LoginController> {
@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
   @override
   // Widget buildWithController(BuildContext context) {
   Widget build(BuildContext context) {
-    final controller = MinProvider.use<LoginController>(context);
+    final controller = context.read<LoginController>();
     return Scaffold(
       appBar: AppBar(title: Text('LoginPage')),
       body: SafeArea(
@@ -40,30 +40,32 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-            $(
-              controller.loading,
-              (loading) => loading
-                  ? const CircularProgressIndicator()
-                  : MaterialButton(
-                      color: Colors.blue,
-                      height: 60.0,
-                      minWidth: MediaQuery.of(context).size.width,
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          if (await controller.login() && context.mounted) {
-                            context.goNamed('home');
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                duration: Duration(seconds: 2),
-                                content: Text('Verify data and try again.'),
-                              ),
-                            );
-                          }
-                        }
-                      },
-                      child: const Text('LOGIN'),
-                    ),
+            $<LoginController, bool>(
+              notifier: controller,
+              selector: (controller) => controller.loading,
+              builder: (context, loading) {
+                if (loading) const CircularProgressIndicator();
+                return MaterialButton(
+                  color: Colors.blue,
+                  height: 60.0,
+                  minWidth: MediaQuery.of(context).size.width,
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      if (await controller.login() && context.mounted) {
+                        context.goNamed('home');
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            duration: Duration(seconds: 2),
+                            content: Text('Verify data and try again.'),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  child: const Text('LOGIN'),
+                );
+              },
             ),
           ],
         ),

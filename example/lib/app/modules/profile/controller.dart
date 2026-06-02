@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
+import 'package:minimals_state_manager/app/state/min_notifier.dart';
 
-class ProfileController extends ChangeNotifier {
+class ProfileController extends MinNotifier {
   ProfileController() {
     print('profile controller init');
   }

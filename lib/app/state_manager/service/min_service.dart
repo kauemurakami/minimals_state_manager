@@ -1,7 +1,7 @@
-import 'package:minimals_state_manager/app/state_manager/controller/min_controller.dart';
+import 'package:flutter/foundation.dart';
 
-class MinService<T extends MinController> {
-  static final Map<Type, MinService<MinController>> _instances = {};
+class MinService<T extends ChangeNotifier> {
+  static final Map<Type, MinService<ChangeNotifier>> _instances = {};
 
   final T _controller;
 
@@ -17,13 +17,15 @@ class MinService<T extends MinController> {
     }
   }
 
-  static T of<T extends MinController>() {
+  static T of<T extends ChangeNotifier>() {
     final type = T;
-    assert(_instances.containsKey(type), 'MinService<$T> has not been initialized.');
+    assert(_instances.containsKey(type),
+        'MinService<$T> has not been initialized.');
     return _instances[type]!.controller as T;
   }
 
-  static MinController permanentController<T extends MinController>(T controller) {
+  static ChangeNotifier permanentController<T extends ChangeNotifier>(
+      T controller) {
     final type = T;
 
     // print('test instance minservice ${_instances[T]?.controller}');
@@ -35,10 +37,10 @@ class MinService<T extends MinController> {
 
   T get controller => _controller;
 
-  static void destroy<T extends MinController>() {
+  static void destroy<T extends ChangeNotifier>() {
     final type = T;
     if (_instances.containsKey(type)) {
-      _instances[type]!.controller.onClose();
+      _instances[type]!.controller.dispose();
       _instances.remove(type);
     }
   }

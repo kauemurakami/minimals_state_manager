@@ -1,0 +1,1 @@
+typedef MinRecord = dynamic;

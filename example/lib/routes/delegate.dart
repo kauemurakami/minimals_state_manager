@@ -18,8 +18,8 @@ abstract class GoRootDelegate {
         pageBuilder: (BuildContext context, GoRouterState state) {
           print('initial login ${state.fullPath}');
           return CustomFadeTransition(
-            child: MinProvider(
-              controller: LoginController(),
+            child: MinProvider<LoginController>(
+              create: () => LoginController(),
               child: LoginPage(),
             ),
           );
@@ -81,8 +81,8 @@ abstract class GoRootDelegate {
               print(' ${state.fullPath}');
               return CustomVerticalTransition(
                 key: state.pageKey,
-                child: MinProvider(
-                  controller: ProfileController(),
+                child: MinProvider<ProfileController>(
+                  create: () => ProfileController(),
                   child: const ProfilePage(),
                 ),
               );

@@ -87,7 +87,7 @@ import 'package:flutter/material.dart';
       void initState() {
         super.initState();
         // Executa o comando de sincronização logo na inicialização da tela
-        widget.viewModel.syncCommand.execute();
+        widget.viewModel.command.execute();
       }
 
       @override
@@ -109,13 +109,25 @@ import 'package:flutter/material.dart';
                 ),
                 const SizedBox(height: 8),
 
-                // 1. ESCOPO DO VIEWMODEL: Escuta apenas duas variáveis (nome e cargo)
-                ObserveSelector<MeuViewModel, ({String nome, String cargo})>(
+                // 0. ESCOPO DO VIEWMODEL: Escuta apenas uma variavel isolado
+                ObserveSelector<MeuViewModel, ({String birthDate})>(
                   notifier: widget.viewModel,
-                  selector: (vm) => (nome: vm.userName, cargo: vm.userRole),
-                  builder: (context, usuario) {
+                  selector: (vm) => (birthDate: vm.user.birthDate),
+                  builder: (context, birthDate) {
                     print('REBUILD: Apenas os dados do usuário mudaram');
-                    return Text('Nome: ${usuario.nome} | Cargo: ${usuario.cargo}');
+                    return Text('Birthdate $birthDate');
+                  },
+                ),
+
+                // 1. ESCOPO DO VIEWMODEL: Escuta apenas duas variáveis (name e role)
+                // mesmo que alteremos um outro campo de user, exemplo birthDate
+                // só ocorrerá o rebuild caso alteremos name e/ou role
+                ObserveSelector<MeuViewModel, ({String name, String role})>(
+                  notifier: widget.viewModel,
+                  selector: (vm) => (name: vm.user.name, role: vm.user.role),
+                  builder: (context, user) {
+                    print('REBUILD: Apenas os dados do usuário mudaram, não o objeto completo');
+                    return Text('Nome: ${user.name} | Cargo: ${user.role}');
                   },
                 ),
 
@@ -124,15 +136,16 @@ import 'package:flutter/material.dart';
                 const Text('Status dos Processos:', style: TextStyle(fontSize: 16)),
                 const SizedBox(height: 8),
 
-                // 2. ESCOPO DO COMMAND 1: Escuta a instância do comando de sincronização
-                ObserveSelector<MeuViewModel, MyCommand>(
+                // 2. ESCOPO DO COMMAND 1: Escuta a instância de um command de sincronização
+                ObserveSelector<MeuViewModel, Command0>(
                   notifier: widget.viewModel,
-                  selector: (vm) => vm.syncCommand,
-                  builder: (context, sync) {
+                  selector: (vm) => vm.command,
+                  builder: (context, command) {
                     print('REBUILD: Apenas o Command de Sincronização mudou');
                     // As verificações de estado ocorrem diretamente aqui no builder
-                    if (sync.isRunning) return const LinearProgressIndicator();
-                    if (sync.error != null) return Text('Erro Sync: ${sync.error}');
+                    if (command.isRunning) return const LinearProgressIndicator();
+                    if (command.isError) return Text('Erro Sync: ${sync.error}');
+                    if (command.completed) return Text('Sucesso');
                     return const Text('Sincronização: Concluída com sucesso.');
                   },
                 ),
@@ -140,16 +153,16 @@ import 'package:flutter/material.dart';
                 const SizedBox(height: 16),
 
                 // 3. ESCOPO DO COMMAND 2: Escuta a instância do comando de download
-                ObserveSelector<MeuViewModel, MyCommand>(
+                ObserveSelector<MeuViewModel, Command0<User>>(
                   notifier: widget.viewModel,
-                  selector: (vm) => vm.downloadCommand,
-                  builder: (context, download) {
+                  selector: (vm) => vm.getUserDataCommand,
+                  builder: (context, result) {
                     print('REBUILD: Apenas o Command de Download mudou');
                     // Verificação de estado interna ao builder
                     return Row(
                       children: [
                         const Text('Download de Relatórios: '),
-                        download.isDownloading
+                        result.isRunning
                             ? const SizedBox(
                                 width: 16,
                                 height: 16,

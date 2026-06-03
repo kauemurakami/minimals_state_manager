@@ -3,6 +3,8 @@ description: "A minimalist study project for state management, lifecycle, and ob
 
 version: 1.0.6
 
+executables:
+  min: min
 # publish_to: none
 
 # author: Kauê Tomaz Murakami<kauetmurakami@gmail.com>

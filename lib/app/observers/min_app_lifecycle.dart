@@ -60,6 +60,8 @@ mixin class AppLifecycleMixin implements WidgetsBindingObserver {
 
   void onChangeTextScaleFactor() {}
 
+  void onHandleStatusBarTap() {}
+
   // ---------------------------------------------------------------------------
   // Navigation Events
   // ---------------------------------------------------------------------------
@@ -203,6 +205,6 @@ mixin class AppLifecycleMixin implements WidgetsBindingObserver {
 
   @override
   void handleStatusBarTap() {
-    // TODO: implement handleStatusBarTap
+    onHandleStatusBarTap();
   }
 }

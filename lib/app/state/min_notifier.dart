@@ -60,7 +60,7 @@ abstract class MinNotifier extends ChangeNotifier {
   ///   user.age = 30;
   /// }); // Rebuilds dependent widgets automatically!
   /// ```
-  void update<K>(K target, void Function(K) action) {
+  void update<T>(T target, void Function(T) action) {
     action(target);
     notifyListeners();
   }

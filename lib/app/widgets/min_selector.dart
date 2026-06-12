@@ -4,7 +4,7 @@ class $<T extends Listenable, K> extends StatefulWidget {
   final T notifier;
   final K Function(T notifier) selector; // Aqui o K vira o seu Record nomeado
   final Widget Function(BuildContext context, K value)
-  builder; // Aqui o K também vira o Record
+      builder; // Aqui o K também vira o Record
   final Widget? child;
   const $({
     required this.notifier,

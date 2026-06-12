@@ -14,6 +14,7 @@ export 'app/widgets/min_selector.dart'; // O seu class $
 export 'app/extensions/min_provider_extensions.dart'; // Onde estão o .read e .watch
 export 'app/state_manager/extensions/min_update.dart';
 export 'app/state_manager/service/min_service.dart';
+export 'app/state/mixins/min_app_lifecycle.dart';
 export 'app/types/min_record.dart';
 export 'app/state/min_props.dart';
 

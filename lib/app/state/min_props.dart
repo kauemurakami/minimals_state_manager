@@ -1,5 +1,12 @@
-import 'package:minimals_state_manager/app/types/min_record.dart';
-
 abstract class MinSnapshot {
-  MinRecord get snapshot;
+  Record get props;
+
+  @override
+  bool operator ==(Object other) =>
+      runtimeType == other.runtimeType &&
+      other is MinSnapshot &&
+      props == other.props;
+
+  @override
+  int get hashCode => props.hashCode;
 }

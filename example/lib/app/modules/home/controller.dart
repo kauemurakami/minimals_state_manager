@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:minimals_state_manager/app/state/min_notifier.dart';
 
-class HomeController extends MinNotifier {
+class HomeController extends MinNotifier with WidgetsBindingObserver {
   final repository = HomeRepository(FakeApi());
   TextEditingController textController = TextEditingController();
 
@@ -14,10 +14,22 @@ class HomeController extends MinNotifier {
   bool openned = true;
 
   @override
-  onReady() {
+  void update<K>(K target, void Function(K) action) {
+    // TODO: implement update
+    super.update(target, action);
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
     print('home controller init');
     scrollListener();
     getItems();
+  }
+
+  @override
+  onReady() {
+    print('home controller rendered');
   }
 
   changeFilter(int type) {
@@ -39,15 +51,16 @@ class HomeController extends MinNotifier {
     await getItems();
   }
 
-  getItems() async => await repository
-      .getItems()
-      .then((data) => update(items, (_) => _ = data));
+  Future<void> getItems() async {
+    items = await repository.getItems();
+    notifyListeners();
+  }
 
-  //remover scrol controller no dispose
   ScrollController scrollController = ScrollController();
 
   @override
   void dispose() {
+    print('home controller dispose');
     scrollController.dispose();
     super.dispose();
   }

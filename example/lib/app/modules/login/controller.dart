@@ -24,4 +24,10 @@ class LoginController extends MinNotifier {
   validateName(_) =>
       user.name == null || user.name!.length < 2 ? 'Insert valid name' : null;
   onSaveName(_) => update(user, (u) => u.name = _);
+
+  @override
+  void dispose() {
+    print('login controller dispose');
+    super.dispose();
+  }
 }

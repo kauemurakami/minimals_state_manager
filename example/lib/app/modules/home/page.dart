@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final controller = MinProvider.use<HomeController>(context);
-    final cartController = MinMultiProvider.use<CartController>(context);
+    final cartController = MinMultiProvider.read<CartController>(context);
     return Scaffold(
       floatingActionButton: Stack(
         children: [

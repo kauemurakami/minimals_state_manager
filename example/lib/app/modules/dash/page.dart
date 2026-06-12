@@ -13,7 +13,7 @@ class DashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = MinMultiProvider.use<DashController>(context);
+    final controller = MinMultiProvider.read<DashController>(context);
     print('rebuild dash');
     return Scaffold(
       body: child ??

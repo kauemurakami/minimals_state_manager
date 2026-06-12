@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-buildBanner(context, {error}) {
+buildBanner(context, {required String message, required bool isRemoved}) {
   return MaterialBanner(
-      backgroundColor: Colors.amber,
+      backgroundColor: isRemoved ? Colors.red : Colors.green,
       content: Text(
-        error ? 'item removed to cart' : 'item added to cart',
+        message,
         style: const TextStyle(
           color: Colors.white,
           fontSize: 15.0,

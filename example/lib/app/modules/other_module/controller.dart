@@ -4,7 +4,20 @@ import 'package:minimals_state_manager/app/state/min_notifier.dart';
 class OtherController extends MinNotifier {
   final OtherRepository repository = OtherRepository();
 
-  OtherController() {
-    print('another controller init');
+  @override
+  onInit() {
+    print('other controller init');
+  }
+
+  @override
+  void onReady() {
+    print('other controller rendered');
+    super.onReady();
+  }
+
+  @override
+  void dispose() {
+    print('other controller dispose');
+    super.dispose();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:example/app/data/models/item.dart';
 import 'package:example/app/modules/cart/controller.dart';
 import 'package:example/app/modules/home/controller.dart';
+import 'package:example/app/modules/widgets/build_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
@@ -12,7 +13,7 @@ class ItemWidget extends Container {
   @override
   Widget build(BuildContext context) {
     final controller = context.read<HomeController>();
-    final cartController = MinMultiProvider.use<CartController>(context);
+    final cartController = MinMultiProvider.read<CartController>(context);
 
     return $<HomeController, List<Item>>(
       notifier: controller,
@@ -37,9 +38,14 @@ class ItemWidget extends Container {
               ],
             ),
             IconButton(
-              onPressed: () => cartController.addItem(
-                items[index],
-              ),
+              onPressed: () {
+                if (cartController.addItem(items[index])) {
+                  ScaffoldMessenger.of(context).showMaterialBanner(buildBanner(
+                      context,
+                      message: 'Add item to cart',
+                      isRemoved: false));
+                }
+              },
               icon: const Icon(
                 Icons.add,
                 color: Colors.green,

@@ -1,5 +1,6 @@
 import 'package:example/app/data/models/item.dart';
 import 'package:example/app/modules/cart/controller.dart';
+import 'package:example/app/modules/widgets/build_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
 import 'package:minimals_state_manager/app/widgets/min_selector.dart';
@@ -9,7 +10,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = MinMultiProvider.use<CartController>(context);
+    final controller = MinMultiProvider.read<CartController>(context);
 
     return SafeArea(
       child: Container(
@@ -28,7 +29,7 @@ class CartPage extends StatelessWidget {
                         child: Text('Cart is empty'),
                       )
                     : ListView.builder(
-                        itemCount: controller.items.length,
+                        itemCount: items.length,
                         itemBuilder: (context, index) => Container(
                           margin: const EdgeInsets.all(6.0),
                           height: 100.0,
@@ -55,12 +56,12 @@ class CartPage extends StatelessWidget {
                               IconButton(
                                 onPressed: () {
                                   if (controller.removeItem(items[index])) {
-                                    // ScaffoldMessenger.of(context)
-                                    //     .showMaterialBanner(
-                                    //   buildBanner(
-                                    //     context, error:true
-                                    //   ),
-                                    // );
+                                    ScaffoldMessenger.of(context)
+                                        .showMaterialBanner(
+                                      buildBanner(context,
+                                          message: 'Item removed from cart',
+                                          isRemoved: true),
+                                    );
                                   }
                                 },
                                 icon: const Icon(
@@ -77,7 +78,10 @@ class CartPage extends StatelessWidget {
             ),
             MaterialButton(
               color: Colors.red,
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                Navigator.pop(context);
+              },
               child: const Text('CLOSE'),
             )
           ],

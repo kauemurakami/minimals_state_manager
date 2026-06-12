@@ -8,6 +8,7 @@ import 'package:url_strategy/url_strategy.dart';
 void main() {
   setPathUrlStrategy();
   runApp(MaterialApp.router(
+    debugShowCheckedModeBanner: false,
     routerConfig: GoRootDelegate.router,
   ));
 }
@@ -120,7 +121,7 @@ void main() {
 //                               fontWeight: FontWeight.w600,
 //                             ),
 //                           ),
-//                           
+//
 //                         ),
 //                       ),
 //                     ],

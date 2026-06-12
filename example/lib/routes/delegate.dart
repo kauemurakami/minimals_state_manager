@@ -1,5 +1,4 @@
 import 'package:example/routes/delegate_imports.dart';
-import 'package:example/routes/providers.dart';
 
 abstract class GoRootDelegate {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -46,12 +45,10 @@ abstract class GoRootDelegate {
           print('shell direction ${state.fullPath}');
           return CustomFadeTransition(
             child: MinMultiProvider(
-              controllers: [
-                dashController,
-                cartController,
+              create: [
+                () => DashController(),
+                () => CartController(),
               ],
-              // child:MinProvider(
-              //   controller: ,
               child: DashPage(child: child),
             ),
           );

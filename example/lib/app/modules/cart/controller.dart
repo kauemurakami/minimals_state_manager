@@ -1,6 +1,6 @@
 import 'package:example/app/data/models/item.dart';
 import 'package:minimals_state_manager/app/state/min_notifier.dart';
-import 'package:minimals_state_manager/app/state/mixins/min_app_lifecycle.dart';
+import 'package:minimals_state_manager/app/observers/min_app_lifecycle.dart';
 
 class CartController extends MinNotifier with AppLifecycleMixin {
   @override
@@ -21,15 +21,16 @@ class CartController extends MinNotifier with AppLifecycleMixin {
     if (exists) {
       return true;
     } else {
-      items.add(item);
-      notifyListeners();
+      update(items, (i) => items.add(item));
       return true;
     }
   }
 
   bool removeItem(item) {
-    items.removeWhere((element) => element == item);
-    notifyListeners();
+    // items.removeWhere((element) => element == item);
+    // items = List.of(items);
+    // notifyListeners();
+    update(items, (i) => items.removeWhere((element) => element == item));
     return true;
   }
 }

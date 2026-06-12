@@ -1,6 +1,7 @@
 import 'package:example/app/data/models/item.dart';
 import 'package:example/app/modules/cart/controller.dart';
 import 'package:example/app/modules/widgets/build_banner.dart';
+import 'package:example/routes/delegate_imports.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
 import 'package:minimals_state_manager/app/widgets/min_selector.dart';
@@ -80,7 +81,7 @@ class CartPage extends StatelessWidget {
               color: Colors.red,
               onPressed: () {
                 ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-                Navigator.pop(context);
+                context.pop();
               },
               child: const Text('CLOSE'),
             )

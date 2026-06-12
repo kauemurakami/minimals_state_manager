@@ -14,12 +14,6 @@ class HomeController extends MinNotifier with WidgetsBindingObserver {
   bool openned = true;
 
   @override
-  void update<K>(K target, void Function(K) action) {
-    // TODO: implement update
-    super.update(target, action);
-  }
-
-  @override
   void onInit() {
     super.onInit();
     print('home controller init');
@@ -47,6 +41,7 @@ class HomeController extends MinNotifier with WidgetsBindingObserver {
 
   removeFilters() async {
     items = [];
+    notifyListeners();
     filter = 0;
     await getItems();
   }

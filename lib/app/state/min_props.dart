@@ -1,12 +1,16 @@
-abstract class MinSnapshot {
+abstract class MinModel {
   Record get props;
 
   @override
   bool operator ==(Object other) =>
-      runtimeType == other.runtimeType &&
-      other is MinSnapshot &&
-      props == other.props;
+      identical(this, other) ||
+      other is MinModel &&
+          runtimeType == other.runtimeType &&
+          props == other.props;
 
   @override
-  int get hashCode => props.hashCode;
+  int get hashCode => Object.hash(
+        runtimeType,
+        props,
+      );
 }

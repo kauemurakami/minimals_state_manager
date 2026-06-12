@@ -21,16 +21,19 @@ class CartController extends MinNotifier with AppLifecycleMixin {
     if (exists) {
       return true;
     } else {
-      update(items, (i) => items.add(item));
+      items.add(item);
+      items = List.of(items);
+      notifyListeners();
+      // update(items, (i) => i.add(item));
       return true;
     }
   }
 
   bool removeItem(item) {
-    // items.removeWhere((element) => element == item);
-    // items = List.of(items);
-    // notifyListeners();
-    update(items, (i) => items.removeWhere((element) => element == item));
+    items.removeWhere((element) => element == item);
+    items = List.of(items);
+    notifyListeners();
+    // update(items, (i) => i.removeWhere((element) => element == item));
     return true;
   }
 }

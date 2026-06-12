@@ -2,7 +2,7 @@ import 'package:example/app/modules/dash/controller.dart';
 import 'package:example/app/modules/home/controller.dart';
 import 'package:example/app/modules/home/page.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
+import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
 import 'package:minimals_state_manager/app/provider/min_provider.dart';
 import 'package:minimals_state_manager/app/widgets/min_selector.dart';
 
@@ -13,8 +13,10 @@ class DashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = MinMultiProvider.read<DashController>(context);
-    print('rebuild dash');
+    // final controller = MinMultiProvider.read<DashController>(context);
+    // or
+    final controller = context.read<DashController>();
+
     return Scaffold(
       body: child ??
           MinProvider<HomeController>(

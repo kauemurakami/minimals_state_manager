@@ -10,6 +10,8 @@ class ListItems extends Container {
 
   @override
   Widget build(BuildContext context) {
+    // final controller = MinProvider.read<HomeController>(context);
+    // or
     final controller = context.read<HomeController>();
 
     return Flexible(

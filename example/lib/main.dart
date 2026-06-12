@@ -10,6 +10,7 @@ void main() {
   runApp(MaterialApp.router(
     debugShowCheckedModeBanner: false,
     routerConfig: GoRootDelegate.router,
+    // routeInformationParser: MyRouteInformationParser(),
   ));
 }
 

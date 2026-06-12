@@ -1,9 +1,8 @@
 import 'package:example/app/data/models/item.dart';
-import 'package:example/app/modules/cart/controller.dart';
 import 'package:example/app/modules/widgets/build_banner.dart';
 import 'package:example/routes/delegate_imports.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
+import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
 import 'package:minimals_state_manager/app/widgets/min_selector.dart';
 
 class CartPage extends StatelessWidget {
@@ -11,7 +10,9 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = MinMultiProvider.read<CartController>(context);
+    // final controller = MinMultiProvider.read<CartController>(context);
+    // or
+    final controller = context.read<CartController>();
 
     return SafeArea(
       child: Container(

@@ -26,7 +26,7 @@ import 'package:flutter/foundation.dart';
 ///
 ///   Future<void> fetchUserData() async {
 ///     final data = await _service.getProfile();
-///     update(user, (u) => u.copyWith(data));
+///     user = data;
 ///     isLoading = false;
 ///     notifyListeners();
 ///   }

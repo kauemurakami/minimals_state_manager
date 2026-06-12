@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 buildBanner(context, {required String message, required bool isRemoved}) {
   return MaterialBanner(
+      onVisible: () async {
+        await Future.delayed(Durations.medium1);
+        ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+      },
       backgroundColor: isRemoved ? Colors.red : Colors.green,
       content: Text(
         message,

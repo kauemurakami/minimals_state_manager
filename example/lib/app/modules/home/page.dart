@@ -1,4 +1,3 @@
-import 'package:example/app/data/models/item.dart';
 import 'package:example/app/modules/cart/controller.dart';
 import 'package:example/app/modules/cart/page.dart';
 import 'package:example/app/modules/home/widgets/app_bar.dart';
@@ -7,7 +6,6 @@ import 'package:example/app/modules/home/widgets/list_items.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
 import 'package:minimals_state_manager/app/widgets/min_selector.dart';
-// import 'package:minimals_state_manager/app/state_manager/widgets/page.dart';
 
 class HomePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -33,10 +31,10 @@ class HomePage extends StatelessWidget {
               Icons.shopping_cart_checkout_outlined,
             ),
           ),
-          $<CartController, List<Item>>(
+          $<CartController, int>(
             notifier: cartController,
-            selector: (notifier) => notifier.items,
-            builder: (context, items) => items.isEmpty
+            selector: (notifier) => notifier.items.length,
+            builder: (context, length) => length <= 0
                 ? const SizedBox.shrink()
                 : Positioned(
                     right: .0,
@@ -48,7 +46,7 @@ class HomePage extends StatelessWidget {
                           shape: BoxShape.circle, color: Colors.green),
                       child: Center(
                         child: Text(
-                          '${items.length}',
+                          '$length',
                           style: const TextStyle(color: Colors.white),
                         ),
                       ),

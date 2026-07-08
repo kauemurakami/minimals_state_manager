@@ -1,6 +1,3 @@
-import 'package:example/app/data/models/item.dart';
-import 'package:example/app/modules/cart/controller.dart';
-import 'package:example/app/modules/cart/page.dart';
 import 'package:example/app/modules/home/widgets/app_bar.dart';
 import 'package:example/app/modules/home/widgets/drawer.dart';
 import 'package:example/app/modules/home/widgets/fab.dart';

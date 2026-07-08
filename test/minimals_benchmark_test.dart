@@ -100,8 +100,8 @@ class RiverpodHarness extends BenchmarkBase {
 }
 
 void main() {
-  test('Execução de Microbenchmarks de Estado', () {
-    print('\n=== INICIANDO BENCHMARK DE MOTORES DE ESTADO ===');
+  test('Execute  Microbenchmarks of state', () {
+    print('\n=== INIT BENCHMARK STATE ENGINES ===');
 
     MinimalsHarness().report();
     NativeHarness().report();

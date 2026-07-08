@@ -1,25 +1,29 @@
+import 'package:example/app/data/models/item.dart';
 import 'package:example/app/modules/home/controller.dart';
 import 'package:example/app/modules/home/widgets/item.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/provider/min_provider.dart';
-import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
+import 'package:minimals_state_manager/min_extensions.dart';
+import 'package:minimals_state_manager/min_widgets.dart';
 
 class ListItems extends Container {
   ListItems({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = MinProvider.use<HomeController>(context);
+    // final controller = MinProvider.read<HomeController>(context);
+    // or
+    final controller = context.read<HomeController>();
 
     return Flexible(
-      child: $(
-        controller.items,
-        (items) {
+      child: $<HomeController, List<Item>>(
+        notifier: controller,
+        selector: (notifier) => notifier.items,
+        builder: (context, items) {
           if (items.isNotEmpty) {
             return ListView.builder(
                 controller: controller.scrollController,
                 itemCount: items.length,
-                itemBuilder: (context, index) => Item(index));
+                itemBuilder: (context, index) => ItemWidget(index));
           } else {
             return const Center(
               child: CircularProgressIndicator(

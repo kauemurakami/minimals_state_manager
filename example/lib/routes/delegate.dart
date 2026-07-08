@@ -1,5 +1,4 @@
 import 'package:example/routes/delegate_imports.dart';
-import 'package:example/routes/providers.dart';
 
 abstract class GoRootDelegate {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -18,8 +17,8 @@ abstract class GoRootDelegate {
         pageBuilder: (BuildContext context, GoRouterState state) {
           print('initial login ${state.fullPath}');
           return CustomFadeTransition(
-            child: MinProvider(
-              controller: LoginController(),
+            child: MinProvider<LoginController>(
+              create: () => LoginController(),
               child: LoginPage(),
             ),
           );
@@ -31,8 +30,8 @@ abstract class GoRootDelegate {
             pageBuilder: (BuildContext context, GoRouterState state) {
               print('going signup ${state.fullPath}');
               return CustomFadeTransition(
-                child: MinProvider(
-                  controller: SignupController(),
+                child: MinProvider<SignupController>(
+                  create: () => SignupController(),
                   child: const SignupPage(),
                 ),
               );
@@ -46,12 +45,10 @@ abstract class GoRootDelegate {
           print('shell direction ${state.fullPath}');
           return CustomFadeTransition(
             child: MinMultiProvider(
-              controllers: [
-                dashController,
-                cartController,
+              create: [
+                () => DashController(),
+                () => CartController(),
               ],
-              // child:MinProvider(
-              //   controller: ,
               child: DashPage(child: child),
             ),
           );
@@ -66,8 +63,9 @@ abstract class GoRootDelegate {
               return CustomSlideTransition(
                 from: SlideFrom.left,
                 key: state.pageKey,
-                child: MinProvider(
-                  controller: HomeController(),
+                child: MinProvider<HomeController>(
+                  key: ValueKey('min_provider_home_${state.pageKey}'),
+                  create: () => HomeController(),
                   child: HomePage(),
                 ),
               );
@@ -81,9 +79,9 @@ abstract class GoRootDelegate {
               print(' ${state.fullPath}');
               return CustomVerticalTransition(
                 key: state.pageKey,
-                child: MinProvider(
-                  controller: ProfileController(),
-                  child: const ProfilePage(),
+                child: MinProvider<ProfileController>(
+                  create: () => ProfileController(),
+                  child: ProfilePage(),
                 ),
               );
             },
@@ -91,17 +89,14 @@ abstract class GoRootDelegate {
           GoRoute(
             name: 'other',
             path: '/other',
-            // name: DashRoutes.other.name,
-            // path: DashRoutes.other.path,
-
             pageBuilder: (BuildContext context, GoRouterState state) {
               print(' ${state.fullPath}');
               return CustomSlideTransition(
                 from: SlideFrom.right,
                 key: state.pageKey,
-                child: MinProvider(
-                  controller: OtherController(),
-                  child: OtherPage(),
+                child: MinProvider<OtherController>(
+                  create: () => OtherController(),
+                  child: const OtherPage(),
                 ),
               );
             },

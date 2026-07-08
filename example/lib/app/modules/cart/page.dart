@@ -1,14 +1,17 @@
-import 'package:example/app/modules/cart/controller.dart';
+import 'package:example/app/data/models/item.dart';
+import 'package:example/routes/delegate_imports.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
-import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
+import 'package:minimals_state_manager/min_extensions.dart';
+import 'package:minimals_state_manager/min_widgets.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = MinMultiProvider.use<CartController>(context);
+    // final controller = MinMultiProvider.read<CartController>(context);
+    // or
+    final controller = context.read<CartController>();
 
     return SafeArea(
       child: Container(
@@ -19,20 +22,21 @@ class CartPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
-              child: $(
-                controller.items,
-                (items) => items.isEmpty
+              child: $<CartController, List<Item>>(
+                notifier: controller,
+                selector: (notifier) => notifier.items,
+                builder: (context, items) => items.isEmpty
                     ? const Center(
                         child: Text('Cart is empty'),
                       )
                     : ListView.builder(
-                        itemCount: controller.items.value.length,
+                        itemCount: items.length,
                         itemBuilder: (context, index) => Container(
                           margin: const EdgeInsets.all(6.0),
                           height: 100.0,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(.5),
+                            color: Colors.grey[300],
                             borderRadius: const BorderRadius.all(
                               Radius.circular(6.0),
                             ),
@@ -46,20 +50,13 @@ class CartPage extends StatelessWidget {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Text('${items[index].name} - $index'),
-                                  Text('Type ${items[index].type}'),
-                                  Text('${items[index].value}'),
+                                  Text(items[index].type.name),
+                                  Text('R\$ ${items[index].value}'),
                                 ],
                               ),
                               IconButton(
                                 onPressed: () {
-                                  if (controller.removeItem(items[index])) {
-                                    // ScaffoldMessenger.of(context)
-                                    //     .showMaterialBanner(
-                                    //   buildBanner(
-                                    //     context, error:true
-                                    //   ),
-                                    // );
-                                  }
+                                  controller.removeItem(items[index]);
                                 },
                                 icon: const Icon(
                                   Icons.remove,
@@ -75,7 +72,9 @@ class CartPage extends StatelessWidget {
             ),
             MaterialButton(
               color: Colors.red,
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                context.pop();
+              },
               child: const Text('CLOSE'),
             )
           ],

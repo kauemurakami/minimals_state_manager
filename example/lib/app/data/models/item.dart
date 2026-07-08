@@ -1,6 +1,9 @@
+import 'package:example/app/data/enums/item_type.dart';
+
 class Item {
   String? name;
-  int? type, id;
+  int? id;
+  ItemType type;
   double? value;
-  Item({this.name, this.value, this.type, this.id});
+  Item({this.name, this.value, required this.type, this.id});
 }

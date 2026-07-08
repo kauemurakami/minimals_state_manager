@@ -1,27 +1,32 @@
+import 'package:example/app/data/models/item.dart';
 import 'package:example/app/modules/cart/controller.dart';
 import 'package:example/app/modules/home/controller.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
-import 'package:minimals_state_manager/app/provider/min_provider.dart';
-import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
+import 'package:minimals_state_manager/min_extensions.dart';
+import 'package:minimals_state_manager/min_providers.dart';
+import 'package:minimals_state_manager/min_widgets.dart';
 
-class Item extends Container {
-  Item(this.index, {super.key});
+class ItemWidget extends Container {
+  ItemWidget(this.index, {super.key});
   final int index;
   @override
   Widget build(BuildContext context) {
-    final controller = MinProvider.use<HomeController>(context);
-    final cartController = MinMultiProvider.use<CartController>(context);
+    final controller = context.read<HomeController>();
+    final cartController = MinMultiProvider.read<CartController>(context);
 
-    return $(
-      controller.items,
-      (items) => Container(
+    return $<HomeController, List<Item>>(
+      notifier: controller,
+      selector: (notifier) => notifier.items,
+      builder: (context, items) => Container(
         margin: const EdgeInsets.all(6.0),
         height: 100.0,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(.5),
-            borderRadius: const BorderRadius.all(Radius.circular(4.0))),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(
+            Radius.circular(4.0),
+          ),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -30,14 +35,14 @@ class Item extends Container {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text('${items[index].name} - $index'),
-                Text('Type ${items[index].type}'),
-                Text('${items[index].value}'),
+                Text(items[index].type.name),
+                Text('R\$ ${items[index].value}'),
               ],
             ),
             IconButton(
-              onPressed: () => cartController.addItem(
-                items[index],
-              ),
+              onPressed: () {
+                cartController.addItem(items[index]);
+              },
               icon: const Icon(
                 Icons.add,
                 color: Colors.green,

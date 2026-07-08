@@ -2,9 +2,9 @@ import 'package:example/app/modules/dash/controller.dart';
 import 'package:example/app/modules/home/controller.dart';
 import 'package:example/app/modules/home/page.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
-import 'package:minimals_state_manager/app/provider/min_provider.dart';
-import 'package:minimals_state_manager/app/widgets/observable_widget.dart';
+import 'package:minimals_state_manager/min_extensions.dart';
+import 'package:minimals_state_manager/min_providers.dart';
+import 'package:minimals_state_manager/min_widgets.dart';
 
 class DashPage extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -13,17 +13,20 @@ class DashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = MinMultiProvider.use<DashController>(context);
-    print('rebuild dash');
+    // final controller = MinMultiProvider.read<DashController>(context);
+    // or
+    final controller = context.read<DashController>();
+
     return Scaffold(
       body: child ??
-          MinProvider(
-            controller: HomeController(),
+          MinProvider<HomeController>(
+            create: () => HomeController(),
             child: HomePage(),
           ),
-      bottomNavigationBar: $(
-        controller.currentIndex,
-        (index) => BottomNavigationBar(
+      bottomNavigationBar: $<DashController, int>(
+        notifier: controller,
+        selector: (notifier) => notifier.currentIndex,
+        builder: (context, index) => BottomNavigationBar(
           currentIndex: index,
           selectedItemColor: Colors.amber,
           unselectedItemColor: Colors.grey,
@@ -36,7 +39,7 @@ class DashPage extends StatelessWidget {
           },
           //change go route
 
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,

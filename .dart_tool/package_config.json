@@ -74,10 +74,22 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "flutter_riverpod",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/flutter_riverpod-2.6.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/user/Documents/development/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "3.10"
+    },
+    {
+      "name": "get_it",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/get_it-9.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "leak_tracker",

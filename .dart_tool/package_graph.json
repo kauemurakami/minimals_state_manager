@@ -14,8 +14,29 @@
         "benchmark_harness",
         "flutter_bloc",
         "flutter_lints",
+        "flutter_riverpod",
         "flutter_test",
+        "get_it",
+        "provider",
         "riverpod"
+      ]
+    },
+    {
+      "name": "provider",
+      "version": "6.1.5+1",
+      "dependencies": [
+        "collection",
+        "flutter",
+        "nested"
+      ]
+    },
+    {
+      "name": "get_it",
+      "version": "9.2.1",
+      "dependencies": [
+        "async",
+        "collection",
+        "meta"
       ]
     },
     {
@@ -35,6 +56,13 @@
         "meta",
         "stack_trace",
         "state_notifier"
+      ]
+    },
+    {
+      "name": "benchmark_harness",
+      "version": "2.4.0",
+      "dependencies": [
+        "args"
       ]
     },
     {
@@ -80,12 +108,23 @@
       ]
     },
     {
-      "name": "provider",
-      "version": "6.1.5+1",
+      "name": "nested",
+      "version": "1.0.0",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
+      "name": "meta",
+      "version": "1.18.0",
+      "dependencies": []
+    },
+    {
+      "name": "async",
+      "version": "2.11.0",
       "dependencies": [
         "collection",
-        "flutter",
-        "nested"
+        "meta"
       ]
     },
     {
@@ -110,8 +149,8 @@
       ]
     },
     {
-      "name": "meta",
-      "version": "1.18.0",
+      "name": "args",
+      "version": "2.7.0",
       "dependencies": []
     },
     {
@@ -204,21 +243,6 @@
       "dependencies": []
     },
     {
-      "name": "nested",
-      "version": "1.0.0",
-      "dependencies": [
-        "flutter"
-      ]
-    },
-    {
-      "name": "async",
-      "version": "2.11.0",
-      "dependencies": [
-        "collection",
-        "meta"
-      ]
-    },
-    {
       "name": "leak_tracker_testing",
       "version": "3.0.2",
       "dependencies": [
@@ -273,16 +297,15 @@
       "dependencies": []
     },
     {
-      "name": "benchmark_harness",
-      "version": "2.4.0",
+      "name": "flutter_riverpod",
+      "version": "2.6.1",
       "dependencies": [
-        "args"
+        "collection",
+        "flutter",
+        "meta",
+        "riverpod",
+        "state_notifier"
       ]
-    },
-    {
-      "name": "args",
-      "version": "2.7.0",
-      "dependencies": []
     }
   ],
   "configVersion": 1

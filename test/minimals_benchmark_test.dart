@@ -5,10 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:minimals_state_manager/minimals_state_manager.dart';
 
-// --- 1. IMPLEMENTAÇÃO DOS ELEMENTOS DE TESTE ---
-
-// 1. Minimals Controller (Sua solução)
-class MinalsCounterController extends MinNotifier {
+// 1. Minimals Notifier
+class MinimalsCounterNotifier extends MinNotifier {
   int count = 0;
 
   void increment() {
@@ -17,7 +15,7 @@ class MinalsCounterController extends MinNotifier {
   }
 }
 
-// 2. ChangeNotifier Nativo do Flutter
+// 2. ChangeNotifier Native Flutter
 class NativeCounterNotifier extends ChangeNotifier {
   int count = 0;
 
@@ -43,15 +41,15 @@ class RiverpodCounter extends Notifier<int> {
 final riverpodProvider =
     NotifierProvider<RiverpodCounter, int>(RiverpodCounter.new);
 
-// --- 2. HARNESSES DO BENCHMARK ---
+// --- 2. HARNESSES BENCHMARK ---
 
-class MinalsHarness extends BenchmarkBase {
-  late MinalsCounterController controller;
-  MinalsHarness() : super('Minimals (MinNotifier)');
+class MinimalsHarness extends BenchmarkBase {
+  late MinimalsCounterNotifier controller;
+  MinimalsHarness() : super('Minimals (MinNotifier)');
 
   @override
   void setup() {
-    controller = MinalsCounterController();
+    controller = MinimalsCounterNotifier();
     controller.addListener(() {});
   }
 
@@ -101,12 +99,11 @@ class RiverpodHarness extends BenchmarkBase {
   void run() => container.read(riverpodProvider.notifier).increment();
 }
 
-// --- 3. EXECUÇÃO ---
 void main() {
   test('Execução de Microbenchmarks de Estado', () {
     print('\n=== INICIANDO BENCHMARK DE MOTORES DE ESTADO ===');
 
-    MinalsHarness().report();
+    MinimalsHarness().report();
     NativeHarness().report();
     BlocHarness().report();
     RiverpodHarness().report();

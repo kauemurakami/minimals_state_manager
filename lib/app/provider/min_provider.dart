@@ -5,22 +5,28 @@ import 'package:minimals_state_manager/app/widgets/inherited_widgets/min_inherit
 /// A standalone provider widget that manages the lifecycle (`onInit`, `onReady`, and `dispose`)
 /// of a state manager instance.
 ///
-/// This widget accommodates both custom controller classes extending `MinNotifier` and
-/// standard Flutter `ChangeNotifier` implementations. If a `MinNotifier` is provided,
-/// its native lifecycle hooks (`onInit` and `onReady`) are triggered automatically.
+/// ### How to use:
 ///
-/// Example usage:
+/// **Registering the provider:**
 /// ```dart
 /// MinProvider(
-///   create: () => MyViewModel(), // Can be a MinNotifier or a ChangeNotifier
+///   create: () => MyViewModel(),
 ///   child: const MyView(),
 /// )
 /// ```
+///
+/// **Accessing state inside build() (Rebuilds on change):**
+/// ```dart
+/// final controller = MinProvider.watch<MyViewModel>(context);
+/// ```
+///
+/// **Accessing state for callbacks/methods (No rebuilds):**
+/// ```dart
+/// final controller = MinProvider.read<MyViewModel>(context);
+/// controller.doSomething();
+/// ```
 class MinProvider<T extends ChangeNotifier> extends StatefulWidget {
-  /// The factory function used to instantiate the state notifier.
   final T Function() create;
-
-  /// The widget subtree that will have access to this provider.
   final Widget child;
 
   const MinProvider({
@@ -28,6 +34,25 @@ class MinProvider<T extends ChangeNotifier> extends StatefulWidget {
     required this.create,
     required this.child,
   });
+
+  /// Accesses the controller and subscribes the context to changes.
+  /// Use this inside the [build] method when you need the UI to reflect state changes.
+  static T watch<T extends ChangeNotifier>(BuildContext context) {
+    final inherited =
+        context.dependOnInheritedWidgetOfExactType<MinInherited<T>>();
+    assert(inherited != null, 'No MinProvider<$T> found in context.');
+    return inherited!.notifier!;
+  }
+
+  /// Accesses the controller without subscribing to changes.
+  /// Use this inside event handlers (onPressed, etc.) or callbacks to avoid unnecessary rebuilds.
+  static T read<T extends ChangeNotifier>(BuildContext context) {
+    final element =
+        context.getElementForInheritedWidgetOfExactType<MinInherited<T>>();
+    assert(element != null, 'No MinProvider<$T> found in context.');
+    final inherited = element!.widget as MinInherited<T>;
+    return inherited.notifier!;
+  }
 
   @override
   State<MinProvider<T>> createState() => _MinProviderState<T>();
@@ -40,16 +65,12 @@ class _MinProviderState<T extends ChangeNotifier>
   @override
   void initState() {
     super.initState();
-    // 1. Instantiates the your 'Notifier' (viewModel, controller)
-    // ChangeNotifier, MinNotifier, ValueNotifier and anothers flutter listenables
     notifier = widget.create();
 
-    // 2. Triggers the specialized initialization ONLY if it's a MinNotifier
     if (notifier is MinNotifier) {
       (notifier as MinNotifier).onInit();
     }
 
-    // 3. Waits for the first frame to safely trigger onReady for MinNotifiers
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && notifier is MinNotifier) {
         (notifier as MinNotifier).onReady();
@@ -59,14 +80,12 @@ class _MinProviderState<T extends ChangeNotifier>
 
   @override
   void dispose() {
-    // 4. Ensures the instance is cleaned up from RAM when popped off the tree
     notifier.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Passes down the instance using the generic-bounded InheritedNotifier channel
     return MinInherited<T>(
       notifier: notifier,
       child: widget.child,

@@ -1,29 +1,40 @@
-import 'package:example/app/data/models/user.dart';
+import 'package:example/app/data/services/auth/service.dart';
+import 'package:example/app/data/services/setup_locator.dart';
 import 'package:example/app/modules/login/repository.dart';
 import 'package:minimals_state_manager/app/state/min_notifier.dart';
 
 class LoginController extends MinNotifier {
   final LoginRepository repository = LoginRepository();
-  final user = User();
+  final authService = min<AuthService>();
   bool loading = false;
 
-  login() async {
-    update(user, (u) => u.name = 'Kauê');
+  @override
+  onInit() {
+    print('LoginController init');
+    super.onInit();
+  }
 
+  @override
+  onReady() {
+    print('LoginController ready');
+    super.onReady();
+  }
+
+  login() async {
     loading = true;
     notifyListeners();
-    await Future.delayed(
-      const Duration(seconds: 2),
-      () => loading = false,
-    );
+    await authService.login();
+    loading = false;
     notifyListeners();
     return true;
   }
 
-  onChangedName(_) => update(user, (u) => u.name = _);
+  onChangedName(_) => update(authService.user, (u) => u.name = _);
   validateName(_) =>
-      user.name == null || user.name!.length < 2 ? 'Insert valid name' : null;
-  onSaveName(_) => update(user, (u) => u.name = _);
+      authService.user.name == null || authService.user.name!.length < 2
+          ? 'Insert valid name'
+          : null;
+  onSaveName(_) => update(authService.user, (u) => u.name = _);
 
   @override
   void dispose() {

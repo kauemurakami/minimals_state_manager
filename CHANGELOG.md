@@ -1,3 +1,16 @@
+## 2.0.0
+- Refact all package.
+- Refact `MinController` to `MinNotifier` with a minimal code.
+- Option to use/extends `ChangeNotifier` instead of `MinNotifier`, without using `ValueNotifier`, since all reactivity is now based on triggering `notifyListeners` from the chosen Notifier—either `ChangeNotifier` or `MinNotifier`.
+- Remove `ValueNotifier` implements types (`.minx` extension).
+- Use native and custom types/class now directly.
+- Refactor `MinProvider` and `MinMultiProvider` modes, now accept any notifier based in `ChangeNotifier` ( alternative to the package `MinNotifier`, to use in your controller/viewModel/notifier).
+- Add `onInit` and `onReady` in `MinNotifier` from `MinProvider` and `MinMultiProvider` widget `states`
+- Create Selector widget (`$`) to listen specific values of the your Notifier, `ChangeNotifier` or `MinNotifier` based in `notifyListeners`.
+- Selector widget `$` listen all types, primitive types, complex types, lists and combinations using `Records` (faster) see example.
+- Refact `MinService` to avoid leaving junk in memory (alternative to the `get_it`).
+- Refact package structure
+
 ## 1.0.6
  - Adding MinService again
 

@@ -1,5 +1,4 @@
 import 'package:example/app/data/models/item.dart';
-import 'package:example/app/modules/widgets/build_banner.dart';
 import 'package:example/routes/delegate_imports.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
@@ -37,7 +36,7 @@ class CartPage extends StatelessWidget {
                           height: 100.0,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(.5),
+                            color: Colors.grey[300],
                             borderRadius: const BorderRadius.all(
                               Radius.circular(6.0),
                             ),
@@ -51,20 +50,13 @@ class CartPage extends StatelessWidget {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Text('${items[index].name} - $index'),
-                                  Text('Type ${items[index].type}'),
-                                  Text('${items[index].value}'),
+                                  Text(items[index].type.name),
+                                  Text('R\$ ${items[index].value}'),
                                 ],
                               ),
                               IconButton(
                                 onPressed: () {
-                                  if (controller.removeItem(items[index])) {
-                                    ScaffoldMessenger.of(context)
-                                        .showMaterialBanner(
-                                      buildBanner(context,
-                                          message: 'Item removed from cart',
-                                          isRemoved: true),
-                                    );
-                                  }
+                                  controller.removeItem(items[index]);
                                 },
                                 icon: const Icon(
                                   Icons.remove,
@@ -81,7 +73,6 @@ class CartPage extends StatelessWidget {
             MaterialButton(
               color: Colors.red,
               onPressed: () {
-                ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
                 context.pop();
               },
               child: const Text('CLOSE'),

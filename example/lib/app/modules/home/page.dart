@@ -1,11 +1,11 @@
+import 'package:example/app/data/models/item.dart';
 import 'package:example/app/modules/cart/controller.dart';
 import 'package:example/app/modules/cart/page.dart';
 import 'package:example/app/modules/home/widgets/app_bar.dart';
 import 'package:example/app/modules/home/widgets/drawer.dart';
+import 'package:example/app/modules/home/widgets/fab.dart';
 import 'package:example/app/modules/home/widgets/list_items.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
-import 'package:minimals_state_manager/app/widgets/min_selector.dart';
 
 class HomePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -14,48 +14,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final controller = MinProvider.use<HomeController>(context);
-    final cartController = MinMultiProvider.read<CartController>(context);
     return Scaffold(
-      floatingActionButton: Stack(
-        children: [
-          FloatingActionButton(
-            onPressed: () => showBottomSheet(
-              enableDrag: true,
-              context: context,
-              builder: (context) => const CartPage(),
-            ),
-            backgroundColor: Colors.amber,
-            //  Navigator.pushNamed(context, Routes.CART),
-            child: const Icon(
-              Icons.shopping_cart_checkout_outlined,
-            ),
-          ),
-          $<CartController, int>(
-            notifier: cartController,
-            selector: (notifier) => notifier.items.length,
-            builder: (context, length) => length <= 0
-                ? const SizedBox.shrink()
-                : Positioned(
-                    right: .0,
-                    top: .0,
-                    child: Container(
-                      height: 20.0,
-                      width: 20.0,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.green),
-                      child: Center(
-                        child: Text(
-                          '$length',
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    )),
-          )
-        ],
-      ),
-      key: scaffoldKey,
+      backgroundColor: Colors.grey[200],
       resizeToAvoidBottomInset: false,
+      floatingActionButton: const FABWidget(),
+      key: scaffoldKey,
       appBar: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -64,7 +27,7 @@ class HomePage extends StatelessWidget {
           child: HomeAppBar(
             scaffoldKey: scaffoldKey,
           )),
-      endDrawer: const HomeDrawer(),
+      endDrawer: HomeDrawer(),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

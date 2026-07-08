@@ -1,3 +1,4 @@
+import 'package:example/app/data/enums/item_type.dart';
 import 'package:example/app/data/models/item.dart';
 import 'package:example/app/data/providers/api.dart';
 import 'package:example/app/modules/home/repository.dart';
@@ -10,7 +11,7 @@ class HomeController extends MinNotifier with WidgetsBindingObserver {
   TextEditingController textController = TextEditingController();
 
   List<Item> items = <Item>[];
-  int filter = 0;
+  ItemType filter = ItemType.EMPTY;
   bool openned = true;
 
   @override
@@ -26,13 +27,13 @@ class HomeController extends MinNotifier with WidgetsBindingObserver {
     print('home controller rendered');
   }
 
-  changeFilter(int type) {
-    type >= 1 && type <= 3 ? filter = type : filter = 0;
+  changeFilter(ItemType type) {
+    filter = type;
     notifyListeners();
     filterItems(type);
   }
 
-  filterItems(type) async {
+  filterItems(ItemType type) async {
     items = [];
     await getItems();
     items = items.where((item) => item.type == type).toList();
@@ -42,7 +43,7 @@ class HomeController extends MinNotifier with WidgetsBindingObserver {
   removeFilters() async {
     items = [];
     notifyListeners();
-    filter = 0;
+    filter = ItemType.EMPTY;
     await getItems();
   }
 
@@ -71,16 +72,6 @@ class HomeController extends MinNotifier with WidgetsBindingObserver {
         showAppBar();
       }
     });
-  }
-
-  hideBottomNav() {
-    openned = false;
-    notifyListeners();
-  }
-
-  showBottomNav() {
-    openned = true;
-    notifyListeners();
   }
 
   hideAppBar() {

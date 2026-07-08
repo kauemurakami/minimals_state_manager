@@ -1,14 +1,16 @@
+import 'package:example/app/data/services/auth/service.dart';
 import 'package:example/app/modules/home/controller.dart';
 import 'package:example/app/modules/home/widgets/filters.dart';
 import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
+import 'package:minimals_state_manager/app/state_manager/service/min_service.dart';
 import 'package:minimals_state_manager/app/widgets/min_selector.dart';
 
 class HomeAppBar extends StatelessWidget {
   final GlobalKey<ScaffoldState>? scaffoldKey;
 
-  const HomeAppBar({required this.scaffoldKey, super.key});
-
+  HomeAppBar({required this.scaffoldKey, super.key});
+  final AuthService _authService = MinService.instance.get<AuthService>();
   @override
   Widget build(BuildContext context) {
     final controller = context.read<HomeController>();
@@ -52,12 +54,17 @@ class HomeAppBar extends StatelessWidget {
                   ),
                 ),
                 Flexible(
+                    child: Text(
+                  'Olá ${_authService.user.name!}',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                )),
+                Flexible(
                     child: InkWell(
                   child: const Icon(Icons.filter_list),
-                  onTap: () => showBottomSheet(
+                  onTap: () => showModalBottomSheet(
                     enableDrag: true,
                     context: context,
-                    builder: (context) => const BSFilters(),
+                    builder: (context) => BSFilters(controller: controller),
                   ),
                 )),
                 Flexible(

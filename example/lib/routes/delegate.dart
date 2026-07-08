@@ -80,7 +80,7 @@ abstract class GoRootDelegate {
                 key: state.pageKey,
                 child: MinProvider<ProfileController>(
                   create: () => ProfileController(),
-                  child: const ProfilePage(),
+                  child: ProfilePage(),
                 ),
               );
             },

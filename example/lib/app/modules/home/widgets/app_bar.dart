@@ -2,9 +2,9 @@ import 'package:example/app/data/services/auth/service.dart';
 import 'package:example/app/modules/home/controller.dart';
 import 'package:example/app/modules/home/widgets/filters.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
-import 'package:minimals_state_manager/app/state_manager/service/min_service.dart';
-import 'package:minimals_state_manager/app/widgets/min_selector.dart';
+import 'package:minimals_state_manager/min_extensions.dart';
+import 'package:minimals_state_manager/min_services.dart';
+import 'package:minimals_state_manager/min_widgets.dart';
 
 class HomeAppBar extends StatelessWidget {
   final GlobalKey<ScaffoldState>? scaffoldKey;

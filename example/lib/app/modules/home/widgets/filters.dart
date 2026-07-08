@@ -1,7 +1,7 @@
 import 'package:example/app/data/enums/item_type.dart';
 import 'package:example/app/modules/home/controller.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/widgets/min_selector.dart';
+import 'package:minimals_state_manager/min_widgets.dart';
 
 class BSFilters extends StatelessWidget {
   const BSFilters({super.key, required this.controller});

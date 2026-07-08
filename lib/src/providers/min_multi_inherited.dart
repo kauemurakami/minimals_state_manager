@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:minimals_state_manager/app/state/min_notifier.dart';
+import 'package:minimals_state_manager/src/state/min_notifier.dart';
 
 /// The native flat bridge that propagates a collection of [MinNotifier] instances down the tree.
 ///

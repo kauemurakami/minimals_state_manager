@@ -33,6 +33,11 @@ import 'package:flutter/foundation.dart';
 /// }
 /// ```
 abstract class MinNotifier extends ChangeNotifier {
+  bool _isDisposed = false;
+
+  /// Retorna se o controller já foi encerrado pelo framework
+  bool get isDisposed => _isDisposed;
+
   /// Triggered automatically as soon as this controller instance is instantiated in memory.
   ///
   /// Use this hook to perform early initializations, fire immediate API calls, or register
@@ -63,5 +68,17 @@ abstract class MinNotifier extends ChangeNotifier {
   void update<T>(T target, void Function(T) action) {
     action(target);
     notifyListeners();
+  }
+
+  @override
+  void notifyListeners() {
+    if (_isDisposed) return;
+    super.notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
   }
 }

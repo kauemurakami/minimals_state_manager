@@ -1,8 +1,8 @@
 import 'package:example/app/modules/login/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:minimals_state_manager/app/widgets/min_selector.dart';
-import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
+import 'package:minimals_state_manager/min_extensions.dart';
+import 'package:minimals_state_manager/min_widgets.dart';
 
 class LoginPage extends StatelessWidget {
 // class LoginPage extends MinWidget<LoginController> {
@@ -14,7 +14,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.read<LoginController>();
     return Scaffold(
-      appBar: AppBar(title: Text('LoginPage')),
+      appBar: AppBar(title: const Text('LoginPage')),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

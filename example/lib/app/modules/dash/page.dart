@@ -2,9 +2,9 @@ import 'package:example/app/modules/dash/controller.dart';
 import 'package:example/app/modules/home/controller.dart';
 import 'package:example/app/modules/home/page.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
-import 'package:minimals_state_manager/app/provider/min_provider.dart';
-import 'package:minimals_state_manager/app/widgets/min_selector.dart';
+import 'package:minimals_state_manager/min_extensions.dart';
+import 'package:minimals_state_manager/min_providers.dart';
+import 'package:minimals_state_manager/min_widgets.dart';
 
 class DashPage extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

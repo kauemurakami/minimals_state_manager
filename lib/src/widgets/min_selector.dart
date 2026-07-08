@@ -46,9 +46,9 @@ import 'package:collection/collection.dart';
 /// )
 ///
 /// Use only notifier to listen any changes:
-/// $<MyNotifier, MyNotifier>(
+/// $<MyNotifier, (MyNotifier)>(
 ///   notifier: notifier,
-///   selector: (notifier) => notifier,
+///   selector: (notifier) => (notifier),
 ///   builder: (context, notifier) => Text(notifier.user.name)
 /// )
 ///

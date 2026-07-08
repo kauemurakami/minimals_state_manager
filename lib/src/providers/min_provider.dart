@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:minimals_state_manager/app/state/min_notifier.dart';
-import 'package:minimals_state_manager/app/widgets/inherited_widgets/min_inherited.dart';
+import 'package:minimals_state_manager/src/state/min_notifier.dart';
+import 'package:minimals_state_manager/src/providers/min_inherited.dart';
 
 /// A standalone provider widget that manages the lifecycle (`onInit`, `onReady`, and `dispose`)
 /// of a state manager instance.

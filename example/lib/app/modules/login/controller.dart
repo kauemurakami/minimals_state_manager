@@ -1,7 +1,7 @@
 import 'package:example/app/data/services/auth/service.dart';
 import 'package:example/app/data/services/setup_locator.dart';
 import 'package:example/app/modules/login/repository.dart';
-import 'package:minimals_state_manager/app/state/min_notifier.dart';
+import 'package:minimals_state_manager/min_notifiers.dart';
 
 class LoginController extends MinNotifier {
   final LoginRepository repository = LoginRepository();

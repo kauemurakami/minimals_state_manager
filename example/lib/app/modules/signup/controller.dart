@@ -1,4 +1,4 @@
-import 'package:minimals_state_manager/app/state/min_notifier.dart';
+import 'package:minimals_state_manager/min_notifiers.dart';
 
 class SignupController extends MinNotifier {
   @override

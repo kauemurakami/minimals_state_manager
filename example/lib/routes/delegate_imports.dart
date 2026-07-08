@@ -17,5 +17,4 @@ export 'package:example/app/modules/signup/controller.dart';
 export 'package:example/app/modules/signup/page.dart';
 export 'package:flutter/widgets.dart';
 export 'package:go_router/go_router.dart';
-export 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
-export 'package:minimals_state_manager/app/provider/min_provider.dart';
+export 'package:minimals_state_manager/min_providers.dart';

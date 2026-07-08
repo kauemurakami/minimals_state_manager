@@ -1,8 +1,8 @@
 import 'package:example/app/data/models/item.dart';
 import 'package:example/routes/delegate_imports.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
-import 'package:minimals_state_manager/app/widgets/min_selector.dart';
+import 'package:minimals_state_manager/min_extensions.dart';
+import 'package:minimals_state_manager/min_widgets.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});

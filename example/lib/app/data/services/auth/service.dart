@@ -1,5 +1,5 @@
 import 'package:example/app/data/models/user.dart';
-import 'package:minimals_state_manager/app/state/min_notifier.dart';
+import 'package:minimals_state_manager/min_notifiers.dart';
 
 class AuthService extends MinNotifier {
   final user = User();

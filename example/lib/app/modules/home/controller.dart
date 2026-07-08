@@ -4,7 +4,7 @@ import 'package:example/app/data/providers/api.dart';
 import 'package:example/app/modules/home/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:minimals_state_manager/app/state/min_notifier.dart';
+import 'package:minimals_state_manager/min_notifiers.dart';
 
 class HomeController extends MinNotifier with WidgetsBindingObserver {
   final repository = HomeRepository(FakeApi());

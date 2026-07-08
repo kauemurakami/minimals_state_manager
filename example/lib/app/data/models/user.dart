@@ -1,6 +1,6 @@
-import 'package:minimals_state_manager/app/state/min_props.dart';
+import 'package:minimals_state_manager/minimals_state_manager.dart';
 
-class User extends MinModel {
+class User extends MinProps {
   User({this.email, this.name});
   String? name, email;
 

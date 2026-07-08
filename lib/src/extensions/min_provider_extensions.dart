@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:minimals_state_manager/app/widgets/inherited_widgets/min_inherited.dart';
-import 'package:minimals_state_manager/app/widgets/inherited_widgets/min_multi_inherited.dart';
+import 'package:minimals_state_manager/src/providers/min_inherited.dart';
+import 'package:minimals_state_manager/src/providers/min_multi_inherited.dart';
 
 /// Context extensions to easily retrieve state managers from the widget tree.
 ///

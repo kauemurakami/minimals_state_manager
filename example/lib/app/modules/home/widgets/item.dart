@@ -2,9 +2,9 @@ import 'package:example/app/data/models/item.dart';
 import 'package:example/app/modules/cart/controller.dart';
 import 'package:example/app/modules/home/controller.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/app/extensions/min_provider_extensions.dart';
-import 'package:minimals_state_manager/app/provider/min_multi_provider.dart';
-import 'package:minimals_state_manager/app/widgets/min_selector.dart';
+import 'package:minimals_state_manager/min_extensions.dart';
+import 'package:minimals_state_manager/min_providers.dart';
+import 'package:minimals_state_manager/min_widgets.dart';
 
 class ItemWidget extends Container {
   ItemWidget(this.index, {super.key});

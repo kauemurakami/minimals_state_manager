@@ -64,6 +64,7 @@ abstract class GoRootDelegate {
                 from: SlideFrom.left,
                 key: state.pageKey,
                 child: MinProvider<HomeController>(
+                  key: ValueKey('min_provider_home_${state.pageKey}'),
                   create: () => HomeController(),
                   child: HomePage(),
                 ),
@@ -88,9 +89,6 @@ abstract class GoRootDelegate {
           GoRoute(
             name: 'other',
             path: '/other',
-            // name: DashRoutes.other.name,
-            // path: DashRoutes.other.path,
-
             pageBuilder: (BuildContext context, GoRouterState state) {
               print(' ${state.fullPath}');
               return CustomSlideTransition(

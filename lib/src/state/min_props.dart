@@ -1,10 +1,10 @@
-abstract class MinModel {
+abstract class MinProps {
   Record get props;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MinModel &&
+      other is MinProps &&
           runtimeType == other.runtimeType &&
           props == other.props;
 

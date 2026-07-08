@@ -10,6 +10,8 @@
 - Selector widget `$` listen all types, primitive types, complex types, lists and combinations using `Records` (faster) see example.
 - Refact `MinService` to avoid leaving junk in memory (alternative to the `get_it`).
 - Refact package structure
+- Add methods `onInit` and `onReady` to use in `MinNotifier` class
+- Add check dispose to never call methods of `MinNotifier` if notifier is disposed.
 
 ## 1.0.6
  - Adding MinService again

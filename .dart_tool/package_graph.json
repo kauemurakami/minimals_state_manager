@@ -11,8 +11,30 @@
         "flutter"
       ],
       "devDependencies": [
+        "benchmark_harness",
+        "flutter_bloc",
         "flutter_lints",
-        "flutter_test"
+        "flutter_test",
+        "riverpod"
+      ]
+    },
+    {
+      "name": "flutter_bloc",
+      "version": "9.1.1",
+      "dependencies": [
+        "bloc",
+        "flutter",
+        "provider"
+      ]
+    },
+    {
+      "name": "riverpod",
+      "version": "2.6.1",
+      "dependencies": [
+        "collection",
+        "meta",
+        "stack_trace",
+        "state_notifier"
       ]
     },
     {
@@ -58,6 +80,41 @@
       ]
     },
     {
+      "name": "provider",
+      "version": "6.1.5+1",
+      "dependencies": [
+        "collection",
+        "flutter",
+        "nested"
+      ]
+    },
+    {
+      "name": "bloc",
+      "version": "9.2.1",
+      "dependencies": [
+        "meta"
+      ]
+    },
+    {
+      "name": "state_notifier",
+      "version": "1.0.0",
+      "dependencies": [
+        "meta"
+      ]
+    },
+    {
+      "name": "stack_trace",
+      "version": "1.12.1",
+      "dependencies": [
+        "path"
+      ]
+    },
+    {
+      "name": "meta",
+      "version": "1.18.0",
+      "dependencies": []
+    },
+    {
       "name": "lints",
       "version": "2.1.1",
       "dependencies": []
@@ -68,11 +125,6 @@
       "dependencies": [
         "async"
       ]
-    },
-    {
-      "name": "meta",
-      "version": "1.18.0",
-      "dependencies": []
     },
     {
       "name": "leak_tracker_flutter_testing",
@@ -89,13 +141,6 @@
       "name": "vector_math",
       "version": "2.2.0",
       "dependencies": []
-    },
-    {
-      "name": "stack_trace",
-      "version": "1.12.1",
-      "dependencies": [
-        "path"
-      ]
     },
     {
       "name": "clock",
@@ -159,6 +204,13 @@
       "dependencies": []
     },
     {
+      "name": "nested",
+      "version": "1.0.0",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
       "name": "async",
       "version": "2.11.0",
       "dependencies": [
@@ -218,6 +270,18 @@
     {
       "name": "vm_service",
       "version": "13.0.0",
+      "dependencies": []
+    },
+    {
+      "name": "benchmark_harness",
+      "version": "2.4.0",
+      "dependencies": [
+        "args"
+      ]
+    },
+    {
+      "name": "args",
+      "version": "2.7.0",
       "dependencies": []
     }
   ],

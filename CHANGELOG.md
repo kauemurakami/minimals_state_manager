@@ -4,6 +4,7 @@
 - Compare with native flutter, riverpod, bloc, provider.
 - Change Readme to add irectly link to show benchmarks.
 - Add new simple example to pubdev
+- Create package tests
 
 ## 2.0.0
 - Refact all package.

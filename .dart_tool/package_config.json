@@ -2,10 +2,28 @@
   "configVersion": 2,
   "packages": [
     {
+      "name": "args",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/args-2.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "async",
       "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/async-2.11.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
+    },
+    {
+      "name": "benchmark_harness",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/benchmark_harness-2.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.10"
+    },
+    {
+      "name": "bloc",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/bloc-9.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
     },
     {
       "name": "boolean_selector",
@@ -44,16 +62,34 @@
       "languageVersion": "3.10"
     },
     {
+      "name": "flutter_bloc",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/flutter_bloc-9.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
       "name": "flutter_lints",
       "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/flutter_lints-2.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
+      "name": "flutter_riverpod",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/flutter_riverpod-2.6.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/user/Documents/development/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "3.10"
+    },
+    {
+      "name": "get_it",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/get_it-9.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "leak_tracker",
@@ -98,10 +134,28 @@
       "languageVersion": "3.5"
     },
     {
+      "name": "nested",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/nested-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "path",
       "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/path-1.9.1",
       "packageUri": "lib/",
       "languageVersion": "3.4"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/provider-6.1.5+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "riverpod",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/riverpod-2.6.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "sky_engine",
@@ -120,6 +174,12 @@
       "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/stack_trace-1.12.1",
       "packageUri": "lib/",
       "languageVersion": "3.4"
+    },
+    {
+      "name": "state_notifier",
+      "rootUri": "file:///Users/user/.pub-cache/hosted/pub.dev/state_notifier-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "stream_channel",

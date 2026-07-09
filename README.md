@@ -1,6 +1,7 @@
 [![Star on GitHub](https://img.shields.io/github/stars/kauemurakami/minimals_state_manager.svg?style=flat&logo=github&colorB=deeppink&label=stars)](https://github.com/kauemurakami/minimals_state_manager)
+[![Benchmarks](https://img.shields.io/badge/Performance-Benchmarks-blueviolet?style=flat&logo=dart&logoColor=white)](./BENCHMARKS.md)
 
-  # Minimals State Manager
+# Minimals State Manager
 
 A lightweight, high-performance, and boilerplate-free state management and dependency injection solution for Flutter.
 
@@ -138,10 +139,27 @@ class HomeController extends MinNotifier {
     notifyListeners();
   }
 
+  ...
+
   @override
   void dispose() {
     // Teardown local controller references or native subscriptions cleanly here
     super.dispose();
+  }
+}
+```
+⚡ Smart In-Place Updates (The update utility)
+When managing complex models, deep nested entities, or mutable data structures, writing manual boilerplate sequences just to trigger an update is tedious. `MinNotifier` introduces the `update` helper, which automatically runs your mutations and systematically fires the notification layer for you in a single, clean expression.
+```dart
+class ProfileController extends MinNotifier {
+  final user = User(name: 'Alex', age: 25);
+
+  void updateUserProfile() {
+    // Mutates internal properties and automatically triggers a UI rebuild!
+    update(user, (p) {
+      p.name = 'John Doe';
+      p.age = 30;
+    });
   }
 }
 ```
@@ -174,24 +192,26 @@ The $ component serves as a precise layout gatekeeper. It hooks into an active c
 $<HomeController, bool>(
   notifier: viewModel
   selector: (viewModel) => viewModel.loading,
-  builder: (context, isSearching) {
+  builder: (context, loading) {
     return loading ? const CircularProgressIndicator() : const TitleHeader();
   },
 )
 ```
 
-#### Grouping Values via Native Dart Records
+#### Grouping Values via Native Dart Records (Ultra fast)
 ```dart
-$<HomeController, (String name, bool loading)>(
+$<HomeNotifier, (String name, bool loading)>(
   notifier: notifier,
-  selector: (notifier) => (name: notifier.user.name, notifier.email),
+  selector: (notifier) => (name: notifier.user.name, loading: notifier.loading),
   builder: (context, data) => data.loading ? CircularProgressIndicator() : Text(data.name);
 )
 ```
 
+
 #### Complex Structural Models via MinProps
 ```dart 
-$<HomeController, User>(
+$<HomeStore, User>(
+  notifier: store,
   selector: (store) => store.user.props,
   builder: (context, user) {
     return Text('Welcome back, ${user.name}');
@@ -203,13 +223,14 @@ $<HomeController, User>(
 
 ```dart 
 $<HomeController, List<Item>>(
+  notifier: controller,
   selector: (controller) => controller.items,
   builder: (context, items) => items.isEmpty 
     ? Text('No have items') 
     : ListView.builder(
       itemCount: items.length,
       .....
-      itemBuilder: (context,index) => Tenxt('${items[index].value}')
+      itemBuilder: (context,index) => Text('${items[index].value}')
     );
 )
 ```
@@ -217,6 +238,7 @@ $<HomeController, List<Item>>(
 #### Listen all changes in your Notifier
 ```dart
 $<HomeViewModel, (HomeViewModel viewModel)>(
+  notifier: viewModel,
   selector: (viewModel) => (viewModel: viewModel),
   builder: (context, viewModel) {
     return Text('Welcome back, ${viewModel.user.name}');
@@ -235,4 +257,6 @@ Or import full package
 ```dart
 import 'package:minimals_state_manager/minimals_state_manager.dart';
 ```
+
+### Benchmarks
 

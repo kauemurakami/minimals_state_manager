@@ -1,7 +1,7 @@
 name: minimals_state_manager
 description: "A minimalist study project for state management, lifecycle, and observables in Flutter, but not recommended for production due to alpha status."
 
-version: 2.0.0
+version: 2.0.1
 
 executables:
   min: min
@@ -31,6 +31,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  benchmark_harness:
+  riverpod:
+  flutter_riverpod: 
+  flutter_bloc:
+  get_it:
+  provider:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

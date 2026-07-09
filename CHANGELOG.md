@@ -1,3 +1,9 @@
+# 2.0.1
+- Add tests Micro Benchmarks with Harness
+- Create BENCHMARKS.md to show results of micro benchmarks
+- Compare with native flutter, riverpod, bloc, provider.
+- Change Readme to add irectly link to show benchmarks.
+
 ## 2.0.0
 - Refact all package.
 - Refact `MinController` to `MinNotifier` with a minimal code.

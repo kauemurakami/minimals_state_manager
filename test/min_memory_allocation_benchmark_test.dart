@@ -1,3 +1,23 @@
+/// # State Manager Lifecycle and Allocation Stress Benchmark
+///
+/// This benchmark measures the time and computational overhead required by each state management
+/// solution to handle full resource lifecycles (instantiation, registration, mutation, and destruction).
+///
+/// ## What this test simulates:
+/// A fast-paced navigation or runtime flow where an ephemeral controller/state is created,
+/// has a UI listener registered, performs a data mutation, destroys the listener, and
+/// disposes of itself completely. This mimics heavy interactions like scrolling infinitely
+/// through complex lists or opening/closing pages rapidly.
+///
+/// ## Reading the Metrics:
+/// * **Target Metric:** Execution runtime in microseconds (`us`) and milliseconds (`ms`).
+/// * **Lower Values (BETTER):** Indicates high efficiency, a tiny memory footprint, and low
+///   abstraction cost. The engine creates and disposes of resources with minimal pressure on
+///   the Dart Garbage Collector (GC), avoiding runtime page stutters (jank) and lowering battery drain.
+/// * **Higher Values (WORSE):** Indicates high operational overhead. Allocating internal asynchronous
+///   streams, subscription structures, or dependency graphs blocks CPU threads and results in aggressive
+///   GC spikes.
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
@@ -72,10 +92,8 @@ class ProviderMemoryHarness extends BenchmarkBase {
 
   @override
   void run() {
-    // Simulates the internal instantiation and disposal cycle that Provider triggers
     final notifier = NativeMemoryNotifier();
-    final providerElement =
-        pkg_provider.ChangeNotifierProvider<NativeMemoryNotifier>(
+    pkg_provider.ChangeNotifierProvider<NativeMemoryNotifier>(
       create: (_) => notifier,
       child: const SizedBox.shrink(),
     );
@@ -86,7 +104,6 @@ class ProviderMemoryHarness extends BenchmarkBase {
     notifier.notifyListeners();
 
     notifier.removeListener(listener);
-    // Explicitly disposing the controller as Provider's delegate would do when unmounting
     notifier.dispose();
   }
 }
@@ -121,17 +138,29 @@ class RiverpodMemoryHarness extends BenchmarkBase {
   }
 }
 
-// --- 3. EXECUTION PATH ---
+// --- 3. EXECUTION PATH WITH AUTO-CONVERSION ---
 void main() {
   test('State Manager Lifecycle and Allocation Stress Benchmark', () {
     print('\n=== STARTING LIFECYCLE ALLOCATION STRESS BENCHMARKS ===');
-    print('>> Tracking microsecond runtime per creation/destruction cycle:');
+    print(
+        '>> Tracking microsecond/ millisecond runtime per creation/destruction cycle:');
 
-    NativeChangeNotifierHarness().report();
-    MinimalsMemoryHarness().report();
-    ProviderMemoryHarness().report();
-    BlocMemoryHarness().report();
-    RiverpodMemoryHarness().report();
+    final nativeUs = NativeChangeNotifierHarness().measure();
+    final minimalsUs = MinimalsMemoryHarness().measure();
+    final providerUs = ProviderMemoryHarness().measure();
+    final blocUs = BlocMemoryHarness().measure();
+    final riverpodUs = RiverpodMemoryHarness().measure();
+
+    void printMetric(String name, double us) {
+      double ms = us / 1000.0;
+      print('$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
+    }
+
+    printMetric('Flutter Native (ChangeNotifier)', nativeUs);
+    printMetric('Minimals Lifecycle Stress', minimalsUs);
+    printMetric('Provider (ChangeNotifierProvider)', providerUs);
+    printMetric('BLoC Lifecycle Stress', blocUs);
+    printMetric('Riverpod Lifecycle Stress', riverpodUs);
 
     print('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
   });

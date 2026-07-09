@@ -1,3 +1,19 @@
+/// # UI Rebuild Isolation and Scope Precision Benchmark
+///
+/// This benchmark measures the ability of each state management solution to achieve
+/// **Perfect Rebuild Isolation** under a heavy UI rendering stress loop.
+///
+/// ## What this test simulates:
+/// A high-stress interactive flow where a reactive data field is updated 1,000 times
+/// back-to-back. The targeted UI component must react and rebuild exactly once per
+/// mutation frame, without over-rendering (wasteful rebuilds) and without under-rendering
+/// (skipping frames or lagging updates).
+///
+/// ## Reading the Metrics:
+/// * **Target Metric:** Exactly **1001 Rebuilds** ($1 \text{ initial build} + 1000 \text{ state updates}$).
+/// * **Greater than 1001 (BAD):** Indicates ghost rebuilds, lack of precision, or leaky state scopes, wasting CPU cycles on unnecessary visual redraws.
+/// * **Less than 1001 (BAD for synchronous rendering):** Indicates the state manager skipped frames or suffered from lag/throttling, dropping asynchronous updates on high-frequency changes.
+/// * **Exactly 1001 (PERFECT):** Indicates ideal atomic UI isolation. The rendering thread is perfectly synchronized with the data engine.
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -49,19 +65,24 @@ final myRiverpodProvider =
 // --- 2. BENCHMARK WIDGET TESTS ---
 
 void main() {
-  // Counters to track the exact number of build executions
   int minimalsBuildCount = 0;
   int blocBuildCount = 0;
   int riverpodBuildCount = 0;
+  int nativeSetStateBuildCount = 0;
 
   setUp(() {
     minimalsBuildCount = 0;
     blocBuildCount = 0;
     riverpodBuildCount = 0;
+    nativeSetStateBuildCount = 0;
   });
 
   group('UI Rebuild Isolation Benchmarks', () {
-    // ==================== MINIMALS SELECOR ($) TEST ====================
+    print('\n=== STARTING UI REBUILD ISOLATION BENCHMARKS ===');
+    print(
+        '>> Checking frame precision (Ideal target is exactly 1001 rebuilds):');
+
+    // ==================== MINIMALS SELECTOR ($) TEST ====================
     testWidgets('Minimals selector `\$` rebuild isolation test',
         (WidgetTester tester) async {
       final controller = MyMinNotifier();
@@ -71,10 +92,9 @@ void main() {
           home: Scaffold(
             body: $<MyMinNotifier, int>(
               notifier: controller,
-              selector: (ctl) =>
-                  ctl.counter, // Selecting only the counter integer
+              selector: (ctl) => ctl.counter,
               builder: (context, counter) {
-                minimalsBuildCount++; // Tracking build trigger
+                minimalsBuildCount++;
                 return Text('Counter: $counter');
               },
             ),
@@ -82,15 +102,13 @@ void main() {
         ),
       );
 
-      // Simulate 1000 fast state updates
       for (int i = 0; i < 1000; i++) {
         controller.increment();
-        await tester.pump(); // Triggers microtask layout pipeline
+        await tester.pump();
       }
 
-      print('-> Minimals Selector (\$) Total Rebuilds: $minimalsBuildCount');
-      expect(
-          minimalsBuildCount, equals(1001)); // 1 initial build + 1000 updates
+      print('- Minimals Selector (\$) Total Rebuilds: $minimalsBuildCount');
+      expect(minimalsBuildCount, equals(1001));
     });
 
     // ==================== BLOC BUILDER TEST ====================
@@ -117,18 +135,14 @@ void main() {
 
       for (int i = 0; i < 1000; i++) {
         cubit.increment();
-        // Usar pump(Duration.zero) força a liberação imediata da fila de microtasks do BLoC
         await tester.pump(Duration.zero);
       }
 
-      print('-> BLoC BlocBuilder Total Rebuilds: $blocBuildCount');
-      expect(
-          blocBuildCount, equals(1001)); // Now it will correctly register 1001
+      print('- BLoC BlocBuilder Total Rebuilds: $blocBuildCount ');
+      expect(blocBuildCount, equals(1001));
     });
 
     // ==================== FLUTTER NATIVE (setState) TEST ====================
-    int nativeSetStateBuildCount = 0;
-
     testWidgets('Flutter Native setState rebuild test',
         (WidgetTester tester) async {
       await tester.pumpWidget(
@@ -138,10 +152,7 @@ void main() {
               builder: (BuildContext context, StateSetter setStateCustom) {
                 nativeSetStateBuildCount++;
 
-                // We simulate an interactive action that triggers setState inside the tree
-                // In a real app, this would be a button tap or internal state mutation
                 if (nativeSetStateBuildCount <= 1000) {
-                  // Schedules the next frame update immediately to simulate 1000 sequential builds
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     setStateCustom(() {});
                   });
@@ -154,15 +165,13 @@ void main() {
         ),
       );
 
-      // Pump the loop to process the scheduled post-frame callbacks up to 1000 iterations
       for (int i = 0; i < 1000; i++) {
         await tester.pump();
       }
 
       print(
-          '-> Flutter Native setState Total Rebuilds: $nativeSetStateBuildCount');
-      expect(nativeSetStateBuildCount,
-          equals(1001)); // 1 initial build + 1000 state mutations
+          '- Flutter Native setState Total Rebuilds: $nativeSetStateBuildCount');
+      expect(nativeSetStateBuildCount, equals(1001));
     });
 
     // ==================== RIVERPOD CONSUMER TEST ====================
@@ -174,7 +183,6 @@ void main() {
             home: Scaffold(
               body: Consumer(
                 builder: (context, ref, child) {
-                  // Selecting only the counter property from the global state object
                   final counter =
                       ref.watch(myRiverpodProvider.select((s) => s.counter));
                   riverpodBuildCount++;
@@ -193,8 +201,10 @@ void main() {
         await tester.pump();
       }
 
-      print('-> Riverpod Consumer Total Rebuilds: $riverpodBuildCount');
+      print('- Riverpod Consumer Total Rebuilds: $riverpodBuildCount ');
       expect(riverpodBuildCount, equals(1001));
+
+      print('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
     });
   });
 }

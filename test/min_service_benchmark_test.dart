@@ -1,3 +1,23 @@
+/// # Dependency Injection and Service Locator Benchmark
+///
+/// This benchmark isolates and measures the performance difference between two main dependency
+/// injection (DI) strategies: Lazy Singletons and Ready Singletons, comparing Minimals (`MinService`)
+/// directly against `GetIt`.
+///
+/// ## Test Architecture:
+/// 1. **Lazy Singletons:** Evaluates lookup efficiency when dependencies are instantiated only
+///    on their first request via factory definitions. This tracks internal conditional overhead
+///    and lazy-evaluation structures.
+/// 2. **Ready Singletons:** Evaluates raw retrieval speed from memory maps for pre-allocated,
+///    already instantiated structures. This measures the pure reference-matching speed of the DI container.
+///
+/// ## Reading the Metrics:
+/// * **Target Metric:** Execution runtime in microseconds (`us`) and milliseconds (`ms`).
+/// * **Lower Values (BETTER):** Indicates a highly optimized map lookup pipeline with zero redundant
+///   type checking. Fast lookups prevent architectural overhead from impacting core application flows,
+///   such as fetching Repositories, Blocs, or UseCases inside tight frame windows.
+/// * **Higher Values (WORSE):** Indicates algorithmic overhead or complex internal hashing strategies
+///   during registry index scans.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:get_it/get_it.dart';
@@ -130,22 +150,35 @@ class GetItReadyHarness extends BenchmarkBase {
   }
 }
 
-// --- 4. EXECUTION PATH ---
+// --- 4. EXECUTION PATH WITH AUTO-CONVERSION ---
 void main() {
   test('Dependency Injection / Service Locator Benchmark', () {
     print('\n=== STARTING SERVICE LOCATOR BENCHMARKS ===');
 
-    // Test Category 1: Lazy Singletons (Instantiated on first call)
-    print('\n>> Testing Lazy Singleton Retrieval Performance:');
-    GetItLazyHarness().report();
-    MinServiceLazyHarness().report();
+    void printMetric(String name, double us) {
+      double ms = us / 1000.0;
+      print('$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
+    }
 
-    print('------------------------------------------------');
+    // Test Category 1: Lazy Singletons (Instantiated on first call)
+    print(
+        '\n>> Testing Lazy Singleton Retrieval Performance (Lower is Better):');
+    final getItLazyUs = GetItLazyHarness().measure();
+    final minLazyUs = MinServiceLazyHarness().measure();
+
+    printMetric('GetIt - Lazy Singleton                 ', getItLazyUs);
+    printMetric('Minimals (MinService) - Lazy Singleton ', minLazyUs);
+
+    print('\n------------------------------------------------');
 
     // Test Category 2: Ready Singletons (Pre-allocated instances)
-    print('\n>> Testing Ready Singleton Retrieval Performance:');
-    GetItReadyHarness().report();
-    MinServiceReadyHarness().report();
+    print(
+        '\n>> Testing Ready Singleton Retrieval Performance (Lower is Better):');
+    final getItReadyUs = GetItReadyHarness().measure();
+    final minReadyUs = MinServiceReadyHarness().measure();
+
+    printMetric('GetIt - Ready Singleton                ', getItReadyUs);
+    printMetric('Minimals (MinService) - Ready Singleton', minReadyUs);
 
     print('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
   });

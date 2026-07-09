@@ -5,7 +5,7 @@
   "packages": [
     {
       "name": "minimals_state_manager",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "dependencies": [
         "collection",
         "flutter"
@@ -46,6 +46,17 @@
         "bloc",
         "flutter",
         "provider"
+      ]
+    },
+    {
+      "name": "flutter_riverpod",
+      "version": "2.6.1",
+      "dependencies": [
+        "collection",
+        "flutter",
+        "meta",
+        "riverpod",
+        "state_notifier"
       ]
     },
     {
@@ -295,17 +306,6 @@
       "name": "vm_service",
       "version": "13.0.0",
       "dependencies": []
-    },
-    {
-      "name": "flutter_riverpod",
-      "version": "2.6.1",
-      "dependencies": [
-        "collection",
-        "flutter",
-        "meta",
-        "riverpod",
-        "state_notifier"
-      ]
     }
   ],
   "configVersion": 1

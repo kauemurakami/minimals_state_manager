@@ -1,5 +1,5 @@
 [![Star on GitHub](https://img.shields.io/github/stars/kauemurakami/minimals_state_manager.svg?style=flat&logo=github&colorB=deeppink&label=stars)](https://github.com/kauemurakami/minimals_state_manager)
-
+[![Benchmarks](https://img.shields.io/badge/Performance-Benchmarks-blueviolet?style=flat&logo=dart&logoColor=white)](./BENCHMARKS.md)
   # Minimals State Manager
 
 A lightweight, high-performance, and boilerplate-free state management and dependency injection solution for Flutter.
@@ -138,6 +138,8 @@ class HomeController extends MinNotifier {
     notifyListeners();
   }
 
+  ...
+
   @override
   void dispose() {
     // Teardown local controller references or native subscriptions cleanly here
@@ -174,24 +176,25 @@ The $ component serves as a precise layout gatekeeper. It hooks into an active c
 $<HomeController, bool>(
   notifier: viewModel
   selector: (viewModel) => viewModel.loading,
-  builder: (context, isSearching) {
+  builder: (context, loading) {
     return loading ? const CircularProgressIndicator() : const TitleHeader();
   },
 )
 ```
 
-#### Grouping Values via Native Dart Records
+#### Grouping Values via Native Dart Records (Ultra fast)
 ```dart
-$<HomeController, (String name, bool loading)>(
+$<HomeNotifier, (String name, bool loading)>(
   notifier: notifier,
-  selector: (notifier) => (name: notifier.user.name, notifier.email),
+  selector: (notifier) => (name: notifier.user.name, loading: notifier.loading),
   builder: (context, data) => data.loading ? CircularProgressIndicator() : Text(data.name);
 )
 ```
 
+
 #### Complex Structural Models via MinProps
 ```dart 
-$<HomeController, User>(
+$<HomeStore, User>(
   selector: (store) => store.user.props,
   builder: (context, user) {
     return Text('Welcome back, ${user.name}');
@@ -209,7 +212,7 @@ $<HomeController, List<Item>>(
     : ListView.builder(
       itemCount: items.length,
       .....
-      itemBuilder: (context,index) => Tenxt('${items[index].value}')
+      itemBuilder: (context,index) => Text('${items[index].value}')
     );
 )
 ```
@@ -235,4 +238,6 @@ Or import full package
 ```dart
 import 'package:minimals_state_manager/minimals_state_manager.dart';
 ```
+
+### Benchmarks
 

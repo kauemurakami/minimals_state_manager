@@ -1,6 +1,7 @@
 [![Star on GitHub](https://img.shields.io/github/stars/kauemurakami/minimals_state_manager.svg?style=flat&logo=github&colorB=deeppink&label=stars)](https://github.com/kauemurakami/minimals_state_manager)
 [![Benchmarks](https://img.shields.io/badge/Performance-Benchmarks-blueviolet?style=flat&logo=dart&logoColor=white)](./BENCHMARKS.md)
-  # Minimals State Manager
+
+# Minimals State Manager
 
 A lightweight, high-performance, and boilerplate-free state management and dependency injection solution for Flutter.
 
@@ -144,6 +145,21 @@ class HomeController extends MinNotifier {
   void dispose() {
     // Teardown local controller references or native subscriptions cleanly here
     super.dispose();
+  }
+}
+```
+⚡ Smart In-Place Updates (The update utility)
+When managing complex models, deep nested entities, or mutable data structures, writing manual boilerplate sequences just to trigger an update is tedious. `MinNotifier` introduces the `update` helper, which automatically runs your mutations and systematically fires the notification layer for you in a single, clean expression.
+```dart
+class ProfileController extends MinNotifier {
+  final user = User(name: 'Alex', age: 25);
+
+  void updateUserProfile() {
+    // Mutates internal properties and automatically triggers a UI rebuild!
+    update(user, (p) {
+      p.name = 'John Doe';
+      p.age = 30;
+    });
   }
 }
 ```

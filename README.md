@@ -211,6 +211,7 @@ $<HomeNotifier, (String name, bool loading)>(
 #### Complex Structural Models via MinProps
 ```dart 
 $<HomeStore, User>(
+  notifier: store,
   selector: (store) => store.user.props,
   builder: (context, user) {
     return Text('Welcome back, ${user.name}');
@@ -222,6 +223,7 @@ $<HomeStore, User>(
 
 ```dart 
 $<HomeController, List<Item>>(
+  notifier: controller,
   selector: (controller) => controller.items,
   builder: (context, items) => items.isEmpty 
     ? Text('No have items') 
@@ -236,6 +238,7 @@ $<HomeController, List<Item>>(
 #### Listen all changes in your Notifier
 ```dart
 $<HomeViewModel, (HomeViewModel viewModel)>(
+  notifier: viewModel,
   selector: (viewModel) => (viewModel: viewModel),
   builder: (context, viewModel) {
     return Text('Welcome back, ${viewModel.user.name}');

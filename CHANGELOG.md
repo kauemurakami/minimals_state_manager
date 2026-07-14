@@ -1,3 +1,12 @@
+# 2.1.0
+- Fix min_selector ($) references use with records in docs.
+- Add github action to run tests and benchmarks
+- Add tests to MinSelector ($)
+- Fix MinSelector ($) to use pure complex models/class
+- Fix MinSelector ($) add possibility of listen the notifier pure
+- Add tests to all platforms
+- Change Documentation to reflect changes
+
 # 2.0.2
 - Fix pubdev description
 

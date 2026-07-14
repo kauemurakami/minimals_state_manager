@@ -1,7 +1,7 @@
 name: minimals_state_manager
 description: "A lightweight, high-performance, and boilerplate-free state management and dependency injection solution for Flutter."
 
-version: 2.0.2
+version: 2.1.0
 
 executables:
   min: min
@@ -21,11 +21,14 @@ dependencies:
     sdk: flutter
   collection: ^1.19.1
 
-# Adicionando suporte para Android e iOS
+# Suported platforms
 platforms:
   android:
   ios:
   web:
+  macos:
+  windows:
+  linux:
 
 dev_dependencies:
   flutter_test:

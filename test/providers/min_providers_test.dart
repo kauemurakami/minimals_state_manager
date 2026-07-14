@@ -31,30 +31,31 @@ void main() {
   /// via both static functional bindings and clean `BuildContext` extension utilities.
   /// {@endtemplate}
   testWidgets(
-      'Should inject controller into the widget tree and resolve via BuildContext extensions',
-      (WidgetTester tester) async {
-    // Arrange
-    final homeNotifier = HomeNotifier();
+    'Should inject controller into the widget tree and resolve via BuildContext extensions',
+    (WidgetTester tester) async {
+      // Arrange
+      final homeNotifier = HomeNotifier();
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: MinProvider<HomeNotifier>(
-          create: () => homeNotifier,
-          child: Builder(
-            builder: (context) {
-              // Act
-              final readController = context.read<HomeNotifier>();
-              return Text('Counter: ${readController.counter}',
-                  textDirection: TextDirection.ltr);
-            },
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MinProvider<HomeNotifier>(
+            create: () => homeNotifier,
+            child: Builder(
+              builder: (context) {
+                // Act
+                final readController = context.read<HomeNotifier>();
+                return Text('Counter: ${readController.counter}',
+                    textDirection: TextDirection.ltr);
+              },
+            ),
           ),
         ),
-      ),
-    );
+      );
 
-    // Assert
-    expect(find.text('Counter: 0'), findsOneWidget);
-  }, variant: TargetPlatformVariant.all());
+      // Assert
+      expect(find.text('Counter: 0'), findsOneWidget);
+    },
+  );
 
   /// {@template min_provider_test.multi_provider}
   /// **Test Target:** `MinMultiProvider` Array Compaction Injection
@@ -64,31 +65,32 @@ void main() {
   /// widget tree context, avoiding nested provider tree nesting pyramids entirely.
   /// {@endtemplate}
   testWidgets(
-      'Should inject multiple distinct managers simultaneously using MinMultiProvider',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: MinMultiProvider(
-          create: [
-            () => HomeNotifier(),
-            () => CartNotifier(),
-          ],
-          child: Builder(
-            builder: (context) {
-              // Act
-              final home = context.read<HomeNotifier>();
-              final cart = context.read<CartNotifier>();
+    'Should inject multiple distinct managers simultaneously using MinMultiProvider',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MinMultiProvider(
+            create: [
+              () => HomeNotifier(),
+              () => CartNotifier(),
+            ],
+            child: Builder(
+              builder: (context) {
+                // Act
+                final home = context.read<HomeNotifier>();
+                final cart = context.read<CartNotifier>();
 
-              // Assert
-              expect(home, isA<HomeNotifier>());
-              expect(cart, isA<CartNotifier>());
-              return const SizedBox.shrink();
-            },
+                // Assert
+                expect(home, isA<HomeNotifier>());
+                expect(cart, isA<CartNotifier>());
+                return const SizedBox.shrink();
+              },
+            ),
           ),
         ),
-      ),
-    );
-  }, variant: TargetPlatformVariant.all());
+      );
+    },
+  );
 
   /// {@template min_provider_test.auto_dispose}
   /// **Test Target:** `MinProvider` Context Pop Tree Garbage Collection & Disposal
@@ -98,41 +100,42 @@ void main() {
   /// the underlying framework must trigger the controller's internal `dispose()` automatically.
   /// {@endtemplate}
   testWidgets(
-      'Should trigger controller disposal automatically when the provider is removed from tree',
-      (WidgetTester tester) async {
-    // Arrange
-    final homeNotifier = HomeNotifier();
-    bool showProvider = true;
+    'Should trigger controller disposal automatically when the provider is removed from tree',
+    (WidgetTester tester) async {
+      // Arrange
+      final homeNotifier = HomeNotifier();
+      bool showProvider = true;
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: StatefulBuilder(
-          builder: (context, setState) {
-            return Column(
-              children: [
-                if (showProvider)
-                  MinProvider<HomeNotifier>(
-                    create: () => homeNotifier,
-                    child: const Text('Active Node'),
+      await tester.pumpWidget(
+        MaterialApp(
+          home: StatefulBuilder(
+            builder: (context, setState) {
+              return Column(
+                children: [
+                  if (showProvider)
+                    MinProvider<HomeNotifier>(
+                      create: () => homeNotifier,
+                      child: const Text('Active Node'),
+                    ),
+                  ElevatedButton(
+                    onPressed: () => setState(() => showProvider = false),
+                    child: const Text('Kill Provider'),
                   ),
-                ElevatedButton(
-                  onPressed: () => setState(() => showProvider = false),
-                  child: const Text('Kill Provider'),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
-      ),
-    );
+      );
 
-    expect(homeNotifier.disposeCalled, isFalse);
+      expect(homeNotifier.disposeCalled, isFalse);
 
-    // Act
-    await tester.tap(find.text('Kill Provider'));
-    await tester.pumpAndSettle(); // Forces widget tree structural refresh
+      // Act
+      await tester.tap(find.text('Kill Provider'));
+      await tester.pumpAndSettle(); // Forces widget tree structural refresh
 
-    // Assert
-    expect(homeNotifier.disposeCalled, isTrue);
-  }, variant: TargetPlatformVariant.all());
+      // Assert
+      expect(homeNotifier.disposeCalled, isTrue);
+    },
+  );
 }

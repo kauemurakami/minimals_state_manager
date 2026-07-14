@@ -37,7 +37,7 @@ import 'package:minimals_state_manager/min_props.dart';
 /// #### 2. Grouping Values via Native Dart Records
 /// Keeps the view updated whenever any grouped property inside the Record changes.
 /// ```dart
-/// $<TestNotifier, ({String bool loading}) name,>(
+/// $<TestNotifier, ({String name, bool loading}),>(
 ///   notifier: context.read<TestNotifier>(),
 ///   selector: (notifier) => (name: notifier.user.name, loading: notifier.loading),
 ///   builder: (context, data) {

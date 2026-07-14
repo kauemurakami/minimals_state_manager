@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the AppLifecycleMixin class from the minimals_state_manager.observers library, for the Dart programming language.">
+  <title>AppLifecycleMixin class - minimals_state_manager.observers library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">minimals_state_manager</a></li>
+    <li><a href="../minimals_state_manager.observers/">min_observers.dart</a></li>
+    <li class="self-crumb">AppLifecycleMixin class</li>
+  </ol>
+  <div class="self-name">AppLifecycleMixin</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="minimals_state_manager.observers&#47;minimals_state_manager.observers-library-sidebar.html"
+    data-below-sidebar="minimals_state_manager.observers&#47;AppLifecycleMixin-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">AppLifecycleMixin</span> class 
+    <a href="https://dart.dev/language/mixins" class="feature feature-mixin" title="This class can be used as a class and a mixin.">mixin</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Base observer that provides optional callbacks for Flutter application
+lifecycle events.</p>
+<p>Extend this class and override only the callbacks you need.</p>
+<p>Example:</p>
+<pre class="language-dart"><code class="language-dart">class HomeController extends MinNotifier
+    with AppLifecycleMixin {
+
+  @override
+  void onResumed() {
+    print('App resumed');
+  }
+
+  @override
+  void onPaused() {
+    print('App paused');
+  }
+}
+</code></pre>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+  <dt>Implemented types</dt>
+  <dd>
+    <ul class="comma-separated clazz-relationships">
+        <li><a href="https://api.flutter.dev/flutter/widgets/WidgetsBindingObserver-class.html">WidgetsBindingObserver</a></li>
+    </ul>
+  </dd>
+        
+
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="AppLifecycleMixin.new" class="callable">
+          <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/AppLifecycleMixin.html">AppLifecycleMixin</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="didChangeAccessibilityFeatures" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/didChangeAccessibilityFeatures.html">didChangeAccessibilityFeatures</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when the system changes the set of currently active accessibility
+features.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="didChangeAppLifecycleState" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/didChangeAppLifecycleState.html">didChangeAppLifecycleState</a></span><span class="signature">(<wbr><span class="parameter" id="didChangeAppLifecycleState-param-state"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/AppLifecycleState.html">AppLifecycleState</a></span> <span class="parameter-name">state</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when the system puts the app in the background or returns
+the app to the foreground.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="didChangeLocales" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/didChangeLocales.html">didChangeLocales</a></span><span class="signature">(<wbr><span class="parameter" id="didChangeLocales-param-locales"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-ui/Locale-class.html">Locale</a></span>&gt;</span>?</span> <span class="parameter-name">locales</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when the system tells the app that the user's locale has
+changed. For example, if the user changes the system language
+settings.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="didChangeMetrics" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/didChangeMetrics.html">didChangeMetrics</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when the application's dimensions change. For example,
+when a phone is rotated.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="didChangePlatformBrightness" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/didChangePlatformBrightness.html">didChangePlatformBrightness</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when the platform brightness changes.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="didChangeTextScaleFactor" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/didChangeTextScaleFactor.html">didChangeTextScaleFactor</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when the platform's text scale factor changes.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="didChangeViewFocus" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/didChangeViewFocus.html">didChangeViewFocus</a></span><span class="signature">(<wbr><span class="parameter" id="didChangeViewFocus-param-event"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/ViewFocusEvent-class.html">ViewFocusEvent</a></span> <span class="parameter-name">event</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called whenever the <a href="https://api.flutter.dev/flutter/dart-ui/PlatformDispatcher-class.html">PlatformDispatcher</a> receives a notification that the
+focus state on a view has changed.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="didHaveMemoryPressure" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/didHaveMemoryPressure.html">didHaveMemoryPressure</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when the system is running low on memory.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="didPopRoute" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/didPopRoute.html">didPopRoute</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when the system tells the app to pop the current route, such as
+after a system back button press or back gesture.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="didPushRoute" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/didPushRoute.html">didPushRoute</a></span><span class="signature">(<wbr><span class="parameter" id="didPushRoute-param-route"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when the host tells the application to push a new route onto the
+navigator.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="didPushRouteInformation" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/didPushRouteInformation.html">didPushRouteInformation</a></span><span class="signature">(<wbr><span class="parameter" id="didPushRouteInformation-param-routeInformation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/RouteInformation-class.html">RouteInformation</a></span> <span class="parameter-name">routeInformation</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when the host tells the application to push a new
+<a href="https://api.flutter.dev/flutter/widgets/RouteInformation-class.html">RouteInformation</a> and a restoration state onto the router.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="didRequestAppExit" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/didRequestAppExit.html">didRequestAppExit</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-ui/AppExitResponse.html">AppExitResponse</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when a request is received from the system to exit the application.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="handleCancelBackGesture" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/handleCancelBackGesture.html">handleCancelBackGesture</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when a predictive back gesture is canceled, indicating that no
+navigation should occur.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="handleCommitBackGesture" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/handleCommitBackGesture.html">handleCommitBackGesture</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when a predictive back gesture is finished successfully, indicating
+that the current route should be popped.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="handleStartBackGesture" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/handleStartBackGesture.html">handleStartBackGesture</a></span><span class="signature">(<wbr><span class="parameter" id="handleStartBackGesture-param-event"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/services/PredictiveBackEvent-class.html">PredictiveBackEvent</a></span> <span class="parameter-name">event</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called at the start of a predictive back gesture.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="handleStatusBarTap" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/handleStatusBarTap.html">handleStatusBarTap</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when the user taps the status bar on iOS, to scroll a scroll
+view to the top.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="handleUpdateBackGestureProgress" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/handleUpdateBackGestureProgress.html">handleUpdateBackGestureProgress</a></span><span class="signature">(<wbr><span class="parameter" id="handleUpdateBackGestureProgress-param-event"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/services/PredictiveBackEvent-class.html">PredictiveBackEvent</a></span> <span class="parameter-name">event</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called when a predictive back gesture moves.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="onAccessibilityFeaturesChanged" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onAccessibilityFeaturesChanged.html">onAccessibilityFeaturesChanged</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onCancelBackGesture" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onCancelBackGesture.html">onCancelBackGesture</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onChangeTextScaleFactor" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onChangeTextScaleFactor.html">onChangeTextScaleFactor</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onCommitBackGesture" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onCommitBackGesture.html">onCommitBackGesture</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onDetached" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onDetached.html">onDetached</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onHandleStatusBarTap" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onHandleStatusBarTap.html">onHandleStatusBarTap</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onHidden" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onHidden.html">onHidden</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onInactive" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onInactive.html">onInactive</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onLifecycleChanged" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onLifecycleChanged.html">onLifecycleChanged</a></span><span class="signature">(<wbr><span class="parameter" id="onLifecycleChanged-param-state"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/AppLifecycleState.html">AppLifecycleState</a></span> <span class="parameter-name">state</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onLocalesChanged" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onLocalesChanged.html">onLocalesChanged</a></span><span class="signature">(<wbr><span class="parameter" id="onLocalesChanged-param-locales"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-ui/Locale-class.html">Locale</a></span>&gt;</span>?</span> <span class="parameter-name">locales</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onMemoryPressure" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onMemoryPressure.html">onMemoryPressure</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onMetricsChanged" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onMetricsChanged.html">onMetricsChanged</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onPaused" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onPaused.html">onPaused</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onPlatformBrightnessChanged" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onPlatformBrightnessChanged.html">onPlatformBrightnessChanged</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onPopRoute" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onPopRoute.html">onPopRoute</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onPushRoute" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onPushRoute.html">onPushRoute</a></span><span class="signature">(<wbr><span class="parameter" id="onPushRoute-param-route"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onPushRouteInformation" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onPushRouteInformation.html">onPushRouteInformation</a></span><span class="signature">(<wbr><span class="parameter" id="onPushRouteInformation-param-routeInformation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/RouteInformation-class.html">RouteInformation</a></span> <span class="parameter-name">routeInformation</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onRequestAppExit" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onRequestAppExit.html">onRequestAppExit</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-ui/AppExitResponse.html">AppExitResponse</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onResumed" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onResumed.html">onResumed</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onStartBackGesture" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onStartBackGesture.html">onStartBackGesture</a></span><span class="signature">(<wbr><span class="parameter" id="onStartBackGesture-param-event"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/services/PredictiveBackEvent-class.html">PredictiveBackEvent</a></span> <span class="parameter-name">event</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onUpdateBackGestureProgress" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onUpdateBackGestureProgress.html">onUpdateBackGestureProgress</a></span><span class="signature">(<wbr><span class="parameter" id="onUpdateBackGestureProgress-param-event"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/services/PredictiveBackEvent-class.html">PredictiveBackEvent</a></span> <span class="parameter-name">event</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="onViewFocusChanged" class="callable">
+  <span class="name"><a href="../minimals_state_manager.observers/AppLifecycleMixin/onViewFocusChanged.html">onViewFocusChanged</a></span><span class="signature">(<wbr><span class="parameter" id="onViewFocusChanged-param-event"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/ViewFocusEvent-class.html">ViewFocusEvent</a></span> <span class="parameter-name">event</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">minimals_state_manager</a></li>
+    <li><a href="../minimals_state_manager.observers/">minimals_state_manager.observers</a></li>
+    <li class="self-crumb">AppLifecycleMixin class</li>
+</ol>
+
+    <h5>minimals_state_manager.observers library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    minimals_state_manager
+      2.1.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

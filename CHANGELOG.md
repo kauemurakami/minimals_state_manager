@@ -1,3 +1,6 @@
+# 2.1.1
+- Fix dart docs
+
 # 2.1.0
 - Fix min_selector ($) references use with records in docs.
 - Add github action to run tests and benchmarks

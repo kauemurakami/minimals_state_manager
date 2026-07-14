@@ -36,7 +36,7 @@ class MinProvider<T extends ChangeNotifier> extends StatefulWidget {
   });
 
   /// Accesses the controller and subscribes the context to changes.
-  /// Use this inside the [build] method when you need the UI to reflect state changes.
+  /// Use this inside the `build` method when you need the UI to reflect state changes.
   static T watch<T extends ChangeNotifier>(BuildContext context) {
     final inherited =
         context.dependOnInheritedWidgetOfExactType<MinInherited<T>>();

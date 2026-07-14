@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="minimals_state_manager API docs, for the Dart programming language.">
+  <title>minimals_state_manager - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/kauemurakami/minimals_state_manager">minimals_state_manager package</a></li>
+  </ol>
+  <div class="self-name">minimals_state_manager</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <p><a href="https://github.com/kauemurakami/minimals_state_manager"><img src="https://img.shields.io/github/stars/kauemurakami/minimals_state_manager.svg?style=flat&amp;logo=github&amp;colorB=deeppink&amp;label=stars" alt="Star on GitHub"></a>
+<a href="https://github.com/kauemurakami/minimals_state_manager/actions"><img src="https://img.shields.io/github/actions/workflow/status/kauemurakami/minimals_state_manager/tests.yaml?branch=main&amp;label=tests%20and%20benchmarks&amp;logo=github&amp;style=flat-square" alt="Tests and benchmarks"></a>
+<a href="https://pub.dev/packages/minimals_state_manager"><img src="https://img.shields.io/pub/v/minimals_state_manager?style=flat-square&amp;color=teal" alt="Pub Version"></a>
+<a href="https://pub.dev/packages/minimals_state_manager"><img src="https://img.shields.io/pub/points/minimals_state_manager?style=flat-square&amp;color=blue" alt="Pub Points"></a>
+<a href="./BENCHMARKS.md"><img src="https://img.shields.io/badge/Performance-Benchmarks-blueviolet?style=flat&amp;logo=dart&amp;logoColor=white" alt="Benchmarks"></a></p>
+<h1 id="minimals-state-manager">Minimals State Manager</h1>
+<p>A lightweight, high-performance, and boilerplate-free state management and dependency injection solution for Flutter.</p>
+<h2 id="why-minimals">Why Minimals?</h2>
+<ul>
+<li><strong>Zero Code Generation:</strong> No <code>build_runner</code>, no waiting, no generated files. Just pure Dart.</li>
+<li><strong>Flutter-Only Dependencies:</strong> Built completely as a clean abstraction over Flutter's native classes (<code>InheritedWidget</code>, <code>ChangeNotifier</code>, <code>Listenable</code>).</li>
+<li><strong>The Best of Three Worlds:</strong> It combines the intuitive lifecycle of <strong>GetX</strong>, the scoped architecture of <strong>Provider</strong>, and the ultra-fast service location of <strong>GetIt</strong>.</li>
+<li><strong>Highly Flexible:</strong> You can use <code>MinNotifier</code>, standard <code>ChangeNotifier</code>, <code>ValueNotifier</code>, or any <code>Listenable</code> out of the box.</li>
+</ul>
+<hr>
+<h2 id="features">Features</h2>
+<h3 id="minservice">MinService</h3>
+<h4 id="setup-and-registration">Setup and Registration</h4>
+<p><code>MinService</code> is an embedded service locator built directly into the package. If you are familiar with <code>GetIt</code>, you will feel right at home. It handles application-wide or lazy singletons cleanly without requiring external dependencies.</p>
+<pre class="language-dart"><code class="language-dart">import 'package:flutter/material.dart';
+import 'package:minimals_state_manager/min_notifiers.dart';
+
+final min = MinService.instance;
+
+void setupLocator() {
+  min.registerLazySingleton(() =&gt; AuthService());
+  min.registerSingleton&lt;ThemeService&gt;(ThemeService());
+  or
+  MinService.instance.registerLazySingleton(() =&gt; AuthService());
+  MinService.instance.registerSingleton&lt;ThemeService&gt;(ThemeService());
+
+}
+
+void main() {
+  setPathUrlStrategy();
+  setupLocator();
+  runApp(const MyApp());
+}
+</code></pre>
+<h4 id="retrieving-and-managing-your-services">Retrieving and Managing your Services</h4>
+<pre class="language-dart"><code class="language-dart">final authService = min&lt;AuthService&gt;();
+final themeService = min.get&lt;ThemeService&gt;();
+or
+final anotherService = MinService.instance&lt;MyService&gt;();
+
+bool exists = min.exists&lt;AuthService&gt;();
+
+min.destroy&lt;AuthService&gt;();
+min.reset();
+</code></pre>
+<p>You can use a global instance <code>final min = MinService.instance</code> and reuse in global code escope or use directly <code>MinService.instance</code> to use any <code>MinService</code> method.<br>
+<strong>Benefits</strong>: Decouples your business logic from the UI layer, guarantees memory efficiency through lazy initialization, and speeds up testing.</p>
+<h3 id="providers">Providers</h3>
+<p>Providers manage the complete setup, lifecycle, and destruction of your state controllers in the widget tree.<br>
+Providers inject, govern, and bound your state controllers directly to specific segments of the Flutter Widget Tree. You don't need to be tied to our <code>MinNotifier</code>.<br>
+They are completely decoupled from any single state architecture: you can pass our specialized <code>MinNotifier</code>, a standard <code>ChangeNotifier</code>, a <code>ValueNotifier</code>, or any custom class implementing the native <code>Listenable</code> interface, not only our</p>
+<h4 id="single-provider">Single Provider</h4>
+<pre class="language-dart"><code class="language-dart">MinProvider&lt;HomeNotifier&gt;(
+  create: () =&gt; HomeNotifier(),
+  child: const HomePage(),
+);
+</code></pre>
+<h4 id="multi-provider">Multi Provider</h4>
+<p>When a page requires multiple controllers, use <code>MinMultiProvider</code> to avoid deeply nested trees ("provider pyramids"):</p>
+<pre class="language-dart"><code class="language-dart">MinMultiProvider(
+  create: [
+    () =&gt; CartNotifier(),
+    () =&gt; HomeController(),
+    () =&gt; UserProfileViewModel(),
+    () =&gt; SettingsStore(),
+  ],
+  child: const HomePage(),
+)
+</code></pre>
+<p><strong>Benefits</strong>: Handles memory cleanup automatically. When the route is popped or destroyed, the controllers are safely disposed.</p>
+<h3 id="accessing-controllers-in-the-ui">Accessing Controllers in the UI</h3>
+<p>You can interact with your providers using either traditional static methods or sleek modern BuildContext extensions.</p>
+<h4 id="static-methods">Static Methods</h4>
+<pre class="language-dart"><code class="language-dart">final controller = MinProvider.watch&lt;HomeController&gt;(context);
+final viewModel = MinProvider.read&lt;HomeViewModel&gt;(context);
+
+final notifier = MinMultiProvider.watch&lt;HomeNotifier(context);
+final store = MinMultiProvider.read&lt;HomeStore&gt;(context);
+</code></pre>
+<h4 id="buildcontext-extensions-cleanest">BuildContext Extensions (Cleanest)</h4>
+<pre class="language-dart"><code class="language-dart">final viewModel = context.watch&lt;HomeViewModel&gt;();
+final controller = context.read&lt;HomeController&gt;();
+</code></pre>
+<h3 id="minnotifier">MinNotifier</h3>
+<p>Minimals gives you absolute freedom when defining your business logic layers. You can use standard Flutter classes like <code>ChangeNotifier</code>, <code>ValueNotifier</code>, or any custom class that extends <code>Listenable</code>, its work with our <code>MinProvider</code>, <code>MinMultiProvider</code> and <code>MinService</code>.<br>
+However, by extending our specialized <strong><code>MinNotifier</code></strong>, you gain access to structured architectural lifecycles (<code>onInit</code> and <code>onReady</code>) along with built-in protection against asynchronous state update crashes.</p>
+<pre class="language-dart"><code class="language-dart">class HomeController extends MinNotifier {
+  final repository = HomeRepository();
+  List&lt;Item&gt; items = [];
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Synchronous execution. Runs immediately as the object is allocated.
+    // Perfect for setting up hardware listeners or stream initializations.
+    setupScrollListeners();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    // Post-frame execution. Runs safely immediately after the first frame draws.
+    // Ideal for safe navigation triggers or making remote server calls.
+    fetchItems();
+  }
+
+  Future&lt;void&gt; fetchItems() async {
+    items = await repository.getItems();
+    
+    // 🛡️ BUILT-IN CRASH PROTECTION (Exclusive to MinNotifier)
+    // If the user navigates away before this asynchronous network call finishes, 
+    // MinNotifier intercepts this call and drops the execution sequence safely,
+    // avoiding standard Flutter framework memory crashes.
+    notifyListeners();
+  }
+
+  ...
+
+  @override
+  void dispose() {
+    // Teardown local controller references or native subscriptions cleanly here
+    super.dispose();
+  }
+}
+</code></pre>
+<p>⚡ Smart In-Place Updates (The update utility)
+When managing complex models, deep nested entities, or mutable data structures, writing manual boilerplate sequences just to trigger an update is tedious. <code>MinNotifier</code> introduces the <code>update</code> helper, which automatically runs your mutations and systematically fires the notification layer for you in a single, clean expression.</p>
+<pre class="language-dart"><code class="language-dart">class ProfileController extends MinNotifier {
+  final user = User(name: 'Alex', age: 25);
+
+  void updateUserProfile() {
+    // Mutates internal properties and automatically triggers a UI rebuild!
+    update(user, (p) {
+      p.name = 'John Doe';
+      p.age = 30;
+    });
+  }
+}
+</code></pre>
+<h3 id="structured-data-objects">Structured Data Objects</h3>
+<h4 id="minprops">MinProps</h4>
+<p><code>MinProps</code> is a lightweight structural layout class designed to bridge concrete data object instances with Dart's modern Records system, enabling fast, boilerplate-free value comparisons.</p>
+<pre class="language-dart"><code class="language-dart">class User extends MinProps {
+  final String name;
+  final String email;
+
+  User({required this.name, required this.email});
+
+  // Expose specific field values as a native immutable Dart Record type
+  @override
+  get props =&gt; (name: name, email: email); 
+}
+</code></pre>
+<p>Manual Insight: By overriding props, MinProps lets you avoid writing long manual overrides for == and hashCode signatures. It enables fast value comparisons when filtering state updates within user views.</p>
+<p>This will be useful if you need to observe state changes in a complex object—such as <code>User</code> via our selector widget. To avoid developer boilerplate and the need to recreate object instances, you can simply extend <code>MinProps</code> in your model and implement the object's attributes, turning it into a record that can then be observed; you will understand this better in the next section.</p>
+<h3 id="granular-rebuild-isolation-via-the-selector-widget-">Granular Rebuild Isolation via the Selector Widget ($)</h3>
+<h4 id="selector-widget-">Selector widget $</h4>
+<p>The $ component serves as a precise layout gatekeeper. It hooks into an active controller, filters down to a targeted field variation using a selector function, and triggers an inner builder rebuild only when that specific selected item shifts values.</p>
+<h4 id="filtering-primitive-state-mutations">Filtering Primitive State Mutations</h4>
+<pre class="language-dart"><code class="language-dart">$&lt;HomeController, bool&gt;(
+  notifier: viewModel
+  selector: (viewModel) =&gt; viewModel.loading,
+  builder: (context, loading) {
+    return loading ? const CircularProgressIndicator() : const TitleHeader();
+  },
+)
+</code></pre>
+<h4 id="grouping-values-via-native-dart-records-ultra-fast">Grouping Values via Native Dart Records (Ultra fast)</h4>
+<pre class="language-dart"><code class="language-dart">$&lt;HomeNotifier, ({String name, bool loading})&gt;(
+  notifier: notifier,
+  selector: (notifier) =&gt; (name: notifier.user.name, loading: notifier.loading),
+  builder: (context, data) =&gt; data.loading ? CircularProgressIndicator() : Text(data.name);
+)
+</code></pre>
+<h4 id="complex-structural-models-via-minprops">Complex Structural Models via MinProps</h4>
+<p>Extends you class with <code>MinProps</code> and implement a getter <code>props</code> with a <code>Record</code> with model attributes to listen any change in model.<br>
+Using:</p>
+<pre class="language-dart"><code class="language-dart">void changeName(String newName){
+  update(user, (u)=&gt; u.name = "Ivo Holanda");
+}
+</code></pre>
+<p>and</p>
+<pre class="language-dart"><code class="language-dart">$&lt;HomeStore, User&gt;(
+  notifier: store,
+  selector: (store) =&gt; store.user,
+  builder: (context, user) {
+    return Text('Welcome back, ${user.name} | email: ${user.email}');
+  },
+)
+</code></pre>
+<p>With this, is not necessary create new instance of the object.</p>
+<h4 id="listsmapssets">Lists/Maps/Sets</h4>
+<pre class="language-dart"><code class="language-dart">$&lt;HomeController, List&lt;Item&gt;&gt;(
+  notifier: controller,
+  selector: (controller) =&gt; controller.items,
+  builder: (context, items) =&gt; items.isEmpty 
+    ? Text('No have items') 
+    : ListView.builder(
+      itemCount: items.length,
+      .....
+      itemBuilder: (context,index) =&gt; Text('${items[index].value}')
+    );
+)
+</code></pre>
+<h4 id="listen-any-changes-in-your-notifier">Listen any changes in your Notifier</h4>
+<pre class="language-dart"><code class="language-dart">$&lt;HomeViewModel, HomeViewModel&gt;(
+  notifier: viewModel,
+  selector: (viewModel) =&gt; viewModel,
+  builder: (context, viewModel) {
+    return Text('Welcome back, ${viewModel.user.name}');
+  },
+)
+</code></pre>
+<h4 id="observations">Observations</h4>
+<p>You have option to import separately each file:</p>
+<pre class="language-dart"><code class="language-dart">import 'package:minimals_state_manager/min_providers.dart';
+import 'package:minimals_state_manager/min_widgets.dart';
+</code></pre>
+<p>Or import full package</p>
+<pre class="language-dart"><code class="language-dart">import 'package:minimals_state_manager/minimals_state_manager.dart';
+</code></pre>
+<h3 id="benchmarks">Benchmarks</h3>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="minimals_state_manager.extensions">
+  <span class="name"><a href="minimals_state_manager.extensions/">min_extensions</a></span> 
+
+</dt>
+<dd>Convenient extensions on core Flutter and Dart classes for easier state management.
+</dd>
+
+          <dt id="minimals_state_manager.notifiers">
+  <span class="name"><a href="minimals_state_manager.notifiers/">min_notifiers</a></span> 
+
+</dt>
+<dd>Reactive state management and change notification utilities.
+</dd>
+
+          <dt id="minimals_state_manager.observers">
+  <span class="name"><a href="minimals_state_manager.observers/">min_observers</a></span> 
+
+</dt>
+<dd>System and application lifecycle observation utilities.
+</dd>
+
+          <dt id="minimals_state_manager.state">
+  <span class="name"><a href="minimals_state_manager.state/">min_props</a></span> 
+
+</dt>
+<dd>Core state properties and structural models for minimals_state_manager.
+</dd>
+
+          <dt id="minimals_state_manager.providers">
+  <span class="name"><a href="minimals_state_manager.providers/">min_providers</a></span> 
+
+</dt>
+<dd>Dependency injection and state scoping utilities for minimals_state_manager.
+</dd>
+
+          <dt id="minimals_state_manager.services">
+  <span class="name"><a href="minimals_state_manager.services/">min_services</a></span> 
+
+</dt>
+<dd>Core business logic and application service utilities.
+</dd>
+
+          <dt id="minimals_state_manager.widgets">
+  <span class="name"><a href="minimals_state_manager.widgets/">min_widgets</a></span> 
+
+</dt>
+<dd>High-performance reactive UI components and state consumer widgets.
+</dd>
+
+          <dt id="minimals_state_manager">
+  <span class="name"><a href="minimals_state_manager/">minimals_state_manager</a></span> 
+
+</dt>
+<dd>A minimalist, high-performance, and boilerplate-free state management library for Flutter.
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="https://github.com/kauemurakami/minimals_state_manager">minimals_state_manager package</a></li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">minimals_state_manager</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="minimals_state_manager.extensions/">min_extensions</a></li>
+      <li><a href="minimals_state_manager.notifiers/">min_notifiers</a></li>
+      <li><a href="minimals_state_manager.observers/">min_observers</a></li>
+      <li><a href="minimals_state_manager.state/">min_props</a></li>
+      <li><a href="minimals_state_manager.providers/">min_providers</a></li>
+      <li><a href="minimals_state_manager.services/">min_services</a></li>
+      <li><a href="minimals_state_manager.widgets/">min_widgets</a></li>
+      <li><a href="minimals_state_manager/">minimals_state_manager</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    minimals_state_manager
+      2.1.0
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

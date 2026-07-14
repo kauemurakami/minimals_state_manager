@@ -1,3 +1,6 @@
+# 2.0.2
+- Fix pubdev description
+
 # 2.0.1
 - Add tests Micro Benchmarks with Harness
 - Create BENCHMARKS.md to show results of micro benchmarks

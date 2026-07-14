@@ -160,14 +160,17 @@ class GetItDeepNestedBenchmark extends BenchmarkBase {
 
 void main() {
   group('=== DEEP NESTED SERVICE INJECTION BENCHMARKS (10 LAYERS) ===', () {
-    test('Execute Hierarchical Dependency Chain Lookup Performance', () {
-      print('=== DEEP NESTED SERVICE INJECTION BENCHMARKS (10 LAYERS) ===');
-      print('> Execute Hierarchical Dependency Chain Lookup Performance \n');
-      final minimalsNested = MinimalsDeepNestedBenchmark()..report();
-      final getItNested = GetItDeepNestedBenchmark()..report();
+    test(
+      'Execute Hierarchical Dependency Chain Lookup Performance',
+      () {
+        print('=== DEEP NESTED SERVICE INJECTION BENCHMARKS (10 LAYERS) ===');
+        print('> Execute Hierarchical Dependency Chain Lookup Performance \n');
+        final minimalsNested = MinimalsDeepNestedBenchmark()..report();
+        final getItNested = GetItDeepNestedBenchmark()..report();
 
-      expect(minimalsNested, isNotNull);
-      expect(getItNested, isNotNull);
-    });
+        expect(minimalsNested, isNotNull);
+        expect(getItNested, isNotNull);
+      },
+    );
   });
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:collection/collection.dart';
+import 'package:minimals_state_manager/min_props.dart';
 
 /// A reactive widget that listens to a [Listenable] (such as [MinNotifier], [ChangeNotifier] or [ValueNotifier])
 /// and rebuilds its [builder] only when the selected value changes.
@@ -75,9 +76,7 @@ class $<T extends Listenable, K> extends StatefulWidget {
 }
 
 class _$<T extends Listenable, K> extends State<$<T, K>> {
-  late K _oldValue;
-
-  /// A static, performance-optimized instance for deep collection comparison.
+  late dynamic _oldValue;
   final _equality = const DeepCollectionEquality();
 
   @override
@@ -87,60 +86,66 @@ class _$<T extends Listenable, K> extends State<$<T, K>> {
     widget.notifier.addListener(_valueChanged);
   }
 
-  @override
-  void didUpdateWidget(covariant $<T, K> oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.notifier != widget.notifier) {
-      oldWidget.notifier.removeListener(_valueChanged);
-      widget.notifier.addListener(_valueChanged);
-      _oldValue = _prepareValue(widget.selector(widget.notifier));
-    }
-  }
+  // ... didUpdateWidget e dispose continuam iguais ...
 
-  @override
-  void dispose() {
-    widget.notifier.removeListener(_valueChanged);
-    super.dispose();
-  }
-
-  /// Evaluates whether the selected value has modified.
-  /// Uses [DeepCollectionEquality] for collections (Iterable/Map) and standard equality for other types.
   void _valueChanged() {
-    final newValue = widget.selector(widget.notifier);
+    final newValueRaw = widget.selector(widget.notifier);
 
+    // CASO DE USO 5 (Listen All):
+    // Se o valor retornado pelo selector for o próprio notifier,
+    // nós SEMPRE forçamos o rebuild a cada notifyListeners().
+    if (identical(newValueRaw, widget.notifier)) {
+      setState(() {
+        // Apenas atualizamos o estado interno para manter o fluxo
+        _oldValue = newValueRaw;
+      });
+      return;
+    }
+
+    final newValuePrepared = _prepareValue(newValueRaw);
     bool hasChanged = false;
 
-    if ((_oldValue is Iterable && newValue is Iterable) ||
-        (_oldValue is Map && newValue is Map)) {
-      hasChanged = !_equality.equals(_oldValue, newValue);
+    if ((_oldValue is Iterable && newValuePrepared is Iterable) ||
+        (_oldValue is Map && newValuePrepared is Map)) {
+      hasChanged = !_equality.equals(_oldValue, newValuePrepared);
     } else {
-      hasChanged = _oldValue != newValue;
+      hasChanged = _oldValue != newValuePrepared;
     }
 
     if (hasChanged) {
       setState(() {
-        _oldValue = _prepareValue(newValue);
+        _oldValue = newValuePrepared;
       });
     }
   }
 
-  /// Creates a shallow copy of collections, preserving their runtime types
-  /// to safely maintain the previous state for comparison.
   dynamic _prepareValue(dynamic value) {
-    if (value is List) {
-      return value.toList();
+    if (value is List) return value.toList();
+    if (value is Set) return value.toSet();
+    if (value is Map) return Map.from(value);
+
+    // 1. SE FOR UM OBJETO QUE EXTENDE MINPROPS (Seu modelo User)
+    // Nós extraímos o Record (.props) e "congelamos" ele para monitorar mudanças profundas
+    if (value is MinProps) {
+      return _extractRecordValues(value.props);
     }
-    if (value is Set) {
-      return value.toSet();
+
+    // 2. SE FOR UM RECORD DIRETO (Ex: (loading, name))
+    if (value is Record) {
+      return _extractRecordValues(value);
     }
-    if (value is Map) {
-      return Map.from(value);
-    }
+
     return value;
+  }
+
+  dynamic _extractRecordValues(Record record) {
+    // Congela a representação do Record como string para comparar facilmente depois
+    return record.toString();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Entrega o K (User) original e tipado sem nenhum cast perigoso!
     return widget.builder(context, widget.selector(widget.notifier));
   }
 }

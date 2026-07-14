@@ -54,7 +54,7 @@ void main() {
 
     // Assert
     expect(find.text('Counter: 0'), findsOneWidget);
-  });
+  }, variant: TargetPlatformVariant.all());
 
   /// {@template min_provider_test.multi_provider}
   /// **Test Target:** `MinMultiProvider` Array Compaction Injection
@@ -88,7 +88,7 @@ void main() {
         ),
       ),
     );
-  });
+  }, variant: TargetPlatformVariant.all());
 
   /// {@template min_provider_test.auto_dispose}
   /// **Test Target:** `MinProvider` Context Pop Tree Garbage Collection & Disposal
@@ -134,5 +134,5 @@ void main() {
 
     // Assert
     expect(homeNotifier.disposeCalled, isTrue);
-  });
+  }, variant: TargetPlatformVariant.all());
 }

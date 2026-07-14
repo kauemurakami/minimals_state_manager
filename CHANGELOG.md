@@ -1,3 +1,6 @@
+# 2.1.2
+- Fix platforms pubdev
+
 # 2.1.1
 - Fix dart docs
 

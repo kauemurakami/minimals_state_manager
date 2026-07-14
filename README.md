@@ -1,5 +1,5 @@
 [![Star on GitHub](https://img.shields.io/github/stars/kauemurakami/minimals_state_manager.svg?style=flat&logo=github&colorB=deeppink&label=stars)](https://github.com/kauemurakami/minimals_state_manager)
-[![Tests](https://img.shields.io/github/actions/workflow/status/kauemurakami/minimals_state_manager/tests.yml?branch=main&label=tests&logo=github&style=flat-square)](https://github.com/kauemurakami/minimals_state_manager/actions)
+[![Tests and benchmarks](https://img.shields.io/github/actions/workflow/status/kauemurakami/minimals_state_manager/tests.yaml?branch=main&label=tests%20and%20benchmarks&logo=github&style=flat-square)](https://github.com/kauemurakami/minimals_state_manager/actions)
 [![Pub Version](https://img.shields.io/pub/v/minimals_state_manager?style=flat-square&color=teal)](https://pub.dev/packages/minimals_state_manager)
 [![Pub Points](https://img.shields.io/pub/points/minimals_state_manager?style=flat-square&color=blue)](https://pub.dev/packages/minimals_state_manager)
 [![Benchmarks](https://img.shields.io/badge/Performance-Benchmarks-blueviolet?style=flat&logo=dart&logoColor=white)](./BENCHMARKS.md)

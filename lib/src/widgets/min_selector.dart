@@ -2,57 +2,86 @@ import 'package:flutter/widgets.dart';
 import 'package:collection/collection.dart';
 import 'package:minimals_state_manager/min_props.dart';
 
-/// A reactive widget that listens to a [Listenable] (such as [MinNotifier], [ChangeNotifier] or [ValueNotifier])
-/// and rebuilds its [builder] only when the selected value changes.
+/// A highly optimized reactive widget that listens to a [Listenable] (such as
+/// [MinNotifier], [ChangeNotifier], or [ValueNotifier]) and rebuilds its [builder]
+/// only when the specific slice of state returned by the [selector] changes.
 ///
-/// The [selector] is used to isolate a specific piece of the state. If the selected
-/// value is a [List], this widget uses [DeepCollectionEquality] to detect deep
-/// changes within the collection items, ensuring surgical rebuilds only when
-/// the list content actually modifies.
+/// Under the hood, this widget uses a smart caching and evaluation mechanism
+/// that supports deep structural comparisons for [Iterable], [Map], [Record],
+/// and custom classes extending [MinProps] (without requiring `copyWith` boilerplate).
 ///
-/// Example:
+/// ### Core Features:
+/// * **Deep Collection Comparison:** Detects deep changes within lists, maps, and sets.
+/// * **Structural Record Evaluation:** Evaluates inline and typed Dart 3 Records.
+/// * **Boilerplate-free Model Tracking:** Automatically monitors property updates of any
+///   custom model extending [MinProps] by looking at its `.props` Record under the hood.
+/// * **Listen All Mode:** Easily opts out of filtering to trigger rebuilds on absolutely
+///   any state emission.
+///
+/// ---
+///
+/// ### Supported Scenarios & Examples:
+///
+/// #### 1. Filtering Primitive State Mutations
+/// Rebuilds only when the targeted primitive value changes.
 /// ```dart
-///
-/// Use Iterables/Set:
-/// $<MyNotifier, List<Item>>(
-///   notifier: notifier,
-///   selector: (notifier) => notifier.products,
-///   builder: (context, list) => ListView(
-///     children: list.map((item) => Text(item.name)).toList(),
-///   ),
-/// )
-///
-/// Use Records:
-/// $<MyNotifier, (String name, bool loading)>(
-///   notifier: notifier,
-///   selector: (notifier) => (name: notifier.user.name, loading: notifier.loading),
-///   builder: (context, data) => data.loading
-///     ? CircularProgressIndicator() : Text(data.name)
-/// )
-///
-/// Use primitive value:
-/// $<MyNotifier, bool>(
-///   notifier: notifier,
+/// $<TestNotifier, bool>(
+///   notifier: context.read<TestNotifier>(),
 ///   selector: (notifier) => notifier.loading,
-///   builder: (context, loading) => loading
-///     ? CircularProgressIndicator() : Text('loaded')
+///   builder: (context, loading) {
+///     return Text(loading ? 'Loading...' : 'Ready');
+///   },
 /// )
+/// ```
 ///
-/// Use complex object (Necessary use MinProps in your model, or create your
-/// property props, generating a record ):
-/// $<MyNotifier, User>(
-///   notifier: notifier,
-///   selector: (notifier) => notifier.user.props,
-///   builder: (context, user) => ...[Text(user.name), Text(user.email)]
+/// #### 2. Grouping Values via Native Dart Records
+/// Keeps the view updated whenever any grouped property inside the Record changes.
+/// ```dart
+/// $<TestNotifier, ({String bool loading}) name,>(
+///   notifier: context.read<TestNotifier>(),
+///   selector: (notifier) => (name: notifier.user.name, loading: notifier.loading),
+///   builder: (context, data) {
+///     return Text('${data.name} -${data.loading ? 'Active' : 'Inactive'}');
+///   },
 /// )
+/// ```
 ///
-/// Use only notifier to listen any changes:
-/// $<MyNotifier, (MyNotifier)>(
-///   notifier: notifier,
-///   selector: (notifier) => (notifier),
-///   builder: (context, notifier) => Text(notifier.user.name)
+/// #### 3. Complex Structural Models (via `MinProps`)
+/// Passes the complex model directly to the builder while automatically monitoring
+/// its internal values using its `.props` Record in the background.
+/// ```dart
+/// $<TestNotifier, User>(
+///   notifier: context.read<TestNotifier>(),
+///   selector: (notifier) => notifier.user, // Automatically tracks nested props!
+///   builder: (context, user) {
+///     return Text('User: ${user.name} \vert{}${user.email}');
+///   },
 /// )
+/// ```
 ///
+/// #### 4. Lists, Maps, and Sets Tracking
+/// Performs deep equality checks to trigger rebuilds whenever items are added, removed,
+/// or modified.
+/// ```dart
+/// $<TestNotifier, List<String>>(
+///   notifier: context.read<TestNotifier>(),
+///   selector: (notifier) => notifier.items,
+///   builder: (context, items) {
+///     return items.isEmpty ? Text('No items') : Text('Total: ${items.length}');
+///   },
+/// )
+/// ```
+///
+/// #### 5. Listen All Changes (Notifier Stream)
+/// Opts out of structural comparison to trigger a rebuild on any event emitted by the notifier.
+/// ```dart
+/// $<TestNotifier, TestNotifier>(
+///   notifier: context.read<TestNotifier>(),
+///   selector: (notifier) => notifier, // Listens to absolutely everything
+///   builder: (context, notifier) {
+///     return Text('Whatever value: ${notifier.whatever}');
+///   },
+/// )
 /// ```
 class $<T extends Listenable, K> extends StatefulWidget {
   /// The observable object that dispatches change notifications.
@@ -86,17 +115,31 @@ class _$<T extends Listenable, K> extends State<$<T, K>> {
     widget.notifier.addListener(_valueChanged);
   }
 
-  // ... didUpdateWidget e dispose continuam iguais ...
+  @override
+  void didUpdateWidget(covariant $<T, K> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.notifier != widget.notifier) {
+      oldWidget.notifier.removeListener(_valueChanged);
+      widget.notifier.addListener(_valueChanged);
+      _oldValue = _prepareValue(widget.selector(widget.notifier));
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.notifier.removeListener(_valueChanged);
+    super.dispose();
+  }
 
   void _valueChanged() {
     final newValueRaw = widget.selector(widget.notifier);
 
-    // CASO DE USO 5 (Listen All):
-    // Se o valor retornado pelo selector for o próprio notifier,
-    // nós SEMPRE forçamos o rebuild a cada notifyListeners().
+    // USE CASE 5 (Listen All):
+    // If the value returned by the selector is the notifier itself,
+    // we ALWAYS force a rebuild on every notifyListeners() call.
     if (identical(newValueRaw, widget.notifier)) {
       setState(() {
-        // Apenas atualizamos o estado interno para manter o fluxo
+        // Just update the internal state to keep the flow consistent
         _oldValue = newValueRaw;
       });
       return;
@@ -124,13 +167,13 @@ class _$<T extends Listenable, K> extends State<$<T, K>> {
     if (value is Set) return value.toSet();
     if (value is Map) return Map.from(value);
 
-    // 1. SE FOR UM OBJETO QUE EXTENDE MINPROPS (Seu modelo User)
-    // Nós extraímos o Record (.props) e "congelamos" ele para monitorar mudanças profundas
+    // 1. IF IT IS AN OBJECT THAT EXTENDS MINPROPS (Your User model)
+    // We extract the Record (.props) and "freeze" its values to safely monitor deep changes.
     if (value is MinProps) {
       return _extractRecordValues(value.props);
     }
 
-    // 2. SE FOR UM RECORD DIRETO (Ex: (loading, name))
+    // 2. IF IT IS A DIRECT RECORD (e.g., (loading, name))
     if (value is Record) {
       return _extractRecordValues(value);
     }
@@ -139,13 +182,13 @@ class _$<T extends Listenable, K> extends State<$<T, K>> {
   }
 
   dynamic _extractRecordValues(Record record) {
-    // Congela a representação do Record como string para comparar facilmente depois
+    // Freezes the Record representation as a string for robust deep comparisons later
     return record.toString();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Entrega o K (User) original e tipado sem nenhum cast perigoso!
+    // Delivers the original, typed K (User) without any dangerous casting!
     return widget.builder(context, widget.selector(widget.notifier));
   }
 }

@@ -1,4 +1,7 @@
 [![Star on GitHub](https://img.shields.io/github/stars/kauemurakami/minimals_state_manager.svg?style=flat&logo=github&colorB=deeppink&label=stars)](https://github.com/kauemurakami/minimals_state_manager)
+[![Tests](https://img.shields.io/github/actions/workflow/status/kauemurakami/minimals_state_manager/tests.yml?branch=main&label=tests&logo=github&style=flat-square)](https://github.com/kauemurakami/minimals_state_manager/actions)
+[![Pub Version](https://img.shields.io/pub/v/minimals_state_manager?style=flat-square&color=teal)](https://pub.dev/packages/minimals_state_manager)
+[![Pub Points](https://img.shields.io/pub/points/minimals_state_manager?style=flat-square&color=blue)](https://pub.dev/packages/minimals_state_manager)
 [![Benchmarks](https://img.shields.io/badge/Performance-Benchmarks-blueviolet?style=flat&logo=dart&logoColor=white)](./BENCHMARKS.md)
 
 # Minimals State Manager
@@ -200,7 +203,7 @@ $<HomeController, bool>(
 
 #### Grouping Values via Native Dart Records (Ultra fast)
 ```dart
-$<HomeNotifier, (String name, bool loading)>(
+$<HomeNotifier, ({String name, bool loading})>(
   notifier: notifier,
   selector: (notifier) => (name: notifier.user.name, loading: notifier.loading),
   builder: (context, data) => data.loading ? CircularProgressIndicator() : Text(data.name);
@@ -209,15 +212,24 @@ $<HomeNotifier, (String name, bool loading)>(
 
 
 #### Complex Structural Models via MinProps
+Extends you class with `MinProps` and implement a getter `props` with a `Record` with model attributes to listen any change in model.  
+Using:
+```dart
+void changeName(String newName){
+  update(user, (u)=> u.name = "Ivo Holanda");
+}
+```
+and
 ```dart 
 $<HomeStore, User>(
   notifier: store,
-  selector: (store) => store.user.props,
+  selector: (store) => store.user,
   builder: (context, user) {
-    return Text('Welcome back, ${user.name}');
+    return Text('Welcome back, ${user.name} | email: ${user.email}');
   },
 )
 ```
+With this, is not necessary create new instance of the object.
 
 #### Lists/Maps/Sets
 
@@ -235,11 +247,11 @@ $<HomeController, List<Item>>(
 )
 ```
 
-#### Listen all changes in your Notifier
+#### Listen any changes in your Notifier
 ```dart
-$<HomeViewModel, (HomeViewModel viewModel)>(
+$<HomeViewModel, HomeViewModel>(
   notifier: viewModel,
-  selector: (viewModel) => (viewModel: viewModel),
+  selector: (viewModel) => viewModel,
   builder: (context, viewModel) {
     return Text('Welcome back, ${viewModel.user.name}');
   },

@@ -1,7 +1,7 @@
 name: minimals_state_manager
-description: "A minimalist study project for state management, lifecycle, and observables in Flutter, but not recommended for production due to alpha status."
+description: "A lightweight, high-performance, and boilerplate-free state management and dependency injection solution for Flutter."
 
-version: 2.0.1
+version: 2.0.2
 
 executables:
   min: min

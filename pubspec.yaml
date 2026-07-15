@@ -1,7 +1,7 @@
 name: minimals_state_manager
-description: "A lightweight, high-performance, and boilerplate-free state management and dependency injection solution for Flutter."
+description: "A fastest, lightweight, high-performance, and boilerplate-free state management and dependency injection solution for Flutter."
 
-version: 2.1.5
+version: 2.1.6
 
 executables:
   min: min
@@ -11,6 +11,8 @@ executables:
 homepage: https://github.com/kauemurakami/minimals_state_manager
 
 repository: https://github.com/kauemurakami/minimals_state_manager
+
+topics: [di, provider, minimals-state-manager, state-management, selector]
 
 environment:
   sdk: '>=3.0.0 <4.0.0' 
@@ -35,11 +37,12 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
   benchmark_harness:
-  riverpod:
+  riverpod: 
   flutter_riverpod: 
-  flutter_bloc:
-  get_it:
-  provider:
+  flutter_bloc: ^9.1.1
+  get_it: ^9.2.1
+  provider: ^6.1.5+1
+  all_observer: ^1.5.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -16,6 +16,7 @@
 ///   re-rendering.
 /// * **Higher Values (WORSE):** Indicates substantial architecture tax per single update event
 ///   (such as stream microtask scheduling, equality verification passes, or state tree traversals).
+import 'package:all_observer/all_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
@@ -115,6 +116,27 @@ class RiverpodHarness extends BenchmarkBase {
   void run() => container.read(riverpodProvider.notifier).increment();
 }
 
+class AllObserverHarness extends BenchmarkBase {
+  late Observable<int> counter;
+  late ObservableSubscription subscription;
+
+  AllObserverHarness() : super('All Observer (Observable)');
+
+  @override
+  void setup() {
+    counter = 0.obs;
+    subscription = counter.listen((_) {});
+  }
+
+  @override
+  void run() => counter.value++;
+
+  @override
+  void teardown() {
+    subscription.cancel();
+  }
+}
+
 // --- 3. EXECUTION PATH WITH AUTO-CONVERSION ---
 void main() {
   test('Execute Microbenchmarks of state', () {
@@ -126,6 +148,7 @@ void main() {
     final nativeUs = NativeHarness().measure();
     final blocUs = BlocHarness().measure();
     final riverpodUs = RiverpodHarness().measure();
+    final allObserver = AllObserverHarness().measure();
 
     void printMetric(String name, double us) {
       double ms = us / 1000.0;
@@ -137,6 +160,7 @@ void main() {
     printMetric('Flutter Native (ChangeNotifier)       ', nativeUs);
     printMetric('BLoC (Cubit)                          ', blocUs);
     printMetric('Riverpod (Notifier)                   ', riverpodUs);
+    printMetric('All Observer (Observable)             ', allObserver);
 
     debugPrint('\n================================================\n');
   });

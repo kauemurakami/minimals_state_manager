@@ -31,6 +31,8 @@ class MinMultiProvider extends StatefulWidget {
   /// The widget subtree that will have access to the provided state managers.
   final Widget child;
 
+  /// Creates a [MinMultiProvider] to inject multiple controllers
+  /// into the widget tree synchronously.
   const MinMultiProvider({
     super.key,
     required this.create,

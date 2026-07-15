@@ -26,9 +26,15 @@ import 'package:minimals_state_manager/src/providers/min_inherited.dart';
 /// controller.doSomething();
 /// ```
 class MinProvider<T extends ChangeNotifier> extends StatefulWidget {
+  /// A function or instance that creates the notifier to be provided.
   final T Function() create;
+
+  /// The widget below this provider in the tree, which will have
+  /// access to the provided controller.
   final Widget child;
 
+  /// Creates a [MinProvider] to inject a single controller
+  /// into the widget tree.
   const MinProvider({
     super.key,
     required this.create,

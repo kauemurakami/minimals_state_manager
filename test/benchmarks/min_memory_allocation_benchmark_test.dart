@@ -18,6 +18,7 @@
 ///   streams, subscription structures, or dependency graphs blocks CPU threads and results in aggressive
 ///   GC spikes.
 
+import 'package:all_observer/all_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
@@ -138,6 +139,21 @@ class RiverpodMemoryHarness extends BenchmarkBase {
   }
 }
 
+class AllObserverMemoryHarness extends BenchmarkBase {
+  AllObserverMemoryHarness() : super('All Observer Lifecycle Stress');
+
+  @override
+  void run() {
+    final counter = 0.obs;
+
+    final subscription = counter.listen((_) {});
+
+    counter.value = 10;
+
+    subscription.cancel();
+  }
+}
+
 // --- 3. EXECUTION PATH WITH AUTO-CONVERSION ---
 void main() {
   test('State Manager Lifecycle and Allocation Stress Benchmark', () {
@@ -153,6 +169,7 @@ void main() {
     final providerUs = ProviderMemoryHarness().measure();
     final blocUs = BlocMemoryHarness().measure();
     final riverpodUs = RiverpodMemoryHarness().measure();
+    final allObserver = AllObserverMemoryHarness().measure();
 
     void logMetric(String name, double us) {
       double ms = us / 1000.0;
@@ -166,6 +183,7 @@ void main() {
     logMetric('Provider (ChangeNotifierProvider)', providerUs);
     logMetric('BLoC Lifecycle Stress', blocUs);
     logMetric('Riverpod Lifecycle Stress', riverpodUs);
+    logMetric('All Observer Lifecycle Stress', allObserver);
 
     debugPrint(
       '=== BENCHMARK EXECUTION COMPLETED ===',

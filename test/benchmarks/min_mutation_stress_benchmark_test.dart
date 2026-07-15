@@ -18,6 +18,7 @@
 ///   mutations through asynchronous event buffers (Streams) or complex graph re-evaluation passes
 ///   locks down CPU cores, causing heavy interface micro-stutters (jank) and battery depletion.
 
+import 'package:all_observer/all_observer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
@@ -166,6 +167,31 @@ class RiverpodMutationHarness extends BenchmarkBase {
   }
 }
 
+class AllObserverMutationHarness extends BenchmarkBase {
+  AllObserverMutationHarness() : super('All Observer (100k Mutations)');
+
+  late Observable<int> counter;
+  late ObservableSubscription subscription;
+
+  @override
+  void setup() {
+    counter = 0.obs;
+    subscription = counter.listen((_) {});
+  }
+
+  @override
+  void run() {
+    for (int i = 0; i < 100000; i++) {
+      counter.value++;
+    }
+  }
+
+  @override
+  void teardown() {
+    subscription.cancel();
+  }
+}
+
 // --- 3. EXECUTION PATH WITH AUTO-CONVERSION ---
 void main() {
   test('High-Frequency Mutation Stress Benchmark', () {
@@ -178,6 +204,7 @@ void main() {
     final minimalsUs = MinimalsMutationHarness().measure();
     final blocUs = BlocMutationHarness().measure();
     final riverpodUs = RiverpodMutationHarness().measure();
+    final allObserver = AllObserverMutationHarness().measure();
 
     // Helper function to debugPrint both metrics clearly
     void printMetric(String name, double us) {
@@ -190,6 +217,7 @@ void main() {
     printMetric('Minimals (100k Mutations)      ', minimalsUs);
     printMetric('BLoC (100k Mutations)          ', blocUs);
     printMetric('Riverpod (100k Mutations)      ', riverpodUs);
+    printMetric('All Observer (100k Mutations)  ', allObserver);
 
     debugPrint('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
   });

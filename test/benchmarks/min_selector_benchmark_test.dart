@@ -14,6 +14,7 @@
 /// * **Greater than 1001 (BAD):** Indicates ghost rebuilds, lack of precision, or leaky state scopes, wasting CPU cycles on unnecessary visual redraws.
 /// * **Less than 1001 (BAD for synchronous rendering):** Indicates the state manager skipped frames or suffered from lag/throttling, dropping asynchronous updates on high-frequency changes.
 /// * **Exactly 1001 (PERFECT):** Indicates ideal atomic UI isolation. The rendering thread is perfectly synchronized with the data engine.
+import 'package:all_observer/all_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -62,6 +63,16 @@ class MyRiverpodNotifier extends Notifier<RiverpodState> {
 final myRiverpodProvider =
     NotifierProvider<MyRiverpodNotifier, RiverpodState>(MyRiverpodNotifier.new);
 
+// All Observer
+class MyObserverState {
+  final counter = 0.obs;
+  final unrelatedData = "Hello".obs;
+
+  void increment() {
+    counter.value++;
+  }
+}
+
 // --- 2. BENCHMARK WIDGET TESTS ---
 
 void main() {
@@ -69,12 +80,14 @@ void main() {
   int blocBuildCount = 0;
   int riverpodBuildCount = 0;
   int nativeSetStateBuildCount = 0;
+  int allObserverBuildCount = 0;
 
   setUp(() {
     minimalsBuildCount = 0;
     blocBuildCount = 0;
     riverpodBuildCount = 0;
     nativeSetStateBuildCount = 0;
+    allObserverBuildCount = 0;
   });
 
   group('UI Rebuild Isolation Benchmarks', () {
@@ -204,6 +217,34 @@ void main() {
 
       debugPrint('- Riverpod Consumer Total Rebuilds: $riverpodBuildCount ');
       expect(riverpodBuildCount, equals(1001));
+
+      debugPrint('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
+    });
+
+    testWidgets('All Observer Widget rebuild isolation test',
+        (WidgetTester tester) async {
+      final state = MyObserverState();
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Observer(
+              () {
+                allObserverBuildCount++;
+                return Text('Counter: ${state.counter.value}');
+              },
+            ),
+          ),
+        ),
+      );
+
+      for (int i = 0; i < 1000; i++) {
+        state.increment();
+        await tester.pump();
+      }
+
+      debugPrint('- All Observer Total Rebuilds: $allObserverBuildCount');
+      expect(allObserverBuildCount, equals(1001));
 
       debugPrint('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
     });

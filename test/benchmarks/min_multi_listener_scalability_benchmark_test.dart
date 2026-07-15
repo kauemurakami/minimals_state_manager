@@ -161,6 +161,7 @@ class AllObserverMultiListenerBenchmark extends BenchmarkBase {
 
   @override
   void setup() {
+    ObserverConfig.listenerLeakThreshold = 1001;
     counter = 0.obs;
 
     for (var i = 0; i < 1000; i++) {

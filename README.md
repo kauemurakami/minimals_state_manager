@@ -5,7 +5,6 @@
 [![Pub Points](https://img.shields.io/pub/points/minimals_state_manager?style=flat-square&color=blue)](https://pub.dev/packages/minimals_state_manager)
 [![Benchmarks](https://img.shields.io/badge/Performance-Benchmarks-blueviolet?style=flat&logo=dart&logoColor=white)](https://github.com/kauemurakami/minimals_state_manager/blob/main/BENCHMARKS.md)
 
-
 # Minimals State Manager
 
 A fastest, lightweight, high-performance, and boilerplate-free state management and dependency injection solution for Flutter.

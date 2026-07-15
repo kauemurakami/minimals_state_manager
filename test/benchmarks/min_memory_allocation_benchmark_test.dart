@@ -4,7 +4,7 @@
 /// solution to handle full resource lifecycles (instantiation, registration, mutation, and destruction).
 ///
 /// ## What this test simulates:
-/// A fast-paced navigation or runtime flow where an ephemeral controller/state is created,
+/// A fast-paced navigation or runtime flow where an ephemeral notifiers/state is created,
 /// has a UI listener registered, performs a data mutation, destroys the listener, and
 /// disposes of itself completely. This mimics heavy interactions like scrolling infinitely
 /// through complex lists or opening/closing pages rapidly.
@@ -40,15 +40,15 @@ class BlocMemoryCubit extends Cubit<int> {
   BlocMemoryCubit() : super(0);
 }
 
-class RiverpodMemoryNotifier extends AutoDisposeNotifier<int> {
+class RiverpodMemoryNotifier extends Notifier<int> {
   @override
   int build() => 0;
 }
 
+// 2. Use NotifierProvider.autoDispose referenciando o Notifier unificado
 final riverpodAutodispProvider =
-    AutoDisposeNotifierProvider<RiverpodMemoryNotifier, int>(
+    NotifierProvider.autoDispose<RiverpodMemoryNotifier, int>(
         RiverpodMemoryNotifier.new);
-
 // --- 2. BENCHMARK HARNESSES FOR LIFECYCLE STRESS ---
 
 class MinimalsMemoryHarness extends BenchmarkBase {

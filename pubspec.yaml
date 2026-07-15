@@ -35,11 +35,12 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
   benchmark_harness:
-  riverpod:
+  riverpod: 
   flutter_riverpod: 
-  flutter_bloc:
-  get_it:
-  provider:
+  flutter_bloc: ^9.1.1
+  get_it: ^9.2.1
+  provider: ^6.1.5+1
+  all_observer: ^1.5.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

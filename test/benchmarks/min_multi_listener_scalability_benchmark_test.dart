@@ -17,6 +17,7 @@
 ///   the event-loop scheduling, stream controller abstraction, or iteration logic scales poorly under pressure. This can
 ///   severely impact the application's responsiveness when handling rapid, concurrent real-time state changes.
 
+import 'package:all_observer/all_observer.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -150,6 +151,48 @@ class BlocMultiListenerBenchmark extends BenchmarkBase {
   }
 }
 
+class AllObserverMultiListenerBenchmark extends BenchmarkBase {
+  AllObserverMultiListenerBenchmark()
+      : super('All Observer (Observable) [1k Listeners]');
+
+  late Observable<int> counter;
+  // 1. Altere o tipo da lista aqui para armazenar as inscrições corretas:
+  final List<ObservableSubscription> subscriptions = [];
+
+  @override
+  void setup() {
+    counter = 0.obs;
+
+    for (var i = 0; i < 1000; i++) {
+      // 2. Guarde o retorno que é um ObservableSubscription
+      final subscription = counter.listen((val) {});
+      subscriptions.add(subscription);
+    }
+  }
+
+  @override
+  void run() {
+    counter.value++;
+  }
+
+  @override
+  void teardown() {
+    // 3. Cancele cada assinatura chamando o método .cancel()
+    for (final sub in subscriptions) {
+      sub.cancel();
+    }
+    subscriptions.clear();
+  }
+
+  @override
+  void report() {
+    final double us = measure();
+    final double ms = us / 1000.0;
+    debugPrint(
+        '$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
+  }
+}
+
 void main() {
   group('=== MULTI-LISTENER SCALABILITY BENCHMARKS (1,000 LISTENERS) ===', () {
     test('Execute High-Density Subscriber Dispatch Runtimes', () {
@@ -163,10 +206,13 @@ void main() {
       final minimalsBenchmark = MinimalsMultiListenerBenchmark()..report();
       final nativeBenchmark = NativeMultiListenerBenchmark()..report();
       final blocBenchmark = BlocMultiListenerBenchmark()..report();
+      final allObserverBenchmark = AllObserverMultiListenerBenchmark()
+        ..report();
 
       expect(minimalsBenchmark, isNotNull);
       expect(nativeBenchmark, isNotNull);
       expect(blocBenchmark, isNotNull);
+      expect(allObserverBenchmark, isNotNull);
     });
   });
 }

@@ -78,8 +78,8 @@ void main() {
   });
 
   group('UI Rebuild Isolation Benchmarks', () {
-    print('\n=== STARTING UI REBUILD ISOLATION BENCHMARKS ===');
-    print(
+    debugPrint('\n=== STARTING UI REBUILD ISOLATION BENCHMARKS ===');
+    debugPrint(
         '>> Checking frame precision (Ideal target is exactly 1001 rebuilds):');
 
     // ==================== MINIMALS SELECTOR ($) TEST ====================
@@ -107,7 +107,8 @@ void main() {
         await tester.pump();
       }
 
-      print('- Minimals Selector (\$) Total Rebuilds: $minimalsBuildCount');
+      debugPrint(
+          '- Minimals Selector (\$) Total Rebuilds: $minimalsBuildCount');
       expect(minimalsBuildCount, equals(1001));
     });
 
@@ -138,7 +139,7 @@ void main() {
         await tester.pump(Duration.zero);
       }
 
-      print('- BLoC BlocBuilder Total Rebuilds: $blocBuildCount ');
+      debugPrint('- BLoC BlocBuilder Total Rebuilds: $blocBuildCount ');
       expect(blocBuildCount, equals(1001));
     });
 
@@ -169,7 +170,7 @@ void main() {
         await tester.pump();
       }
 
-      print(
+      debugPrint(
           '- Flutter Native setState Total Rebuilds: $nativeSetStateBuildCount');
       expect(nativeSetStateBuildCount, equals(1001));
     });
@@ -201,10 +202,10 @@ void main() {
         await tester.pump();
       }
 
-      print('- Riverpod Consumer Total Rebuilds: $riverpodBuildCount ');
+      debugPrint('- Riverpod Consumer Total Rebuilds: $riverpodBuildCount ');
       expect(riverpodBuildCount, equals(1001));
 
-      print('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
+      debugPrint('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
     });
   });
 }

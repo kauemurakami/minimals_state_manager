@@ -1,15 +1,16 @@
 import 'package:example/app/data/models/item.dart';
+import 'package:flutter/foundation.dart';
 import 'package:minimals_state_manager/min_notifiers.dart';
 
 class CartController extends MinNotifier {
   @override
   onInit() {
-    print('cart controller init');
+    debugPrint('cart controller init');
   }
 
   @override
   onReady() {
-    print('cart controller ready');
+    debugPrint('cart controller ready');
   }
 
   List<Item> items = <Item>[];

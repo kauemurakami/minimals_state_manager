@@ -1,21 +1,23 @@
 // bin/min.dart
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 void main(List<String> args) {
   // Agora o comando oficial é 'snapshot'
   if (args.isEmpty || args[0] != 'snapshot') {
-    print('❌ Use: min snapshot <caminho_do_arquivo.dart>');
+    debugPrint(' Use: min snapshot <caminho_do_arquivo.dart>');
     return;
   }
 
   if (args.length < 2) {
-    print('❌ Forneça o caminho do arquivo model.');
+    debugPrint(' Forneça o caminho do arquivo model.');
     return;
   }
 
   final file = File(args[1]);
   if (!file.existsSync()) {
-    print('❌ Arquivo não encontrado: ${args[1]}');
+    debugPrint(' Arquivo não encontrado: ${args[1]}');
     return;
   }
 
@@ -67,7 +69,7 @@ void main(List<String> args) {
   }
 
   if (propsGeradas.isEmpty) {
-    print('⚠️ Nenhum atributo mapeável encontrado para o MinSnapshot.');
+    debugPrint(' Nenhum atributo mapeável encontrado para o MinSnapshot.');
     return;
   }
 
@@ -80,6 +82,6 @@ void main(List<String> args) {
         metodoSnapshot +
         content.substring(lastCurly);
     file.writeAsStringSync(novoConteudo);
-    print('🚀 [Min] `get snapshot` atualizado e sobrescrito com sucesso!');
+    debugPrint('🚀 [Min] `get snapshot` atualizado e sobrescrito com sucesso!');
   }
 }

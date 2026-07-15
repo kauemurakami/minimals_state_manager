@@ -169,8 +169,8 @@ class RiverpodMutationHarness extends BenchmarkBase {
 // --- 3. EXECUTION PATH WITH AUTO-CONVERSION ---
 void main() {
   test('High-Frequency Mutation Stress Benchmark', () {
-    print('\n=== STARTING HIGH-FREQUENCY MUTATION STRESS BENCHMARKS ===');
-    print(
+    debugPrint('\n=== STARTING HIGH-FREQUENCY MUTATION STRESS BENCHMARKS ===');
+    debugPrint(
         '>> Measuring execution speed for 100,000 rapid back-to-back state mutations:');
 
     // We execute measure() directly to grab the raw double value in microseconds
@@ -179,10 +179,11 @@ void main() {
     final blocUs = BlocMutationHarness().measure();
     final riverpodUs = RiverpodMutationHarness().measure();
 
-    // Helper function to print both metrics clearly
+    // Helper function to debugPrint both metrics clearly
     void printMetric(String name, double us) {
       double ms = us / 1000.0;
-      print('$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
+      debugPrint(
+          '$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
     }
 
     printMetric('Flutter Native (100k Mutations)', nativeUs);
@@ -190,6 +191,6 @@ void main() {
     printMetric('BLoC (100k Mutations)          ', blocUs);
     printMetric('Riverpod (100k Mutations)      ', riverpodUs);
 
-    print('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
+    debugPrint('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
   });
 }

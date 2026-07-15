@@ -15,7 +15,7 @@ abstract class GoRootDelegate {
         name: 'login',
         path: '/login',
         pageBuilder: (BuildContext context, GoRouterState state) {
-          print('initial login ${state.fullPath}');
+          debugPrint('initial login ${state.fullPath}');
           return CustomFadeTransition(
             child: MinProvider<LoginController>(
               create: () => LoginController(),
@@ -28,7 +28,7 @@ abstract class GoRootDelegate {
             name: 'signup',
             path: 'signup',
             pageBuilder: (BuildContext context, GoRouterState state) {
-              print('going signup ${state.fullPath}');
+              debugPrint('going signup ${state.fullPath}');
               return CustomFadeTransition(
                 child: MinProvider<SignupController>(
                   create: () => SignupController(),
@@ -42,7 +42,7 @@ abstract class GoRootDelegate {
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         pageBuilder: (context, state, child) {
-          print('shell direction ${state.fullPath}');
+          debugPrint('shell direction ${state.fullPath}');
           return CustomFadeTransition(
             child: MinMultiProvider(
               create: [
@@ -59,7 +59,7 @@ abstract class GoRootDelegate {
             name: 'home',
             path: '/home',
             pageBuilder: (BuildContext context, GoRouterState state) {
-              print(' ${state.fullPath}');
+              debugPrint(' ${state.fullPath}');
               return CustomSlideTransition(
                 from: SlideFrom.left,
                 key: state.pageKey,
@@ -76,7 +76,7 @@ abstract class GoRootDelegate {
             name: 'profile',
             path: '/profile',
             pageBuilder: (BuildContext context, GoRouterState state) {
-              print(' ${state.fullPath}');
+              debugPrint(' ${state.fullPath}');
               return CustomVerticalTransition(
                 key: state.pageKey,
                 child: MinProvider<ProfileController>(
@@ -90,7 +90,7 @@ abstract class GoRootDelegate {
             name: 'other',
             path: '/other',
             pageBuilder: (BuildContext context, GoRouterState state) {
-              print(' ${state.fullPath}');
+              debugPrint(' ${state.fullPath}');
               return CustomSlideTransition(
                 from: SlideFrom.right,
                 key: state.pageKey,

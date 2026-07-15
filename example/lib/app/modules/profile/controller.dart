@@ -1,20 +1,21 @@
+import 'package:flutter/foundation.dart';
 import 'package:minimals_state_manager/min_notifiers.dart';
 
 class ProfileController extends MinNotifier {
   @override
   onInit() {
-    print('profile controller init');
+    debugPrint('profile controller init');
   }
 
   @override
   void onReady() {
-    print('profile controller rendered');
+    debugPrint('profile controller rendered');
     super.onReady();
   }
 
   @override
   void dispose() {
-    print('profile controller dispose');
+    debugPrint('profile controller dispose');
     super.dispose();
   }
 }

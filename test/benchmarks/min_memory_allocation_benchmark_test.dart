@@ -57,7 +57,7 @@ class MinimalsMemoryHarness extends BenchmarkBase {
   @override
   void run() {
     final controller = MinMemoryController();
-    final listener = () {};
+    void listener() {}
 
     controller.addListener(listener);
     controller.value = 10;
@@ -75,7 +75,7 @@ class NativeChangeNotifierHarness extends BenchmarkBase {
   @override
   void run() {
     final notifier = NativeMemoryNotifier();
-    final listener = () {};
+    void listener() {}
 
     notifier.addListener(listener);
     notifier.value = 10;
@@ -98,7 +98,7 @@ class ProviderMemoryHarness extends BenchmarkBase {
       child: const SizedBox.shrink(),
     );
 
-    final listener = () {};
+    void listener() {}
     notifier.addListener(listener);
     notifier.value = 10;
     notifier.notifyListeners();
@@ -141,9 +141,12 @@ class RiverpodMemoryHarness extends BenchmarkBase {
 // --- 3. EXECUTION PATH WITH AUTO-CONVERSION ---
 void main() {
   test('State Manager Lifecycle and Allocation Stress Benchmark', () {
-    print('\n=== STARTING LIFECYCLE ALLOCATION STRESS BENCHMARKS ===');
-    print(
-        '>> Tracking microsecond/ millisecond runtime per creation/destruction cycle:');
+    debugPrint(
+      '=== STARTING LIFECYCLE ALLOCATION STRESS BENCHMARKS ===',
+    );
+    debugPrint(
+      '>> Tracking microsecond/ millisecond runtime per creation/destruction cycle:',
+    );
 
     final nativeUs = NativeChangeNotifierHarness().measure();
     final minimalsUs = MinimalsMemoryHarness().measure();
@@ -151,17 +154,21 @@ void main() {
     final blocUs = BlocMemoryHarness().measure();
     final riverpodUs = RiverpodMemoryHarness().measure();
 
-    void printMetric(String name, double us) {
+    void logMetric(String name, double us) {
       double ms = us / 1000.0;
-      print('$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
+      debugPrint(
+        '$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms',
+      );
     }
 
-    printMetric('Flutter Native (ChangeNotifier)', nativeUs);
-    printMetric('Minimals Lifecycle Stress', minimalsUs);
-    printMetric('Provider (ChangeNotifierProvider)', providerUs);
-    printMetric('BLoC Lifecycle Stress', blocUs);
-    printMetric('Riverpod Lifecycle Stress', riverpodUs);
+    logMetric('Flutter Native (ChangeNotifier)', nativeUs);
+    logMetric('Minimals Lifecycle Stress', minimalsUs);
+    logMetric('Provider (ChangeNotifierProvider)', providerUs);
+    logMetric('BLoC Lifecycle Stress', blocUs);
+    logMetric('Riverpod Lifecycle Stress', riverpodUs);
 
-    print('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
+    debugPrint(
+      '=== BENCHMARK EXECUTION COMPLETED ===',
+    );
   });
 }

@@ -1,3 +1,7 @@
+# 2.1.5
+- Add dartdocs in rest files by pubdev.
+- Fix all issues of the dart analyser.
+
 # 2.1.4
 - Fix platforms pubdev (need more time to release platforms)
 - Rolback variants to widget test to all platforms

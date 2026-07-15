@@ -1,4 +1,4 @@
-// # Multi-Listener Scalability Benchmark
+/// # Multi-Listener Scalability Benchmark
 ///
 /// ## Purpose
 /// This benchmark evaluates and compares the scalability and processing efficiency of state mutation propagation
@@ -16,11 +16,11 @@
 /// * **Higher values (Slower):** Exposes internal overhead within the subscriber synchronization mechanism. Slower runtimes mean
 ///   the event-loop scheduling, stream controller abstraction, or iteration logic scales poorly under pressure. This can
 ///   severely impact the application's responsiveness when handling rapid, concurrent real-time state changes.
-///
+
 import 'package:benchmark_harness/benchmark_harness.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/foundation.dart';
 import 'package:minimals_state_manager/min_notifiers.dart';
 
 // --- BENCHMARK CONCRETE IMPLEMENTATIONS ---
@@ -76,7 +76,9 @@ class MinimalsMultiListenerBenchmark extends BenchmarkBase {
   void report() {
     final double us = measure();
     final double ms = us / 1000.0;
-    print('$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
+    debugPrint(
+      '$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms',
+    );
   }
 }
 
@@ -103,7 +105,9 @@ class NativeMultiListenerBenchmark extends BenchmarkBase {
   void report() {
     final double us = measure();
     final double ms = us / 1000.0;
-    print('$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
+    debugPrint(
+      '$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms',
+    );
   }
 }
 
@@ -140,15 +144,21 @@ class BlocMultiListenerBenchmark extends BenchmarkBase {
   void report() {
     final double us = measure();
     final double ms = us / 1000.0;
-    print('$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
+    debugPrint(
+      '$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms',
+    );
   }
 }
 
 void main() {
   group('=== MULTI-LISTENER SCALABILITY BENCHMARKS (1,000 LISTENERS) ===', () {
     test('Execute High-Density Subscriber Dispatch Runtimes', () {
-      print('=== MULTI-LISTENER SCALABILITY BENCHMARKS (1,000 LISTENERS) ===');
-      print('Execute High-Density Subscriber Dispatch Runtimes \n');
+      debugPrint(
+        '=== MULTI-LISTENER SCALABILITY BENCHMARKS (1,000 LISTENERS) ===',
+      );
+      debugPrint(
+        'Execute High-Density Subscriber Dispatch Runtimes',
+      );
 
       final minimalsBenchmark = MinimalsMultiListenerBenchmark()..report();
       final nativeBenchmark = NativeMultiListenerBenchmark()..report();

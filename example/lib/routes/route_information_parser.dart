@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyRouteInformationParser extends RouteInformationParser<Uri> {
   @override
   Future<Uri> parseRouteInformation(RouteInformation routeInformation) {
-    print(' --- ${routeInformation.uri.pathSegments} --- ');
+    debugPrint(' --- ${routeInformation.uri.pathSegments} --- ');
     return Future.value(routeInformation.uri);
   }
 

@@ -1,6 +1,9 @@
 # 2.1.6
 - Add missing dart docs in files mentioneds in pubdev/score to get 100% coverage dartdoc
 - Fix reexport, remove unnecessary libraries
+- Add all_observer in benchmarks
+- Add package topics
+- Change infos
 
 # 2.1.5
 - Add dartdocs in rest files by pubdev.

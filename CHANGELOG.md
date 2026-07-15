@@ -1,5 +1,5 @@
 # 2.1.6
-- Add missing dart docs in files mentioneds in pubdev/score
+- Add missing dart docs in files mentioneds in pubdev/score to get 100% coverage dartdoc
 
 # 2.1.5
 - Add dartdocs in rest files by pubdev.

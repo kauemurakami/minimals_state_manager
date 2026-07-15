@@ -12,6 +12,8 @@ homepage: https://github.com/kauemurakami/minimals_state_manager
 
 repository: https://github.com/kauemurakami/minimals_state_manager
 
+topics: [di, provider, minimals-state-manager, state-management, selector]
+
 environment:
   sdk: '>=3.0.0 <4.0.0' 
   flutter: '>=3.10.0'

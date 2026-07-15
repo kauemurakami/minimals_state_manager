@@ -1,3 +1,6 @@
+# 2.1.6
+- Add missing dart docs in files mentioneds in pubdev/score
+
 # 2.1.5
 - Add dartdocs in rest files by pubdev.
 - Fix all issues of the dart analyser.

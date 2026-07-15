@@ -1,4 +1,8 @@
 # 2.1.3
+- Fix platforms pubdev (need more time to release platforms)
+- Rolback variants to widget test to all platforms
+
+# 2.1.3
 - Fix platforms pubdev
 
 # 2.1.2

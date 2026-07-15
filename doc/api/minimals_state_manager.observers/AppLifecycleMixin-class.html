@@ -55,21 +55,23 @@
 
     
 <section class="desc markdown">
-  <p>Base observer that provides optional callbacks for Flutter application
-lifecycle events.</p>
-<p>Extend this class and override only the callbacks you need.</p>
-<p>Example:</p>
-<pre class="language-dart"><code class="language-dart">class HomeController extends MinNotifier
-    with AppLifecycleMixin {
-
+  <p>A mixin class that simplifies observing Flutter application lifecycle events,
+system updates, and navigation callbacks.</p>
+<p>This acts as a wrapper around <a href="https://api.flutter.dev/flutter/widgets/WidgetsBindingObserver-class.html">WidgetsBindingObserver</a>, allowing classes to
+react to lifecycle changes without having to manually register or implement
+all observer methods.</p>
+<p>Subclasses can mix in or extend this class and override only the specific
+callbacks they require.</p>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">class HomeController extends MinNotifier with AppLifecycleMixin {
   @override
   void onResumed() {
-    print('App resumed');
+    debugPrint('App returned to the foreground');
   }
 
   @override
   void onPaused() {
-    print('App paused');
+    debugPrint('App went to the background');
   }
 }
 </code></pre>
@@ -402,7 +404,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the active accessibility features of the platform are changed.
   
 
 </dd>
@@ -415,7 +417,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the predictive back gesture is canceled.
   
 
 </dd>
@@ -428,7 +430,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the platform's text scale factor changes (e.g., user changes font size settings).
   
 
 </dd>
@@ -441,7 +443,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the predictive back gesture is fully committed (user completed the swipe).
   
 
 </dd>
@@ -454,7 +456,8 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the application is still hosted on a Flutter engine but is
+detached from any host views.
   
 
 </dd>
@@ -467,7 +470,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the user taps the device status bar (primarily on iOS devices).
   
 
 </dd>
@@ -480,7 +483,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when all views of the application have been hidden.
   
 
 </dd>
@@ -493,7 +496,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the application is in an inactive state and is not receiving input.
   
 
 </dd>
@@ -506,7 +509,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called whenever the application's lifecycle state changes.
   
 
 </dd>
@@ -519,7 +522,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the system's preferred locales are updated.
   
 
 </dd>
@@ -532,7 +535,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the system is running low on available memory.
   
 
 </dd>
@@ -545,7 +548,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the application's physical metrics (like screen size or orientation) change.
   
 
 </dd>
@@ -558,7 +561,8 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the application is not currently visible to the user and is
+running in the background.
   
 
 </dd>
@@ -571,7 +575,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the platform's active brightness setting changes (e.g., toggling dark mode).
   
 
 </dd>
@@ -584,7 +588,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the system requests to pop the current route.
   
 
 </dd>
@@ -597,7 +601,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the system requests to push a new route path.
   
 
 </dd>
@@ -610,7 +614,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the system pushes new route information (e.g., via deep linking).
   
 
 </dd>
@@ -623,7 +627,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the platform requests to terminate the application.
   
 
 </dd>
@@ -636,7 +640,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when the application is visible and responding to user input.
   
 
 </dd>
@@ -649,7 +653,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when a predictive back gesture is initiated.
   
 
 </dd>
@@ -662,7 +666,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called sequentially as the predictive back gesture updates its progress.
   
 
 </dd>
@@ -675,7 +679,7 @@ view to the top.
 
 </dt>
 <dd>
-  
+  Called when a view's focus state transitions.
   
 
 </dd>
@@ -743,7 +747,7 @@ view to the top.
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.0
+      2.1.4
   </span>
   
 </footer>

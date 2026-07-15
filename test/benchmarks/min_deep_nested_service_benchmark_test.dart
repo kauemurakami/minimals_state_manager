@@ -18,6 +18,7 @@
 library deep_nested_benchmark;
 
 import 'package:benchmark_harness/benchmark_harness.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minimals_state_manager/min_services.dart';
@@ -113,6 +114,7 @@ class MinimalsDeepNestedBenchmark extends BenchmarkBase {
 
   @override
   void run() {
+    // ignore: unused_local_variable
     final root = min<RootNode>();
   }
 
@@ -120,7 +122,9 @@ class MinimalsDeepNestedBenchmark extends BenchmarkBase {
   void report() {
     final double us = measure();
     final double ms = us / 1000.0;
-    print('$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
+    debugPrint(
+      '$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms',
+    );
   }
 }
 
@@ -147,6 +151,7 @@ class GetItDeepNestedBenchmark extends BenchmarkBase {
 
   @override
   void run() {
+    // ignore: unused_local_variable
     final root = sl.get<RootNode>();
   }
 
@@ -154,7 +159,9 @@ class GetItDeepNestedBenchmark extends BenchmarkBase {
   void report() {
     final double us = measure();
     final double ms = us / 1000.0;
-    print('$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
+    debugPrint(
+      '$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms',
+    );
   }
 }
 
@@ -163,8 +170,13 @@ void main() {
     test(
       'Execute Hierarchical Dependency Chain Lookup Performance',
       () {
-        print('=== DEEP NESTED SERVICE INJECTION BENCHMARKS (10 LAYERS) ===');
-        print('> Execute Hierarchical Dependency Chain Lookup Performance \n');
+        debugPrint(
+          '=== DEEP NESTED SERVICE INJECTION BENCHMARKS (10 LAYERS) ===',
+        );
+        debugPrint(
+          'Execute Hierarchical Dependency Chain Lookup Performance',
+        );
+
         final minimalsNested = MinimalsDeepNestedBenchmark()..report();
         final getItNested = GetItDeepNestedBenchmark()..report();
 

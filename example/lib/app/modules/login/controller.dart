@@ -1,6 +1,7 @@
 import 'package:example/app/data/services/auth/service.dart';
 import 'package:example/app/data/services/setup_locator.dart';
 import 'package:example/app/modules/login/repository.dart';
+import 'package:flutter/foundation.dart';
 import 'package:minimals_state_manager/min_notifiers.dart';
 
 class LoginController extends MinNotifier {
@@ -10,13 +11,13 @@ class LoginController extends MinNotifier {
 
   @override
   onInit() {
-    print('LoginController init');
+    debugPrint('LoginController init');
     super.onInit();
   }
 
   @override
   onReady() {
-    print('LoginController ready');
+    debugPrint('LoginController ready');
     super.onReady();
   }
 
@@ -38,7 +39,7 @@ class LoginController extends MinNotifier {
 
   @override
   void dispose() {
-    print('login controller dispose');
+    debugPrint('login controller dispose');
     super.dispose();
   }
 }

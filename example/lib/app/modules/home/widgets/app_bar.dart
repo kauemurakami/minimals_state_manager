@@ -48,7 +48,7 @@ class HomeAppBar extends StatelessWidget {
                       Flexible(
                           child: InkWell(
                         child: const Icon(Icons.search),
-                        onTap: () => print('search'),
+                        onTap: () => debugPrint('search'),
                       )),
                     ],
                   ),

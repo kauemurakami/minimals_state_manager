@@ -11,20 +11,20 @@ class HomeController extends MinNotifier with WidgetsBindingObserver {
   TextEditingController textController = TextEditingController();
 
   List<Item> items = <Item>[];
-  ItemType filter = ItemType.EMPTY;
+  ItemType filter = ItemType.empty;
   bool openned = true;
 
   @override
   void onInit() {
     super.onInit();
-    print('home controller init');
+    debugPrint('home controller init');
     scrollListener();
     getItems();
   }
 
   @override
   onReady() {
-    print('home controller rendered');
+    debugPrint('home controller rendered');
   }
 
   changeFilter(ItemType type) {
@@ -43,7 +43,7 @@ class HomeController extends MinNotifier with WidgetsBindingObserver {
   removeFilters() async {
     items = [];
     notifyListeners();
-    filter = ItemType.EMPTY;
+    filter = ItemType.empty;
     await getItems();
   }
 
@@ -56,7 +56,7 @@ class HomeController extends MinNotifier with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    print('home controller dispose');
+    debugPrint('home controller dispose');
     scrollController.dispose();
     super.dispose();
   }

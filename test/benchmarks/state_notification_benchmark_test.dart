@@ -118,8 +118,8 @@ class RiverpodHarness extends BenchmarkBase {
 // --- 3. EXECUTION PATH WITH AUTO-CONVERSION ---
 void main() {
   test('Execute Microbenchmarks of state', () {
-    print('\n=== INIT BENCHMARK STATE ENGINES ===');
-    print(
+    debugPrint('\n=== INIT BENCHMARK STATE ENGINES ===');
+    debugPrint(
         '>> Tracking execution runtime per single atomic notification cycle (Lower is Better):');
 
     final minimalsUs = MinimalsHarness().measure();
@@ -129,7 +129,8 @@ void main() {
 
     void printMetric(String name, double us) {
       double ms = us / 1000.0;
-      print('$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
+      debugPrint(
+          '$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
     }
 
     printMetric('Minimals (MinNotifier)                ', minimalsUs);
@@ -137,6 +138,6 @@ void main() {
     printMetric('BLoC (Cubit)                          ', blocUs);
     printMetric('Riverpod (Notifier)                   ', riverpodUs);
 
-    print('\n================================================\n');
+    debugPrint('\n================================================\n');
   });
 }

@@ -46,7 +46,7 @@ class BSFilters extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.06,
                       decoration: BoxDecoration(
                         border: Border.all(
-                            color: filter != ItemType.EMPTY &&
+                            color: filter != ItemType.empty &&
                                     (ItemType.validTypes[index] == filter)
                                 ? Colors.green
                                 : Colors.amber),

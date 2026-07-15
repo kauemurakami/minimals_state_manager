@@ -14,20 +14,20 @@ class DashController extends MinNotifier {
 
   @override
   void onInit() {
-    print('dash controller init');
+    debugPrint('dash controller init');
     super.onInit();
   }
 
   @override
   void onReady() {
-    print('dash widget rendered');
+    debugPrint('dash widget rendered');
     super.onReady();
   }
 
   goChangePage(int _, BuildContext context) async {
     currentIndex = _;
     notifyListeners();
-    print(
+    debugPrint(
         'route ${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath}');
     context.goNamed(
       pages[currentIndex],
@@ -36,7 +36,7 @@ class DashController extends MinNotifier {
 
   @override
   void dispose() {
-    print('dash controller dispose');
+    debugPrint('dash controller dispose');
     super.dispose();
   }
 }

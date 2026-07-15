@@ -1,4 +1,5 @@
 import 'package:example/app/data/models/user.dart';
+import 'package:flutter/foundation.dart';
 import 'package:minimals_state_manager/min_notifiers.dart';
 
 class AuthService extends MinNotifier {
@@ -7,13 +8,13 @@ class AuthService extends MinNotifier {
 
   @override
   void onInit() {
-    print('AuthService init');
+    debugPrint('AuthService init');
     super.onInit();
   }
 
   @override
   void onReady() {
-    print('AuthService ready');
+    debugPrint('AuthService ready');
     super.onReady();
   }
 

@@ -1,7 +1,7 @@
 name: minimals_state_manager
 description: "A lightweight, high-performance, and boilerplate-free state management and dependency injection solution for Flutter."
 
-version: 2.1.4
+version: 2.1.5
 
 executables:
   min: min

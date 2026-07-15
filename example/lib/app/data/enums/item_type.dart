@@ -7,7 +7,7 @@ enum ItemType {
   A(_typeA, 'Tipo A'),
   B(_typeB, 'Tipo B'),
   C(_typeC, 'Tipo C'),
-  EMPTY(_empty, 'EMPTY');
+  empty(_empty, 'EMPTY');
 
   const ItemType(this._value, this._name);
 

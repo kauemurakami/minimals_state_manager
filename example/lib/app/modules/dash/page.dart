@@ -8,7 +8,7 @@ import 'package:minimals_state_manager/min_widgets.dart';
 
 class DashPage extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  final child;
+  final Widget? child;
   DashPage({this.child, super.key});
 
   @override
@@ -34,7 +34,7 @@ class DashPage extends StatelessWidget {
           unselectedIconTheme: const IconThemeData(color: Colors.grey),
           backgroundColor: Colors.white,
           onTap: (_) {
-            print(_);
+            debugPrint('$_');
             controller.goChangePage(_, context)!;
           },
           //change go route

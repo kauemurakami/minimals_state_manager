@@ -4,6 +4,7 @@
 - Add all_observer in benchmarks
 - Add package topics
 - Change infos
+- Add tests coverage
 
 # 2.1.5
 - Add dartdocs in rest files by pubdev.

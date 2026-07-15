@@ -1,4 +1,4 @@
-name: Flutter tests and benchmarks
+name: tests and benchmarks
 run-name: Tests and benchmarks 🚀
 on:
   pull_request:
@@ -22,5 +22,10 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Run tests
-        run: flutter test
+      - name: Run Tests with Coverage
+        # O comando --coverage gera o arquivo lcov.info em coverage/lcov.info
+        run: flutter test --coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+      

@@ -33,9 +33,12 @@ import 'package:flutter/foundation.dart';
 /// }
 /// ```
 abstract class MinNotifier extends ChangeNotifier {
+  /// Initializes internal structures for subclasses of [MinNotifier].
+  MinNotifier();
+
   bool _isDisposed = false;
 
-  /// Retorna se o controller já foi encerrado pelo framework
+  /// Returns whether this controller has already been disposed of by the framework.
   bool get isDisposed => _isDisposed;
 
   /// Triggered automatically as soon as this controller instance is instantiated in memory.

@@ -41,13 +41,13 @@ class AuthController extends MinNotifier {
   bool loading = false;
   @override
   void onInit() {
-    print('AuthController init');
+    debugPrint('AuthController init');
     super.onInit();
   }
 
   @override
   void onReady() {
-    print('AuthController ready');
+    debugPrint('AuthController ready');
     super.onReady();
   }
 
@@ -69,7 +69,7 @@ class AuthController extends MinNotifier {
 
   @override
   void dispose() {
-    print('Auth controller disposed');
+    debugPrint('Auth controller disposed');
     super.dispose();
   }
 }
@@ -102,6 +102,7 @@ class AuthPage extends StatelessWidget {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   await controller.login();
+                  if (!context.mounted) return;
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -127,13 +128,13 @@ class AuthPage extends StatelessWidget {
 class AnotherController extends MinNotifier {
   @override
   void onInit() {
-    print('AnotherController init');
+    debugPrint('AnotherController init');
     super.onInit();
   }
 
   @override
   void onReady() {
-    print('AnotherController ready');
+    debugPrint('AnotherController ready');
 
     super.onReady();
   }
@@ -151,7 +152,7 @@ class MainController extends MinNotifier {
 
   @override
   void onReady() {
-    print('MainController ready');
+    debugPrint('MainController ready');
     super.onReady();
   }
 
@@ -197,6 +198,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.read<MainController>();
     //or
+    // ignore: unused_local_variable
     final anotherController = MinMultiProvider.read<AnotherController>(context);
 
     return Scaffold(

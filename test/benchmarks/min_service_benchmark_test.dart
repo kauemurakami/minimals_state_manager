@@ -18,6 +18,7 @@
 ///   such as fetching Repositories, Blocs, or UseCases inside tight frame windows.
 /// * **Higher Values (WORSE):** Indicates algorithmic overhead or complex internal hashing strategies
 ///   during registry index scans.
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:get_it/get_it.dart';
@@ -49,8 +50,11 @@ class MinServiceLazyHarness extends BenchmarkBase {
   @override
   void run() {
     // Simulates continuous retrieval of lazy initialized services
+    // ignore: unused_local_variable
     final db = MinService.instance<DatabaseService>();
+    // ignore: unused_local_variable
     final auth = MinService.instance<AuthService>();
+    // ignore: unused_local_variable
     final api = MinService.instance<ApiService>();
   }
 
@@ -78,8 +82,11 @@ class GetItLazyHarness extends BenchmarkBase {
   @override
   void run() {
     // Simulates continuous retrieval of lazy initialized services
+    // ignore: unused_local_variable
     final db = GetIt.instance<DatabaseService>();
+    // ignore: unused_local_variable
     final auth = GetIt.instance<AuthService>();
+    // ignore: unused_local_variable
     final api = GetIt.instance<ApiService>();
   }
 
@@ -109,8 +116,11 @@ class MinServiceReadyHarness extends BenchmarkBase {
   @override
   void run() {
     // Simulates raw lookup speed of pre-instantiated structures
+    // ignore: unused_local_variable
     final db = MinService.instance<DatabaseService>();
+    // ignore: unused_local_variable
     final auth = MinService.instance<AuthService>();
+    // ignore: unused_local_variable
     final api = MinService.instance<ApiService>();
   }
 
@@ -138,8 +148,11 @@ class GetItReadyHarness extends BenchmarkBase {
   @override
   void run() {
     // Simulates raw lookup speed of pre-instantiated structures
+    // ignore: unused_local_variable
     final db = GetIt.instance<DatabaseService>();
+    // ignore: unused_local_variable
     final auth = GetIt.instance<AuthService>();
+    // ignore: unused_local_variable
     final api = GetIt.instance<ApiService>();
   }
 
@@ -153,15 +166,16 @@ class GetItReadyHarness extends BenchmarkBase {
 // --- 4. EXECUTION PATH WITH AUTO-CONVERSION ---
 void main() {
   test('Dependency Injection / Service Locator Benchmark', () {
-    print('\n=== STARTING SERVICE LOCATOR BENCHMARKS ===');
+    debugPrint('\n=== STARTING SERVICE LOCATOR BENCHMARKS ===');
 
     void printMetric(String name, double us) {
       double ms = us / 1000.0;
-      print('$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
+      debugPrint(
+          '$name: ${us.toStringAsFixed(5)} us / ${ms.toStringAsFixed(5)} ms');
     }
 
     // Test Category 1: Lazy Singletons (Instantiated on first call)
-    print(
+    debugPrint(
         '\n>> Testing Lazy Singleton Retrieval Performance (Lower is Better):');
     final getItLazyUs = GetItLazyHarness().measure();
     final minLazyUs = MinServiceLazyHarness().measure();
@@ -169,10 +183,10 @@ void main() {
     printMetric('GetIt - Lazy Singleton                 ', getItLazyUs);
     printMetric('Minimals (MinService) - Lazy Singleton ', minLazyUs);
 
-    print('\n------------------------------------------------');
+    debugPrint('\n------------------------------------------------');
 
     // Test Category 2: Ready Singletons (Pre-allocated instances)
-    print(
+    debugPrint(
         '\n>> Testing Ready Singleton Retrieval Performance (Lower is Better):');
     final getItReadyUs = GetItReadyHarness().measure();
     final minReadyUs = MinServiceReadyHarness().measure();
@@ -180,6 +194,6 @@ void main() {
     printMetric('GetIt - Ready Singleton                ', getItReadyUs);
     printMetric('Minimals (MinService) - Ready Singleton', minReadyUs);
 
-    print('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
+    debugPrint('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
   });
 }

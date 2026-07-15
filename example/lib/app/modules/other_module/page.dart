@@ -7,8 +7,8 @@ class OtherPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.blue,
-        appBar: AppBar(title: Text('OtherPage')),
-        body: SafeArea(
+        appBar: AppBar(title: const Text('OtherPage')),
+        body: const SafeArea(
             child: Column(
           children: [
             Text('OtherController'),

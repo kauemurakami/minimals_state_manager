@@ -64,10 +64,10 @@
 <p>This package provides a complete ecosystem for managing application state with
 focus on developer experience, reactive rebuilding, and structural evaluation:</p>
 <ul>
-<li><strong>Reactive State:</strong> Efficiently dispatch and listen to updates via <a href="../minimals_state_manager.notifiers/MinNotifier-class.html">MinNotifier</a>.</li>
+<li><strong>Reactive State:</strong> Efficiently dispatch and listen to updates via <a href="../minimals_state_manager/MinNotifier-class.html">MinNotifier</a>.</li>
 <li><strong>Granular Rebuilding:</strong> Rebuild only what is strictly necessary with the <code>$</code> widget.</li>
-<li><strong>Boilerplate-free Tracking:</strong> Perform deep structural comparison on custom models via <a href="../minimals_state_manager.state/MinProps-class.html">MinProps</a>.</li>
-<li><strong>Dependency Injection:</strong> Scope and inject your states down the widget tree using <a href="../minimals_state_manager.providers/MinProvider-class.html">MinProvider</a>.</li>
+<li><strong>Boilerplate-free Tracking:</strong> Perform deep structural comparison on custom models via <a href="../minimals_state_manager/MinProps-class.html">MinProps</a>.</li>
+<li><strong>Dependency Injection:</strong> Scope and inject your states down the widget tree using <a href="../minimals_state_manager/MinProvider-class.html">MinProvider</a>.</li>
 <li><strong>Lifecycle Awareness:</strong> Monitor app states seamlessly with lifecycle observers.</li>
 </ul>
 </section>
@@ -77,17 +77,17 @@ focus on developer experience, reactive rebuilding, and structural evaluation:</
       <h2>Classes</h2>
       <dl>
           <dt id="$">
-  <span class="name "><a href="../minimals_state_manager.widgets/$-class.html">$</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/Listenable-class.html">Listenable</a></span>, <span class="type-parameter">K</span>&gt;</span></span> 
+  <span class="name "><a href="../minimals_state_manager/$-class.html">$</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/Listenable-class.html">Listenable</a></span>, <span class="type-parameter">K</span>&gt;</span></span> 
 
 </dt>
 <dd>
   A highly optimized reactive widget that listens to a <a href="https://api.flutter.dev/flutter/foundation/Listenable-class.html">Listenable</a> (such as
-<a href="../minimals_state_manager.notifiers/MinNotifier-class.html">MinNotifier</a>, <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a>, or <a href="https://api.flutter.dev/flutter/foundation/ValueNotifier-class.html">ValueNotifier</a>) and rebuilds its <a href="../minimals_state_manager.widgets/$/builder.html">builder</a>
-only when the specific slice of state returned by the <a href="../minimals_state_manager.widgets/$/selector.html">selector</a> changes.
+<a href="../minimals_state_manager/MinNotifier-class.html">MinNotifier</a>, <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a>, or <a href="https://api.flutter.dev/flutter/foundation/ValueNotifier-class.html">ValueNotifier</a>) and rebuilds its <a href="../minimals_state_manager/$/builder.html">builder</a>
+only when the specific slice of state returned by the <a href="../minimals_state_manager/$/selector.html">selector</a> changes.
 </dd>
 
           <dt id="AppLifecycleMixin">
-  <span class="name "><a href="../minimals_state_manager.observers/AppLifecycleMixin-class.html">AppLifecycleMixin</a></span> 
+  <span class="name "><a href="../minimals_state_manager/AppLifecycleMixin-class.html">AppLifecycleMixin</a></span> 
 
 </dt>
 <dd>
@@ -96,7 +96,7 @@ system updates, and navigation callbacks.
 </dd>
 
           <dt id="MinMultiProvider">
-  <span class="name "><a href="../minimals_state_manager.providers/MinMultiProvider-class.html">MinMultiProvider</a></span> 
+  <span class="name "><a href="../minimals_state_manager/MinMultiProvider-class.html">MinMultiProvider</a></span> 
 
 </dt>
 <dd>
@@ -105,7 +105,7 @@ of a list of state management instances simultaneously.
 </dd>
 
           <dt id="MinNotifier">
-  <span class="name "><a href="../minimals_state_manager.notifiers/MinNotifier-class.html">MinNotifier</a></span> 
+  <span class="name "><a href="../minimals_state_manager/MinNotifier-class.html">MinNotifier</a></span> 
 
 </dt>
 <dd>
@@ -113,7 +113,7 @@ of a list of state management instances simultaneously.
 </dd>
 
           <dt id="MinProps">
-  <span class="name "><a href="../minimals_state_manager.state/MinProps-class.html">MinProps</a></span> 
+  <span class="name "><a href="../minimals_state_manager/MinProps-class.html">MinProps</a></span> 
 
 </dt>
 <dd>
@@ -121,7 +121,7 @@ of a list of state management instances simultaneously.
 </dd>
 
           <dt id="MinProvider">
-  <span class="name "><a href="../minimals_state_manager.providers/MinProvider-class.html">MinProvider</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></span>&gt;</span></span> 
+  <span class="name "><a href="../minimals_state_manager/MinProvider-class.html">MinProvider</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></span>&gt;</span></span> 
 
 </dt>
 <dd>
@@ -130,7 +130,7 @@ of a state manager instance.
 </dd>
 
           <dt id="MinService">
-  <span class="name "><a href="../minimals_state_manager.services/MinService-class.html">MinService</a></span> 
+  <span class="name "><a href="../minimals_state_manager/MinService-class.html">MinService</a></span> 
 
 </dt>
 <dd>
@@ -149,7 +149,7 @@ anywhere within your application.
       <h2>Extensions</h2>
       <dl>
           <dt id="ProviderExtension">
-  <span class="name "><a href="../minimals_state_manager.extensions/ProviderExtension.html">ProviderExtension</a></span>
+  <span class="name "><a href="../minimals_state_manager/ProviderExtension.html">ProviderExtension</a></span>
   on <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a>
   
 
@@ -181,13 +181,13 @@ anywhere within your application.
     <h5><span class="package-name">minimals_state_manager</span> <span class="package-kind">package</span></h5>
     <ol>
       <li class="section-title">Libraries</li>
-      <li><a href="../minimals_state_manager.extensions/">min_extensions</a></li>
-      <li><a href="../minimals_state_manager.notifiers/">min_notifiers</a></li>
-      <li><a href="../minimals_state_manager.observers/">min_observers</a></li>
-      <li><a href="../minimals_state_manager.state/">min_props</a></li>
-      <li><a href="../minimals_state_manager.providers/">min_providers</a></li>
-      <li><a href="../minimals_state_manager.services/">min_services</a></li>
-      <li><a href="../minimals_state_manager.widgets/">min_widgets</a></li>
+      <li><a href="../min_extensions/">min_extensions</a></li>
+      <li><a href="../min_notifiers/">min_notifiers</a></li>
+      <li><a href="../min_observers/">min_observers</a></li>
+      <li><a href="../min_props/">min_props</a></li>
+      <li><a href="../min_providers/">min_providers</a></li>
+      <li><a href="../min_services/">min_services</a></li>
+      <li><a href="../min_widgets/">min_widgets</a></li>
       <li><a href="../minimals_state_manager/">minimals_state_manager</a></li>
 </ol>
 
@@ -199,7 +199,7 @@ anywhere within your application.
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.5
+      2.1.6
   </span>
   
 </footer>

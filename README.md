@@ -7,7 +7,7 @@
 
 # Minimals State Manager
 
-A lightweight, high-performance, and boilerplate-free state management and dependency injection solution for Flutter.
+A fastest, lightweight, high-performance, and boilerplate-free state management and dependency injection solution for Flutter.
 
 ## Why Minimals?
 

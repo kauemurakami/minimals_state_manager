@@ -2,6 +2,5 @@
 ///
 /// This library provides classes like `MinProps` to allow deep comparison
 /// and state tracking without boilerplate.
-library minimals_state_manager.state;
 
 export 'src/state/min_props.dart';

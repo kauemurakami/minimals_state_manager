@@ -1,3 +1,6 @@
+# 2.2.2
+- Fix README doc reference notifier, not controller
+
 # 2.2.1
 - Get 100% coverage to dart docs package
 

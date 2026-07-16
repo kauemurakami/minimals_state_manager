@@ -54,6 +54,13 @@
 </h1></div>
 
     
+<section class="desc markdown">
+  <p>An abstract base class that provides structural equality and hashing based on
+a provided set of properties.</p>
+<p>Implementations of <a href="../minimals_state_manager/MinProps-class.html">MinProps</a> must provide a <a href="../minimals_state_manager/MinProps/props.html">props</a> record, which is then used
+to implement <a href="../minimals_state_manager/MinProps/operator_equals.html">operator ==</a> and <a href="../minimals_state_manager/MinProps/hashCode.html">hashCode</a>. This ensures that two instances
+of the same type are considered equal if their property values are identical.</p>
+</section>
 
 
 
@@ -65,7 +72,8 @@
           <span class="name"><a href="../minimals_state_manager/MinProps/MinProps.html">MinProps</a></span><span class="signature">()</span>
         </dt>
         <dd>
-          
+          Creates a <a href="../minimals_state_manager/MinProps-class.html">MinProps</a> instance.
+            <div class="constructor-modifier features">const</div>
         </dd>
     </dl>
   </section>
@@ -82,7 +90,7 @@
 
 </dt>
 <dd>
-  The hash code for this object.
+  Returns a hash code for this object based on its <a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a> and <a href="../minimals_state_manager/MinProps/props.html">props</a>.
   <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
 
 </dd>
@@ -94,7 +102,7 @@
 
 </dt>
 <dd>
-  
+  The collection of properties that define the equality of this instance.
   <div class="features"><span class="feature">no setter</span></div>
 
 </dd>
@@ -162,7 +170,7 @@
 
 </dt>
 <dd>
-  The equality operator.
+  Compares this object with <code>other</code> for structural equality.
   <div class="features"><span class="feature">override</span></div>
 
 </dd>

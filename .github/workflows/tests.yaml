@@ -8,13 +8,12 @@ on:
   pull_request:
     branches:
       - main
+      - dev
     types:
       - closed
 
 jobs:
   test:
-    # Removemos a restrição de "merged == true" porque agora o push direto também dispara
-    # E garantimos que ele rode se for um PR fechado OU um push direto
     if: github.event_name == 'push' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 

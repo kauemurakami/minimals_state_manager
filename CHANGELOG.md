@@ -1,3 +1,6 @@
+# 2.3.1
+- fix dart docs pub dev
+
 # 2.3.0
 - Multi-Instance Notifier Support: Introduced the ability to register and retrieve multiple distinct instances of the same Notifier type within the same scope.
   - Added support for tag-based identification in MinProvider, MinMultiProvider, and MinService.

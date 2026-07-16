@@ -69,28 +69,27 @@ of a state manager instance.</p>
   child: const MyView(),
 )
 </code></pre>
-<p>or usage with tag
-MinProvider(
-create: () =&gt; MyViewModel(),
-tag: 'page1',
-child: const MyView(),
-)</p>
-<pre class="language-dart"><code>**Accessing state inside build() (Rebuilds on change):**
-```dart
-final notifier = MinProvider.watch&lt;MyNotifier&gt;(context);
-with tag
+<pre class="language-dart"><code class="language-dart">//or usage with tag
+ MinProvider(
+  create: () =&gt; MyViewModel(),
+  tag: 'page1',
+  child: const MyView(),
+)
+</code></pre>
+<p><strong>Accessing state inside build() (Rebuilds on change):</strong></p>
+<pre class="language-dart"><code class="language-dart">final notifier = MinProvider.watch&lt;MyNotifier&gt;(context);
+//with tag
 final notifier = MinProvider.watch&lt;MyNotifier&gt;(context, tag: 'page1');
 </code></pre>
 <p><strong>Accessing state for callbacks/methods (No rebuilds):</strong></p>
 <pre class="language-dart"><code class="language-dart">final notifier = MinProvider.read&lt;MyNotifier&gt;(context);
-usage with tags
+//usage with tags
 final notifier = MinProvider.read&lt;MyNotifier&gt;(context, tag: 'page1');
 controller.doSomething();
 </code></pre>
-<p>or use provider_extensions</p>
+<p>//or use provider_extensions</p>
 <pre class="language-dart"><code class="language-dart">final notifier = context.read&lt;MyNotifier&gt;(tag: 'page1');
 final notifier = context.watch&lt;MyNotifier&gt;(tag: 'page1');
-
 </code></pre>
 </section>
 

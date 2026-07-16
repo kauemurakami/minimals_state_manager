@@ -1,13 +1,12 @@
 import 'package:flutter/widgets.dart';
 import '../state/min_notifier.dart';
-import '../types/tagged_notifier.dart';
 import 'min_multi_inherited.dart';
 
 /// A multi-provider widget that manages the lifecycle (initialization, readiness,
 /// and disposal) of a collection of state management instances simultaneously.
 ///
 /// It accepts a list of objects, supporting either raw factory functions `() => MyNotifier()`
-/// or tagged instances defined via [TaggedNotifier] (using the `.tag()` extension).
+/// or tagged instances defined via `TaggedNotifier` (using the `.tag()` extension).
 ///
 /// Example usage:
 /// ```dart

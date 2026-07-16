@@ -1,3 +1,6 @@
+# 2.2.1
+- Get 100% coverage to dart docs package
+
 # 2.2.0
 - Add missing dart docs to get 100% covarage of the dart docs in pub score (before was 91.5%)
 - Generate dart doc api

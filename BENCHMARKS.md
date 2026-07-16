@@ -1,135 +1,87 @@
 # ⚡ Performance & Benchmarks
 
-This document consolidates the benchmark results executed within the **Minimals State Manager** ecosystem. The goal of these tests is to transparently measure CPU efficiency, object allocation overhead, and notification dispatch runtimes compared to the leading solutions in the Flutter ecosystem.
-
-> 🔬 **Benchmark Environment:** Executed using the native `benchmark_harness` infrastructure under the Dart compiler optimized for production (Release mode). The efficiency multiplier indicates how many times faster Minimals performs against its competitors ($Runtime_{Competitor} / Runtime_{Minimals}$).
-
----
+This document consolidates the benchmark results executed within the **Minimals State Manager** ecosystem.
 
 ## 📦 1. Lifecycle Allocation & Memory Stress
-* **Test Type:** Object Allocation & Disposal Footprint (Lifecycle Tax).
-* **Objective:** Measures the precise runtime in microseconds required to fully instantiate a state container along with its listeners, and subsequently destroy it. This test evaluates the architectural "tax" a framework imposes when creating and disposing of views, controllers, or routes frequently.
-* **Metric Rule:** *Lower is better* (Lower execution runtime indicates an ultra-lightweight object initialization footprint and significantly reduced Garbage Collector pressure).
-
 | State Manager | Runtime (μs) | Runtime (ms) | Multiplier (CPU Efficiency) |
 | :--- | :--- | :--- | :--- |
-| **Minimals Lifecycle Stress** | **0.95688 us** | **0.00096 ms** | **Baseline (1x)** |
-| Flutter Native (`ChangeNotifier`) | 0.94361 us | 0.00094 ms | 0.98x (Identical) |
-| Provider (`ChangeNotifierProvider`) | 1.14585 us | 0.00115 ms | 1.19x slower |
-| Riverpod Lifecycle Stress | 120.68165 us | 0.12068 ms | 126.12x slower |
-| BLoC Lifecycle Stress | 192.49009 us | 0.19249 ms | 201.16x slower |
+| **Minimals (MinMultiProvider)** | **0.94383 us** | **0.00094 ms** | **1.0x (Baseline)** |
+| **Minimals (MinProvider)** | 0.97705 us | 0.00098 ms | 1.04x slower |
+| Flutter Native (`ChangeNotifier`) | 0.94838 us | 0.00095 ms | 1.01x slower |
+| Provider (`ChangeNotifierProvider`) | 1.16302 us | 0.00116 ms | 1.23x slower |
+| Provider (`MultiProvider`) | 1.95554 us | 0.00196 ms | 2.07x slower |
+| All Observer Lifecycle Stress | 28.02282 us | 0.02802 ms | 29.69x slower |
+| BLoC Lifecycle Stress | 198.04634 us | 0.19805 ms | 209.83x slower |
+| Riverpod Lifecycle Stress | 230.10572 us | 0.23011 ms | 243.80x slower |
 
 ---
 
-## ⚡ 2. High-Frequency Mutation Stress Test
-* **Test Type:** Direct State Mutation Throughput.
-* **Objective:** Evaluates the internal core processing speed under a heavy, continuous loop of 100,000 rapid, back-to-back state mutations. This simulates extreme real-time data streaming workloads, such as processing active WebSockets, handling high-fps animations, or parsing high-frequency hardware sensor feeds.
-* **Metric Rule:** *Lower is better* (Lower execution runtime indicates maximum throughput capacity without throttling or dropping frames).
-
+## ⚡ 2. High-Frequency Mutation Stress Test (100k Mutations)
 | State Manager | Runtime (μs) | Runtime (ms) | Multiplier (CPU Efficiency) |
 | :--- | :--- | :--- | :--- |
-| **Minimals (100k Mutations)** | **15255.23881 us** | **15.25524 ms** | **Baseline (1x)** |
-| Flutter Native (100k Mutations) | 15405.04478 us | 15.40504 ms | 1.01x slower |
-| BLoC (100k Mutations) | 49559.40000 us | 49.55940 ms | 3.24x slower |
-| Riverpod (100k Mutations) | 124016.29412 us | 124.01629 ms | 8.12x slower |
+| **Minimals (100k Mutations)** | **15694.59231 us** | **15.69459 ms** | **1.0x (Baseline)** |
+| Flutter Native (100k Mutations) | 15450.02239 us | 15.45002 ms | 0.98x (Identical) |
+| BLoC (100k Mutations) | 49603.80435 us | 49.60380 ms | 3.16x slower |
+| All Observer (100k Mutations) | 2359778.00000 us | 2359.77800 ms | 150.35x slower |
+| Riverpod (100k Mutations) | 4886420.50000 us | 4886.42050 ms | 311.34x slower |
 
 ---
 
 ## 🎯 3. UI Rebuild Isolation and Scope Precision
-* **Test Type:** UI Scope Targeting & Rebuild Precision.
-* **Objective:** Counts the exact number of widget rebuild cycles triggered when targeted state variables undergo modifications. This ensures that the framework's selector strategy successfully isolates visual components, blocking unnecessary re-rendering cycles from leaking into parent UI scopes.
-* **Metric Rule:** *Lower is better* (The count should perfectly match the exact number of data mutations; any additional rebuild represents wasted GPU/CPU layout cycles).
-
 | State Manager | Selector Strategy | Total UI Rebuilds | Precision Status |
 | :--- | :--- | :--- | :--- |
-| **Minimals** | Selector (`$`) | 1001 | 100% Precise (Perfect Isolation) |
-| BLoC | `BlocBuilder` | 1001 | 100% Precise (Perfect Isolation) |
-| Flutter Native | `setState` (Scoped) | 1001 | 100% Precise (Perfect Isolation) |
-| Riverpod | `Consumer` | 1001 | 100% Precise (Perfect Isolation) |
+| **Minimals** | Selector (`$`) | 1001 | 100% Precise |
+| BLoC | `BlocBuilder` | 1001 | 100% Precise |
+| Flutter Native | `setState` (Scoped) | 1001 | 100% Precise |
+| Riverpod | `Consumer` | 1001 | 100% Precise |
+| All Observer | `Observer` | 1001 | 100% Precise |
 
 ---
 
-## 📦 4. Service Locator Dependency Injection (DI Container)
-* **Test Type:** Memory Registry Lookup & Reference Matching Map Scan.
-* **Objective:** Measures the absolute execution speed of scanning the internal registry container to retrieve a registered object dependency using `MinService` compared directly to the industry standard (`GetIt`). Divided into on-demand factory evaluation (Lazy) and pre-allocated map lookups (Ready).
-* **Metric Rule:** *Lower is better* (Pure, raw O(1) pointer map retrievals prevent dependency resolution from becoming a bottleneck as your app scales to hundreds of decoupled services).
-
-### On-Demand Factory Evaluation (Lazy Singletons)
+## 📦 4. Service Locator Dependency Injection (DI)
+**On-Demand Factory Evaluation (Lazy Singletons)**
 | DI Engine | Runtime (μs) | Runtime (ms) | Multiplier (CPU Efficiency) |
 | :--- | :--- | :--- | :--- |
-| **Minimals (`MinService`)** | **0.75712 us** | **0.00076 ms** | **Baseline (1x)** |
-| GetIt - Lazy Singleton | 10.85896 us | 0.01086 ms | 14.34x slower |
+| **Minimals (MinService)** | **2.81130 us** | **0.00281 ms** | **1.0x (Baseline)** |
+| GetIt - Lazy Singleton | 10.40901 us | 0.01041 ms | 3.70x slower |
 
-### Pre-Allocated Map Lookups (Ready Singletons)
+**Pre-Allocated Map Lookups (Ready Singletons)**
 | DI Engine | Runtime (μs) | Runtime (ms) | Multiplier (CPU Efficiency) |
 | :--- | :--- | :--- | :--- |
-| **Minimals (`MinService`)** | **0.76032 us** | **0.00076 ms** | **Baseline (1x)** |
-| GetIt - Ready Singleton | 10.89023 us | 0.01089 ms | 14.32x slower |
+| **Minimals (MinService)** | **2.79872 us** | **0.00280 ms** | **1.0x (Baseline)** |
+| GetIt - Ready Singleton | 11.53752 us | 0.01154 ms | 4.12x slower |
 
 ---
 
 ## ⚛️ 5. Atomic State Notification Cycle
-* **Test Type:** Single Event Dispatch and Notification Propagation.
-* **Objective:** Isolates and evaluates the absolute minimal code execution path required by the state machine to register a single variable modification and instantly alert a single active listener. It strips away loops to inspect the raw algorithmic efficiency of the underlying callback arrays.
-* **Metric Rule:** *Lower is better* (Exceptional leanness here guarantees that the application context responds with close-to-zero latency, avoiding UI micro-stutters during interactions).
-
 | State Manager | Runtime (μs) | Runtime (ms) | Multiplier (CPU Efficiency) |
 | :--- | :--- | :--- | :--- |
-| **Minimals (`MinNotifier`)** | **0.16110 us** | **0.00016 ms** | **Baseline (1x)** |
-| Flutter Native (`ChangeNotifier`) | 0.16072 us | 0.00016 ms | 0.99x (Identical) |
-| BLoC (`Cubit`) | 0.50092 us | 0.00050 ms | 3.10x slower |
-| Riverpod (`Notifier`) | 2.03051 us | 0.00203 ms | 12.60x slower |
+| **Minimals (MinNotifier)** | **0.16535 us** | **0.00017 ms** | **1.0x (Baseline)** |
+| Flutter Native (`ChangeNotifier`) | 0.16336 us | 0.00016 ms | 0.99x (Identical) |
+| BLoC (`Cubit`) | 0.49695 us | 0.00050 ms | 3.00x slower |
+| All Observer (Observable) | 24.22465 us | 0.02422 ms | 146.50x slower |
+| Riverpod (Notifier) | 71.30813 us | 0.07131 ms | 431.25x slower |
 
-### 6. 🌲 Deep Nested Service Injection Benchmarks (10 Layers)
+---
 
-> Execute Hierarchical Dependency Chain Lookup Performance
-
+## 6. 🌲 Deep Nested Service Injection Benchmarks (10 Layers)
 | Framework / Service Engine | Runtime (us) | Runtime (ms) | Speed Factor |
 | :--- | :--- | :--- | :--- |
-| **Minimals (MinService)** | **0.25658 us** | **0.00026 ms** | **1.0x (Baseline)** |
-| GetIt | 3.20147 us | 0.00320 ms | 12.48x slower |
+| **Minimals (MinService)** | **0.59344 us** | **0.00059 ms** | **1.0x (Baseline)** |
+| GetIt | 3.23401 us | 0.00323 ms | 5.45x slower |
 
-* **Objective:** Measures the architectural latency and type-graph parsing overhead when resolving a deeply chained dependency tree spanning 10 continuous layers.
-* **What it tests:** The time required by the container to recursively look up, hash, and inject multiple layers of dependent services until arriving at the requested root entity.
-* **Metric Rule:** *Lower is Better*. Lower execution times demonstrate highly optimized pointer lookup structures.
-* **What it means:** `MinService` performs structural resolution via flat O(1) memory address mapping, executing approximately 12.5 times faster than GetIt. This guarantees that your dependency injection matrix remains close-to-zero latency even within dense, large-scale enterprise architectures.
+---
 
-### 7. 👥 Multi-Listener Scalability Benchmarks (1,000 Listeners)
-
-> Execute High-Density Subscriber Dispatch Runtimes
-
+## 7. 👥 Multi-Listener Scalability Benchmarks (1,000 Listeners)
 | Framework / State Manager | Runtime (us) | Runtime (ms) | Speed Factor |
 | :--- | :--- | :--- | :--- |
-| **Minimals (MinNotifier)** | **28.80769 us** | **0.02881 ms** | **1.0x (Baseline)** |
-| Flutter Native (`ChangeNotifier`) | 27.99434 us | 0.02799 ms | 0.97x (Identical) |
-| BLoC (`Cubit Stream`) | 393.31148 us | 0.39331 ms | 13.65x slower |
+| **Minimals (MinNotifier)** | **28.06508 us** | **0.02807 ms** | **1.0x (Baseline)** |
+| Flutter Native (`ChangeNotifier`) | 28.23812 us | 0.02824 ms | 1.01x slower |
+| All Observer (Observable) | 204.12633 us | 0.20413 ms | 7.27x slower |
+| BLoC (`Cubit Stream`) | 455.04834 us | 0.45505 ms | 16.21x slower |
 
-* **Objective:** Measures the architectural scalability and algorithmic efficiency of the notification dispatch pipeline when a single state mutation propagates across a high-density subscriber topology (1,000 active concurrent listeners).
-* **What it tests:** The execution time required to iterate through a massive array of active observers, execute their synchronous callbacks, and evaluate if the dispatch loop triggers unnecessary structural allocations or performance bottlenecks.
-* **Metric Rule:** *Lower is Better*. Lower values guarantee a highly lean notification layer capable of updating complex or massive multi-widget tree configurations flawlessly.
-* **What it means:** `MinNotifier` retains an identical performance envelope to Flutter's micro-optimized native core, demonstrating pure linear scalability. By completely bypassing stream-scheduling layers, it runs approximately 13.6 times faster than BLoC, ensuring close-to-zero CPU latency even under intense interface subscriber counts.
 
-#### run tests
-Open a terminal in main folder of the package and run: 
-
+### Run Benchmarks
 ```bash
-flutter test test/min_deep_nested_service_benchmark_test.dart
-```
-```bash
-flutter test test/min_memory_allocation_benchmark_test.dart
-```
-```bash
-flutter test test/min_multi_listener_scalability_benchmark_test.dart
-```
-```bash
-flutter test test/min_mutation_stress_benchmark_test.dart
-```
-```bash
-flutter test test/min_selector_benchmark_test.dart
-```
-```bash
-flutter test test/min_service_benchmark_test.dart
-```
-```bash
-flutter test test/mstate_notification_benchmark_test.dart
+flutter run test
 ```

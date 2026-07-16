@@ -1,3 +1,7 @@
+# 2.1.7
+- Remove dart docs in files that not more library
+- Generate dart doc api
+
 # 2.1.6
 - Add missing dart docs in files mentioneds in pubdev/score to get 100% coverage dartdoc
 - Fix reexport, remove unnecessary libraries

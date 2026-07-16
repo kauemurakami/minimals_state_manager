@@ -24,10 +24,17 @@ jobs:
 
       - name: Run Tests with Coverage
         run: flutter test --coverage
-      
+
+      - name: Fix coverage file paths
+        run: |
+          sed -i 's|SF:|SF:lib/|g' coverage/lcov.info
+          sed -i 's|SF:lib/lib/|SF:lib/|g' coverage/lcov.info
+        shell: bash
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
           files: coverage/lcov.info
           fail_ci_if_error: true 
           token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true

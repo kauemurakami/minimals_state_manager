@@ -55,7 +55,8 @@
     <section class="multi-line-signature">
       
 <span class="returntype">void</span>
-<span class="name ">destroy</span>&lt;<wbr><span class="type-parameter">T extends Object</span>&gt;(<wbr>)
+<span class="name ">destroy</span>&lt;<wbr><span class="type-parameter">T extends Object</span>&gt;(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="destroy-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span>, </span></li>
+</ol>})
 
       
 
@@ -63,17 +64,17 @@
     
 <section class="desc markdown">
   <p>Disposes and completely removes the instance of type <code>T</code> from memory.</p>
+<p>If <code>tag</code> is provided, only that specific instance is destroyed.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">void destroy&lt;T extends Object&gt;() {
-  final type = T;
-  if (_instances.containsKey(type)) {
-    final instance = _instances[type];
-
+  <pre class="language-dart"><code class="language-dart">void destroy&lt;T extends Object&gt;({String? tag}) {
+  final key = (T, tag);
+  if (_instances.containsKey(key)) {
+    final instance = _instances[key];
     if (instance is ChangeNotifier) {
       instance.dispose();
     } else {
@@ -81,12 +82,9 @@
         (instance as dynamic).dispose();
       } catch (_) {}
     }
-
-    _instances.remove(type);
+    _instances.remove(key);
   }
-  if (_builders.containsKey(type)) {
-    _builders.remove(type);
-  }
+  _builders.remove(key);
 }</code></pre>
 </section>
 
@@ -115,7 +113,7 @@
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

@@ -56,6 +56,7 @@
       const
       <span class="name ">MinProvider&lt;<wbr><span class="type-parameter">T extends ChangeNotifier</span>&gt;</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span></li>
 <li><span class="parameter" id="param-create"><span>required</span> <span class="type-annotation">T</span> <span class="parameter-name">create</span>(), </span></li>
+<li><span class="parameter" id="param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span>, </span></li>
 <li><span class="parameter" id="param-child"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span> <span class="parameter-name">child</span>, </span></li>
 </ol>})
     </section>
@@ -72,6 +73,7 @@ into the widget tree.</p>
   <pre class="language-dart"><code class="language-dart">const MinProvider({
   super.key,
   required this.create,
+  this.tag,
   required this.child,
 });</code></pre>
 </section>
@@ -101,7 +103,7 @@ into the widget tree.</p>
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

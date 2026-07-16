@@ -55,31 +55,41 @@
     <section class="multi-line-signature">
       
 <span class="returntype">T</span>
-<span class="name ">get</span>&lt;<wbr><span class="type-parameter">T extends Object</span>&gt;(<wbr>)
+<span class="name ">get</span>&lt;<wbr><span class="type-parameter">T extends Object</span>&gt;(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="get-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span>, </span></li>
+</ol>})
 
       
 
     </section>
     
 <section class="desc markdown">
-  <p>Retrieves the registered instance of type <code>T</code> without needing a BuildContext.</p>
+  <p>Retrieves the registered instance of type <code>T</code>.</p>
+<p>If <code>tag</code> is provided, it specifically searches for the instance
+registered with that tag. If no <code>tag</code> is provided, it retrieves the
+untagged instance.</p>
+<p>Throws an <a href="https://api.flutter.dev/flutter/dart-core/Exception-class.html">Exception</a> if the requested type (or tag) has not been registered.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">T get&lt;T extends Object&gt;() {
-  final type = T;
+  <pre class="language-dart"><code class="language-dart">T get&lt;T extends Object&gt;({String? tag}) {
+  final key = (T, tag);
 
-  if (!_instances.containsKey(type) &amp;&amp; _builders.containsKey(type)) {
-    _instances[type] = _builders[type]!();
+  &#47;&#47; Try to build lazily if instance is missing
+  if (!_instances.containsKey(key) &amp;&amp; _builders.containsKey(key)) {
+    _instances[key] = _builders[key]!();
   }
 
-  assert(_instances.containsKey(type),
-      &#39;MinService: Instance of type $type has not been initialized. Make sure to call registerSingleton&lt;$type&gt;(...) or registerLazySingleton&lt;$type&gt;(...) first.&#39;);
+  if (!_instances.containsKey(key)) {
+    final tagMsg = tag != null ? &#39; with tag &quot;$tag&quot;&#39; : &#39; without a tag&#39;;
+    throw Exception(&#39;MinService: Instance of type $T$tagMsg was not found. &#39;
+        &#39;Ensure you registered it using registerSingleton&lt;$T&gt;(..., tag: &quot;$tag&quot;) &#39;
+        &#39;or registerLazySingleton&lt;$T&gt;(..., tag: &quot;$tag&quot;).&#39;);
+  }
 
-  return _instances[type] as T;
+  return _instances[key] as T;
 }</code></pre>
 </section>
 
@@ -108,7 +118,7 @@
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

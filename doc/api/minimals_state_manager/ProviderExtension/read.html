@@ -55,7 +55,8 @@
     <section class="multi-line-signature">
       
 <span class="returntype">T</span>
-<span class="name ">read</span>&lt;<wbr><span class="type-parameter">T extends ChangeNotifier</span>&gt;(<wbr>)
+<span class="name ">read</span>&lt;<wbr><span class="type-parameter">T extends ChangeNotifier</span>&gt;(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="read-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span>, </span></li>
+</ol>})
 
       
 
@@ -68,41 +69,55 @@ registering a dependency or triggering widget rebuilds.</p>
 you only need to trigger methods or mutations on the state manager.</p>
 <p>This method looks up through both standalone <code>MinProvider</code> and <code>MinMultiProvider</code> containers.</p>
 <p>Example:</p>
-<pre class="language-dart"><code class="language-dart">class MyViewModel extends ChangeNotifier { ... }
+<pre class="language-dart"><code class="language-dart">class MyNotifier extends ChangeNotifier { ... }
 or
-class MyViewModel extends MinNotifier { ... }
+class MyNotifier extends MinNotifier { ... }
 usage :
-final myViewModel = context.read&lt;MyViewModel&gt;();
+final notifier = context.read&lt;MyNotifier&gt;();
+or using tag
+final notifier = context.read&lt;MyNotifier&gt;(tag: 'page1');
 </code></pre>
+<p>Optionally, you can provide a <code>tag</code> to perform a precise lookup. If the instance
+is not found, it throws a descriptive <a href="https://api.flutter.dev/flutter/foundation/FlutterError-class.html">FlutterError</a>.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">T read&lt;T extends ChangeNotifier&gt;() {
-  &#47;&#47; 1. Tries to look up the single-provider channel element
+  <pre class="language-dart"><code class="language-dart">T read&lt;T extends ChangeNotifier&gt;({String? tag}) {
+  &#47;&#47; 1. Try to look up the single-provider channel element
   final elementIndividual =
       getElementForInheritedWidgetOfExactType&lt;MinInherited&lt;T&gt;&gt;();
   if (elementIndividual != null) {
     return (elementIndividual.widget as MinInherited&lt;T&gt;).notifier!;
   }
 
-  &#47;&#47; 2. If not found, falls back to the multi-provider flat registry element
+  &#47;&#47; 2. Fall back to the multi-provider flat registry element
   final elementMulti =
       getElementForInheritedWidgetOfExactType&lt;MinMultiInherited&gt;();
   if (elementMulti != null) {
-    final provider = elementMulti.widget as MinMultiInherited;
-    final notifier = provider.notifiers.firstWhere(
-      (c) =&gt; c is T,
-      orElse: () =&gt; throw Exception(
-          &#39;Notifier of type $T was not found in MinMultiProvider.&#39;),
+    final inherited = elementMulti.widget as MinMultiInherited;
+    final entry = inherited.instances.firstWhere(
+      (item) =&gt; item.notifier is T &amp;&amp; item.tag == tag,
+      orElse: () {
+        if (tag != null) {
+          throw FlutterError(
+              &#39;MinMultiProvider: Notifier of type $T with tag &quot;$tag&quot; was not found.\n&#39;
+              &#39;Ensure you registered this specific notifier with .tag(&quot;$tag&quot;).&#39;);
+        } else {
+          throw FlutterError(
+              &#39;MinMultiProvider: Notifier of type $T without a tag was not found.\n&#39;
+              &#39;Ensure you registered this notifier without calling .tag().&#39;);
+        }
+      },
     );
-    return notifier as T;
+    return entry.notifier as T;
   }
 
-  throw Exception(
-      &#39;No MinProvider&lt;$T&gt; or MinMultiProvider found in the current context.&#39;);
+  throw FlutterError(
+      &#39;No MinProvider&lt;$T&gt; or MinMultiProvider found in the current context.\n&#39;
+      &#39;Make sure a provider is positioned above this widget in the tree.&#39;);
 }</code></pre>
 </section>
 
@@ -131,7 +146,7 @@ final myViewModel = context.read&lt;MyViewModel&gt;();
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

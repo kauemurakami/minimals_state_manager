@@ -1,7 +1,6 @@
 import 'package:example/app/data/models/item.dart';
 import 'package:example/routes/delegate_imports.dart';
 import 'package:flutter/material.dart';
-import 'package:minimals_state_manager/min_extensions.dart';
 import 'package:minimals_state_manager/min_widgets.dart';
 
 class CartPage extends StatelessWidget {
@@ -11,7 +10,7 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // final controller = MinMultiProvider.read<CartController>(context);
     // or
-    final controller = context.read<CartController>();
+    final controller = context.read<CartController>(tag: 'pages');
 
     return SafeArea(
       child: Container(

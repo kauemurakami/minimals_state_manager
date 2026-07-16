@@ -27,13 +27,21 @@ import 'package:riverpod/riverpod.dart';
 import 'package:provider/provider.dart' as pkg_provider;
 import 'package:minimals_state_manager/minimals_state_manager.dart';
 
-// --- 1. CONTROLLERS WITH DISPOSE LIFECYCLES ---
+// --- 1. notifierS WITH DISPOSE LIFECYCLES ---
 
-class MinMemoryController extends MinNotifier {
+class MinMemorynotifier extends MinNotifier {
+  int value = 0;
+}
+
+class MinAnotherMemorynotifier extends MinNotifier {
   int value = 0;
 }
 
 class NativeMemoryNotifier extends ChangeNotifier {
+  int value = 0;
+}
+
+class NativeAnotherMemoryNotifier extends ChangeNotifier {
   int value = 0;
 }
 
@@ -57,15 +65,47 @@ class MinimalsMemoryHarness extends BenchmarkBase {
 
   @override
   void run() {
-    final controller = MinMemoryController();
+    final notifier = MinMemorynotifier();
     void listener() {}
 
-    controller.addListener(listener);
-    controller.value = 10;
-    controller.notifyListeners();
+    MinProvider<MinMemorynotifier>(
+      create: () => notifier,
+      child: const SizedBox.shrink(),
+    );
+    notifier.addListener(listener);
+    notifier.value = 10;
+    notifier.notifyListeners();
 
-    controller.removeListener(listener);
-    controller.dispose();
+    notifier.removeListener(listener);
+    notifier.dispose();
+  }
+}
+
+class MinimalsMultiMemoryHarness extends BenchmarkBase {
+  MinimalsMultiMemoryHarness()
+      : super('Minimals (MinMultiProvider) Lifecycle Stress');
+
+  @override
+  void run() {
+    final notifier = MinMemorynotifier();
+    final anothernNotifier = MinAnotherMemorynotifier();
+    void listener() {}
+
+    // Simula a criação do MinMultiProvider
+    MinMultiProvider(
+      create: [
+        () => notifier,
+        () => anothernNotifier,
+      ],
+      child: const SizedBox.shrink(),
+    );
+
+    notifier.addListener(listener);
+    notifier.value = 10;
+    notifier.notifyListeners();
+
+    notifier.removeListener(listener);
+    notifier.dispose();
   }
 }
 
@@ -96,6 +136,38 @@ class ProviderMemoryHarness extends BenchmarkBase {
     final notifier = NativeMemoryNotifier();
     pkg_provider.ChangeNotifierProvider<NativeMemoryNotifier>(
       create: (_) => notifier,
+      child: const SizedBox.shrink(),
+    );
+
+    void listener() {}
+    notifier.addListener(listener);
+    notifier.value = 10;
+    notifier.notifyListeners();
+
+    notifier.removeListener(listener);
+    notifier.dispose();
+  }
+}
+
+class ProviderMultiMemoryHarness extends BenchmarkBase {
+  ProviderMultiMemoryHarness()
+      : super('Provider (MultiProvider) Lifecycle Stress');
+
+  @override
+  void run() {
+    final notifier = NativeMemoryNotifier();
+    final anotherNotifier = NativeMemoryNotifier();
+
+    // Simula a criação do MultiProvider com um ChangeNotifierProvider dentro
+    pkg_provider.MultiProvider(
+      providers: [
+        pkg_provider.ChangeNotifierProvider<NativeMemoryNotifier>(
+          create: (_) => notifier,
+        ),
+        pkg_provider.ChangeNotifierProvider<NativeMemoryNotifier>(
+          create: (_) => anotherNotifier,
+        ),
+      ],
       child: const SizedBox.shrink(),
     );
 
@@ -170,6 +242,8 @@ void main() {
     final blocUs = BlocMemoryHarness().measure();
     final riverpodUs = RiverpodMemoryHarness().measure();
     final allObserver = AllObserverMemoryHarness().measure();
+    final providerMultiUs = ProviderMultiMemoryHarness().measure();
+    final minimalsMultiUs = MinimalsMultiMemoryHarness().measure();
 
     void logMetric(String name, double us) {
       double ms = us / 1000.0;
@@ -179,8 +253,10 @@ void main() {
     }
 
     logMetric('Flutter Native (ChangeNotifier)', nativeUs);
-    logMetric('Minimals Lifecycle Stress', minimalsUs);
+    logMetric('Minimals (MinProvider)', minimalsUs);
+    logMetric('Minimals (MinMultiProvider)', minimalsMultiUs);
     logMetric('Provider (ChangeNotifierProvider)', providerUs);
+    logMetric('Provider (MultiProvider)', providerMultiUs);
     logMetric('BLoC Lifecycle Stress', blocUs);
     logMetric('Riverpod Lifecycle Stress', riverpodUs);
     logMetric('All Observer Lifecycle Stress', allObserver);

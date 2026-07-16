@@ -55,49 +55,34 @@
     <section class="multi-line-signature">
       
 <span class="returntype">T</span>
-<span class="name ">watch</span>&lt;<wbr><span class="type-parameter">T extends ChangeNotifier</span>&gt;(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="watch-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span></li>
-</ol>)
+<span class="name ">watch</span>&lt;<wbr><span class="type-parameter">T extends ChangeNotifier</span>&gt;(<wbr><ol class="parameter-list"> <li><span class="parameter" id="watch-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, {</span></li>
+<li><span class="parameter" id="watch-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span>, </span></li>
+</ol>})
 
       
 
     </section>
     
 <section class="desc markdown">
-  <p>Obtains a state manager of type <code>T</code> from the nearest <a href="../../minimals_state_manager/MinMultiProvider-class.html">MinMultiProvider</a> ancestor,
-and registers this <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> to be dependent on it.</p>
-<p>The widget using this method will automatically rebuild whenever the provider itself
-updates its internal notifier references.</p>
-<p>Throws a <a href="https://api.flutter.dev/flutter/foundation/FlutterError-class.html">FlutterError</a> if the <a href="../../minimals_state_manager/MinMultiProvider-class.html">MinMultiProvider</a> is not found in the context
-or if a notifier of type <code>T</code> was not registered in the <a href="../../minimals_state_manager/MinMultiProvider/create.html">create</a> list.</p>
-<p>Example usage:</p>
-<pre class="language-dart"><code class="language-dart">final loginController = MinMultiProvider.watch&lt;LoginController&gt;(context);
-</code></pre>
+  <p>Obtains a state manager of type <code>T</code> and registers the <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a>
+to rebuild when the provider container triggers a notification.</p>
+<p>Similar to <a href="../../minimals_state_manager/MinMultiProvider/read.html">read</a>, this method performs an exact match for the <code>tag</code>.
+If the instance is not found, it throws a descriptive <a href="https://api.flutter.dev/flutter/foundation/FlutterError-class.html">FlutterError</a>.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">static T watch&lt;T extends ChangeNotifier&gt;(BuildContext context) {
-  final provider =
-      context.dependOnInheritedWidgetOfExactType&lt;MinMultiInherited&gt;();
+  <pre class="language-dart"><code class="language-dart">static T watch&lt;T extends ChangeNotifier&gt;(BuildContext context,
+    {String? tag}) {
+  &#47;&#47; 1. First, find the notifier using the internal helper
+  final notifier = _findNotifier&lt;T&gt;(context, tag: tag);
 
-  if (provider == null) {
-    throw FlutterError(
-      &#39;MinMultiProvider was not found in the current context.\n&#39;
-      &#39;Make sure MinMultiProvider is positioned above this widget in the tree.&#39;,
-    );
-  }
+  &#47;&#47; 2. Subscribe to the inherited widget to trigger rebuilds
+  context.dependOnInheritedWidgetOfExactType&lt;MinMultiInherited&gt;();
 
-  final notifier = provider.notifiers.firstWhere(
-    (n) =&gt; n is T,
-    orElse: () =&gt; throw FlutterError(
-      &#39;Notifier of type $T was not found in this MinMultiProvider.\n&#39;
-      &#39;Verify that you added this state notifier factory to the &quot;create&quot; parameter list.&#39;,
-    ),
-  );
-
-  return notifier as T;
+  return notifier;
 }</code></pre>
 </section>
 
@@ -126,7 +111,7 @@ or if a notifier of type <code>T</code> was not registered in the <a href="../..
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

@@ -5,24 +5,20 @@ import 'package:flutter/widgets.dart';
 ///
 /// It extends [InheritedWidget] directly instead of [InheritedNotifier] because it acts
 /// as a flat registry/container for multiple state managers.
+/// An [InheritedWidget] that stores a map of tagged state managers.
+///
+/// It exposes the [taggedNotifiers] to the widget tree, allowing
+/// [MinMultiProvider] to perform efficient lookups.
 class MinMultiInherited extends InheritedWidget {
-  /// The flat collection of active state management layers.
-  final List<ChangeNotifier> notifiers;
+  final List<({ChangeNotifier notifier, String? tag})> instances;
 
-  /// Creates a [MinMultiInherited] container.
   const MinMultiInherited({
-    Key? key,
-    required this.notifiers,
-    required Widget child,
-  }) : super(
-          key: key,
-          child: child,
-        );
+    super.key,
+    required this.instances,
+    required super.child,
+  });
 
-  /// Determines if dependent widgets should be notified when the list of
-  /// notifiers changes.
   @override
-  bool updateShouldNotify(covariant MinMultiInherited oldWidget) {
-    return notifiers != oldWidget.notifiers;
-  }
+  bool updateShouldNotify(MinMultiInherited oldWidget) =>
+      instances != oldWidget.instances;
 }

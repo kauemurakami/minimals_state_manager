@@ -63,12 +63,34 @@ of a state manager instance.</p>
   child: const MyView(),
 )
 </code></pre>
-<p><strong>Accessing state inside build() (Rebuilds on change):</strong></p>
-<pre class="language-dart"><code class="language-dart">final controller = MinProvider.watch&lt;MyViewModel&gt;(context);
+<p>or</p>
+<pre class="language-dart"><code class="language-dart">MinProvider(
+  create: () =&gt; MyViewModel(),
+  child: const MyView(),
+)
+</code></pre>
+<p>or usage with tag
+MinProvider(
+create: () =&gt; MyViewModel(),
+tag: 'page1',
+child: const MyView(),
+)</p>
+<pre class="language-dart"><code>**Accessing state inside build() (Rebuilds on change):**
+```dart
+final notifier = MinProvider.watch&lt;MyNotifier&gt;(context);
+with tag
+final notifier = MinProvider.watch&lt;MyNotifier&gt;(context, tag: 'page1');
 </code></pre>
 <p><strong>Accessing state for callbacks/methods (No rebuilds):</strong></p>
-<pre class="language-dart"><code class="language-dart">final controller = MinProvider.read&lt;MyViewModel&gt;(context);
+<pre class="language-dart"><code class="language-dart">final notifier = MinProvider.read&lt;MyNotifier&gt;(context);
+usage with tags
+final notifier = MinProvider.read&lt;MyNotifier&gt;(context, tag: 'page1');
 controller.doSomething();
+</code></pre>
+<p>or use provider_extensions</p>
+<pre class="language-dart"><code class="language-dart">final notifier = context.read&lt;MyNotifier&gt;(tag: 'page1');
+final notifier = context.watch&lt;MyNotifier&gt;(tag: 'page1');
+
 </code></pre>
 </section>
 
@@ -103,7 +125,7 @@ controller.doSomething();
     <h2>Constructors</h2>
     <dl class="constructor-summary-list">
         <dt id="MinProvider.new" class="callable">
-          <span class="name"><a href="../minimals_state_manager/MinProvider/MinProvider.html">MinProvider</a></span><span class="signature">({<span class="parameter" id="param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="param-create"><span>required</span> <span class="type-annotation">T</span> <span class="parameter-name">create</span>(), </span><span class="parameter" id="param-child"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span> <span class="parameter-name">child</span></span>})</span>
+          <span class="name"><a href="../minimals_state_manager/MinProvider/MinProvider.html">MinProvider</a></span><span class="signature">({<span class="parameter" id="param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="param-create"><span>required</span> <span class="type-annotation">T</span> <span class="parameter-name">create</span>(), </span><span class="parameter" id="param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span>, </span><span class="parameter" id="param-child"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span> <span class="parameter-name">child</span></span>})</span>
         </dt>
         <dd>
           Creates a <a href="../minimals_state_manager/MinProvider-class.html">MinProvider</a> to inject a single controller
@@ -176,6 +198,18 @@ access to the provided controller.
 <dd class="inherited">
   A representation of the runtime type of the object.
   <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="tag" class="property">
+  <span class="name"><a href="../minimals_state_manager/MinProvider/tag.html">tag</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  link a instance notifier a one tag
+  <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
@@ -349,7 +383,7 @@ tools and by <a href="https://api.flutter.dev/flutter/foundation/DiagnosticsNode
     <h2>Static Methods</h2>
     <dl class="callables">
         <dt id="read" class="callable">
-  <span class="name"><a href="../minimals_state_manager/MinProvider/read.html">read</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="read-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span>)
+  <span class="name"><a href="../minimals_state_manager/MinProvider/read.html">read</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="read-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, {</span><span class="parameter" id="read-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span></span>})
     <span class="returntype parameter">&#8594; T</span>
   </span>
   
@@ -357,13 +391,12 @@ tools and by <a href="https://api.flutter.dev/flutter/foundation/DiagnosticsNode
 </dt>
 <dd>
   Accesses the controller without subscribing to changes.
-Use this inside event handlers (onPressed, etc.) or callbacks to avoid unnecessary rebuilds.
   
 
 </dd>
 
         <dt id="watch" class="callable">
-  <span class="name"><a href="../minimals_state_manager/MinProvider/watch.html">watch</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="watch-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span>)
+  <span class="name"><a href="../minimals_state_manager/MinProvider/watch.html">watch</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="watch-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, {</span><span class="parameter" id="watch-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span></span>})
     <span class="returntype parameter">&#8594; T</span>
   </span>
   
@@ -371,7 +404,6 @@ Use this inside event handlers (onPressed, etc.) or callbacks to avoid unnecessa
 </dt>
 <dd>
   Accesses the controller and subscribes the context to changes.
-Use this inside the <code>build</code> method when you need the UI to reflect state changes.
   
 
 </dd>
@@ -403,7 +435,7 @@ Use this inside the <code>build</code> method when you need the UI to reflect st
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

@@ -8,9 +8,15 @@ void main() {
       final notifier1 = ChangeNotifier();
       final notifier2 = ChangeNotifier();
 
+      // We must pass records: ({ChangeNotifier notifier, String? tag})
+      final instances = [
+        (notifier: notifier1, tag: null),
+        (notifier: notifier2, tag: 'my_tag'),
+      ];
+
       await tester.pumpWidget(
         MinMultiInherited(
-          notifiers: [notifier1, notifier2],
+          instances: instances,
           child: Container(),
         ),
       );
@@ -20,7 +26,9 @@ void main() {
           element.dependOnInheritedWidgetOfExactType<MinMultiInherited>();
 
       expect(inherited, isNotNull);
-      expect(inherited!.notifiers, containsAll([notifier1, notifier2]));
+      expect(inherited!.instances.length, 2);
+      expect(inherited.instances[0].notifier, notifier1);
+      expect(inherited.instances[1].tag, 'my_tag');
     });
 
     testWidgets('updateShouldNotify returns true when list changes',
@@ -31,20 +39,19 @@ void main() {
       // First build
       await tester.pumpWidget(
         MinMultiInherited(
-          notifiers: [notifier1],
+          instances: [(notifier: notifier1, tag: null)],
           child: Container(),
         ),
       );
 
-      // Rebuild with different list (triggers updateShouldNotify)
+      // Rebuild with different list
       await tester.pumpWidget(
         MinMultiInherited(
-          notifiers: [notifier2],
+          instances: [(notifier: notifier2, tag: null)],
           child: Container(),
         ),
       );
 
-      // If we got here, updateShouldNotify was executed and covered.
       expect(find.byType(Container), findsOneWidget);
     });
   });

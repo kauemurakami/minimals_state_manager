@@ -55,27 +55,36 @@
     <section class="multi-line-signature">
       
 <span class="returntype">T</span>
-<span class="name ">watch</span>&lt;<wbr><span class="type-parameter">T extends ChangeNotifier</span>&gt;(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="watch-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span></li>
-</ol>)
+<span class="name ">watch</span>&lt;<wbr><span class="type-parameter">T extends ChangeNotifier</span>&gt;(<wbr><ol class="parameter-list"> <li><span class="parameter" id="watch-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, {</span></li>
+<li><span class="parameter" id="watch-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span>, </span></li>
+</ol>})
 
       
 
     </section>
     
 <section class="desc markdown">
-  <p>Accesses the controller and subscribes the context to changes.
-Use this inside the <code>build</code> method when you need the UI to reflect state changes.</p>
+  <p>Accesses the controller and subscribes the context to changes.</p>
+<p>Use this inside the <code>build</code> method when you need the UI to reflect state changes.
+If a <code>tag</code> is provided, it specifically searches for the instance associated with
+that tag. If no <code>tag</code> is provided, it returns the nearest instance of <code>T</code>.</p>
+<p>Throws a <a href="https://api.flutter.dev/flutter/foundation/FlutterError-class.html">FlutterError</a> if no <a href="../../minimals_state_manager/MinProvider-class.html">MinProvider</a> for <code>T</code> is found, or if
+a specific <code>tag</code> was requested but not found in the ancestor chain.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">static T watch&lt;T extends ChangeNotifier&gt;(BuildContext context) {
-  final inherited =
-      context.dependOnInheritedWidgetOfExactType&lt;MinInherited&lt;T&gt;&gt;();
-  assert(inherited != null, &#39;No MinProvider&lt;$T&gt; found in context.&#39;);
-  return inherited!.notifier!;
+  <pre class="language-dart"><code class="language-dart">static T watch&lt;T extends ChangeNotifier&gt;(BuildContext context,
+    {String? tag}) {
+  final target = _findNotifier&lt;T&gt;(context, tag, true);
+
+  &#47;&#47; Se o &#39;target&#39; não foi o que veio no dependOnInheritedWidgetOfExactType inicial,
+  &#47;&#47; precisamos nos inscrever especificamente no &#39;target&#39; via aspect.
+  return context
+      .dependOnInheritedWidgetOfExactType&lt;MinInherited&lt;T&gt;&gt;(aspect: target)!
+      .notifier!;
 }</code></pre>
 </section>
 
@@ -104,7 +113,7 @@ Use this inside the <code>build</code> method when you need the UI to reflect st
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

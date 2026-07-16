@@ -100,8 +100,8 @@ system updates, and navigation callbacks.
 
 </dt>
 <dd>
-  A multi-provider widget that manages the lifecycle (<code>onInit</code>, <code>onReady</code>, and <code>dispose</code>)
-of a list of state management instances simultaneously.
+  A multi-provider widget that manages the lifecycle (initialization, readiness,
+and disposal) of a collection of state management instances simultaneously.
 </dd>
 
           <dt id="MinNotifier">
@@ -136,7 +136,7 @@ of a state manager instance.
 </dt>
 <dd>
   A universal, contextless Service Locator designed to manage any type of instance
-(such as ChangeNotifier controllers, pure Dart classes, HTTP clients, or repositories)
+(such as ChangeNotifier notifiers, pure Dart classes, HTTP clients, or repositories)
 anywhere within your application.
 </dd>
 
@@ -157,6 +157,16 @@ anywhere within your application.
 </dt>
 <dd>
   Context extensions to easily retrieve state managers from the widget tree.
+</dd>
+
+          <dt id="TaggedNotifierExtension">
+  <span class="name "><a href="../minimals_state_manager/TaggedNotifierExtension.html">TaggedNotifierExtension</a></span>
+  on T
+  
+
+</dt>
+<dd>
+  Allows for a fluent API to assign a tag to a Notifier registration.
 </dd>
 
       </dl>
@@ -200,7 +210,7 @@ anywhere within your application.
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

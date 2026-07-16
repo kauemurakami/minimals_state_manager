@@ -55,28 +55,27 @@
     
 <section class="desc markdown">
   <p>A universal, contextless Service Locator designed to manage any type of instance
-(such as ChangeNotifier controllers, pure Dart classes, HTTP clients, or repositories)
+(such as ChangeNotifier notifiers, pure Dart classes, HTTP clients, or repositories)
 anywhere within your application.</p>
-<h3 id="traditional-usage-via-singleton-instance">Traditional Usage (via Singleton instance):</h3>
-<pre class="language-dart"><code class="language-dart">// 1. Register your dependencies
-MinService.instance.registerSingleton(CartController());
-MinService.instance.registerLazySingleton(() =&gt; ApiService());
+<h3 id="registering-dependencies">Registering Dependencies:</h3>
+<pre class="language-dart"><code class="language-dart">// Singleton (Instant registration)
+MinService.instance.registerSingleton(Cartnotifier(), tag: 'cart');
 
-// 2. Retrieve your instances anywhere
-final cart = MinService.instance.get&lt;CartController&gt;();
+// Lazy Singleton (Registered only when first accessed)
+MinService.instance.registerLazySingleton(() =&gt; ApiService(), tag: 'api');
 </code></pre>
-<h3 id="custom-global-alias-usage-recommended-for-better-dx">Custom Global Alias Usage (Recommended for better DX):</h3>
-<p>You can define your own global shortcut in your initialization file:</p>
+<h3 id="retrieving-dependencies">Retrieving Dependencies:</h3>
+<pre class="language-dart"><code class="language-dart">// Without tag
+final service = MinService.instance.get&lt;MyService&gt;();
+final service = MinService.instance.get&lt;CartModel&gt;();
+
+// With tag
+final cart = MinService.instance.get&lt;Cartnotifier&gt;(tag: 'cart');
+</code></pre>
+<h3 id="using-as-a-shortcut">Using as a shortcut:</h3>
 <pre class="language-dart"><code class="language-dart">final min = MinService.instance;
-
-// Now you can use it fluidly:
-void setup() {
-  min.registerSingleton(CartController());
-}
-
-// Retrieve using the .get() method or the shortcut callable syntax:
-final cart = min.get&lt;CartController&gt;();
-final auth = min&lt;AuthController&gt;();
+final notifier = min&lt;Cartnotifier&gt;(tag: 'cart');
+final model = min&lt;CartModel&gt;(tag: 'cart');
 </code></pre>
 </section>
 
@@ -123,20 +122,20 @@ final auth = min&lt;AuthController&gt;();
     <h2>Methods</h2>
     <dl class="callables">
         <dt id="call" class="callable">
-  <span class="name"><a href="../minimals_state_manager/MinService/call.html">call</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr>)
+  <span class="name"><a href="../minimals_state_manager/MinService/call.html">call</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr>{<span class="parameter" id="call-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span></span>})
     <span class="returntype parameter">&#8594; T</span>
   </span>
   
 
 </dt>
 <dd>
-  Allows callable shortcut usage when assigned to a variable or instance pointer.
+  Allows callable shortcut usage.
   
 
 </dd>
 
         <dt id="destroy" class="callable">
-  <span class="name"><a href="../minimals_state_manager/MinService/destroy.html">destroy</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr>)
+  <span class="name"><a href="../minimals_state_manager/MinService/destroy.html">destroy</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr>{<span class="parameter" id="destroy-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span></span>})
     <span class="returntype parameter">&#8594; void</span>
   </span>
   
@@ -156,33 +155,34 @@ final auth = min&lt;AuthController&gt;();
 
 </dt>
 <dd>
-  Clears all registered active services and lazy builders running their dipose processes.
+  Clears all registered active services and lazy builders.
   
 
 </dd>
 
         <dt id="exists" class="callable">
-  <span class="name"><a href="../minimals_state_manager/MinService/exists.html">exists</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr>)
+  <span class="name"><a href="../minimals_state_manager/MinService/exists.html">exists</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr>{<span class="parameter" id="exists-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span></span>})
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
   </span>
   
 
 </dt>
 <dd>
-  Checks whether an active physical instance of type <code>T</code> is currently alive in memory.
+  Checks whether an active physical instance of type <code>T</code> (optionally with <code>tag</code>)
+is currently alive in memory.
   
 
 </dd>
 
         <dt id="get" class="callable">
-  <span class="name"><a href="../minimals_state_manager/MinService/get.html">get</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr>)
+  <span class="name"><a href="../minimals_state_manager/MinService/get.html">get</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr>{<span class="parameter" id="get-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span></span>})
     <span class="returntype parameter">&#8594; T</span>
   </span>
   
 
 </dt>
 <dd>
-  Retrieves the registered instance of type <code>T</code> without needing a BuildContext.
+  Retrieves the registered instance of type <code>T</code>.
   
 
 </dd>
@@ -201,7 +201,7 @@ final auth = min&lt;AuthController&gt;();
 </dd>
 
         <dt id="registerLazySingleton" class="callable">
-  <span class="name"><a href="../minimals_state_manager/MinService/registerLazySingleton.html">registerLazySingleton</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="registerLazySingleton-param-builder"><span class="type-annotation">T</span> <span class="parameter-name">builder</span>()</span>)
+  <span class="name"><a href="../minimals_state_manager/MinService/registerLazySingleton.html">registerLazySingleton</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="registerLazySingleton-param-builder"><span class="type-annotation">T</span> <span class="parameter-name">builder</span>(), {</span><span class="parameter" id="registerLazySingleton-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span></span>})
     <span class="returntype parameter">&#8594; void</span>
   </span>
   
@@ -214,7 +214,7 @@ final auth = min&lt;AuthController&gt;();
 </dd>
 
         <dt id="registerSingleton" class="callable">
-  <span class="name"><a href="../minimals_state_manager/MinService/registerSingleton.html">registerSingleton</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="registerSingleton-param-instance"><span class="type-annotation">T</span> <span class="parameter-name">instance</span></span>)
+  <span class="name"><a href="../minimals_state_manager/MinService/registerSingleton.html">registerSingleton</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="registerSingleton-param-instance"><span class="type-annotation">T</span> <span class="parameter-name">instance</span>, {</span><span class="parameter" id="registerSingleton-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span></span>})
     <span class="returntype parameter">&#8594; T</span>
   </span>
   
@@ -234,7 +234,7 @@ final auth = min&lt;AuthController&gt;();
 
 </dt>
 <dd>
-  Resets the locator, identical to <a href="../minimals_state_manager/MinService/destroyAll.html">destroyAll</a>, primarily for testing syntax familiarity.
+  Resets the locator, identical to <a href="../minimals_state_manager/MinService/destroyAll.html">destroyAll</a>.
   
 
 </dd>
@@ -319,7 +319,7 @@ final auth = min&lt;AuthController&gt;();
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

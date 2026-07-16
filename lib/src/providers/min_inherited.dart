@@ -17,10 +17,12 @@ import 'package:minimals_state_manager/src/state/min_notifier.dart';
 /// )
 /// ```
 class MinInherited<T extends ChangeNotifier> extends InheritedNotifier<T> {
+  final String? tag;
   const MinInherited({
     Key? key,
     required T notifier,
     required Widget child,
+    this.tag,
   }) : super(
           key: key,
           notifier: notifier,

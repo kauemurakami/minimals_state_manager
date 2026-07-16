@@ -11,6 +11,7 @@
 library minimals_state_manager;
 
 export 'src/extensions/min_provider_extensions.dart';
+export 'src/extensions/min_notifier_extensions.dart';
 export 'src/state/min_notifier.dart';
 export 'src/services/min_service.dart';
 export 'src/widgets/min_selector.dart';

@@ -1,164 +1,144 @@
 import 'package:flutter/widgets.dart';
-
-import '../../min_notifiers.dart';
+import '../state/min_notifier.dart';
+import '../types/tagged_notifier.dart';
 import 'min_multi_inherited.dart';
 
-/// A multi-provider widget that manages the lifecycle (`onInit`, `onReady`, and `dispose`)
-/// of a list of state management instances simultaneously.
+/// A multi-provider widget that manages the lifecycle (initialization, readiness,
+/// and disposal) of a collection of state management instances simultaneously.
 ///
-/// This widget acts as a shared lifecycle capsule for your state architecture. It accepts
-/// a heterogeneous list of factory functions returning either your custom [MinNotifier]
-/// controllers or standard Flutter [ChangeNotifier] classes (such as `ValueNotifier`).
-///
-/// If a provided instance inherits from [MinNotifier], its dedicated lifecycle hooks
-/// (`onInit` and `onReady`) will be executed automatically. Standard [ChangeNotifier]s
-/// will skip these steps safely while still benefiting from automated `dispose` cleanups.
+/// It accepts a list of objects, supporting either raw factory functions `() => MyNotifier()`
+/// or tagged instances defined via [TaggedNotifier] (using the `.tag()` extension).
 ///
 /// Example usage:
 /// ```dart
 /// MinMultiProvider(
-///   create: [
-///     () => LoginController(),    // Extends MinNotifier
-///     () => ValueNotifier<int>(0), // Standard Flutter ChangeNotifier subclass
+///   notifiers: [
+///     () => LoginController(),
+///     () => LoginController().tag('admin'),
 ///   ],
 ///   child: const MyView(),
 /// )
 /// ```
 class MinMultiProvider extends StatefulWidget {
-  /// The list of factory functions used to instantiate the state notifiers or change notifiers.
-  final List<ChangeNotifier Function()> create;
-
-  /// The widget subtree that will have access to the provided state managers.
+  final List<Object> create;
   final Widget child;
 
-  /// Creates a [MinMultiProvider] to inject multiple controllers
-  /// into the widget tree synchronously.
-  const MinMultiProvider({
-    super.key,
-    required this.create,
-    required this.child,
-  });
+  MinMultiProvider({super.key, required this.create, required this.child}) {
+    // Validação que garante que a lista não esteja vazia
+    if (create.isEmpty) {
+      throw FlutterError(
+        'MinMultiProvider: The "create" list cannot be empty. '
+        'You must provide at least one notifier provider.',
+      );
+    }
+  }
 
   @override
   State<MinMultiProvider> createState() => _MinMultiProviderState();
 
-  /// Obtains a state manager of type [T] from the nearest [MinMultiProvider] ancestor,
-  /// without listening to future changes or triggering widget rebuilds.
+  /// Obtains a state manager of type [T] from the nearest [MinMultiProvider] ancestor.
   ///
-  /// This method works seamlessly whether the requested class is a custom [MinNotifier]
-  /// or a standard [ChangeNotifier].
-  ///
-  /// Throws a [FlutterError] if the [MinMultiProvider] is not found in the context
-  /// or if a notifier of type [T] was not registered in the [create] list.
-  ///
-  /// Example usage:
-  /// ```dart
-  /// final loginViewModel = MinMultiProvider.read<LoginViewModel>(context);
-  /// ```
-  static T read<T extends ChangeNotifier>(BuildContext context) {
-    final element =
-        context.getElementForInheritedWidgetOfExactType<MinMultiInherited>();
-
-    if (element == null) {
-      throw FlutterError(
-        'MinMultiProvider was not found in the current context.\n'
-        'Make sure MinMultiProvider is positioned above this widget in the tree.',
-      );
-    }
-
-    final provider = element.widget as MinMultiInherited;
-
-    final notifier = provider.notifiers.firstWhere(
-      (n) => n is T,
-      orElse: () => throw FlutterError(
-        'Notifier of type $T was not found in this MinMultiProvider.\n'
-        'Verify that you added this state notifier factory to the "create" parameter list.',
-      ),
-    );
-
-    return notifier as T;
+  /// This method performs an exact match for the [tag]. If [tag] is null, it retrieves
+  /// the instance registered without a tag. If the instance is not found,
+  /// it throws a descriptive [FlutterError].
+  static T read<T extends ChangeNotifier>(BuildContext context, {String? tag}) {
+    return _findNotifier<T>(context, tag: tag);
   }
 
-  /// Obtains a state manager of type [T] from the nearest [MinMultiProvider] ancestor,
-  /// and registers this [BuildContext] to be dependent on it.
+  /// Obtains a state manager of type [T] and registers the [BuildContext]
+  /// to rebuild when the provider container triggers a notification.
   ///
-  /// The widget using this method will automatically rebuild whenever the provider itself
-  /// updates its internal notifier references.
-  ///
-  /// Throws a [FlutterError] if the [MinMultiProvider] is not found in the context
-  /// or if a notifier of type [T] was not registered in the [create] list.
-  ///
-  /// Example usage:
-  /// ```dart
-  /// final loginController = MinMultiProvider.watch<LoginController>(context);
-  /// ```
-  static T watch<T extends ChangeNotifier>(BuildContext context) {
-    final provider =
+  /// Similar to [read], this method performs an exact match for the [tag].
+  /// If the instance is not found, it throws a descriptive [FlutterError].
+  static T watch<T extends ChangeNotifier>(BuildContext context,
+      {String? tag}) {
+    // 1. First, find the notifier using the internal helper
+    final notifier = _findNotifier<T>(context, tag: tag);
+
+    // 2. Subscribe to the inherited widget to trigger rebuilds
+    context.dependOnInheritedWidgetOfExactType<MinMultiInherited>();
+
+    return notifier;
+  }
+
+  /// Internal helper to locate the notifier in the tree.
+  static T _findNotifier<T extends ChangeNotifier>(BuildContext context,
+      {String? tag}) {
+    final inherited =
         context.dependOnInheritedWidgetOfExactType<MinMultiInherited>();
 
-    if (provider == null) {
+    if (inherited == null) {
       throw FlutterError(
-        'MinMultiProvider was not found in the current context.\n'
-        'Make sure MinMultiProvider is positioned above this widget in the tree.',
+        'MinMultiProvider: No MinMultiInherited found. '
+        'Ensure that a MinMultiProvider is present above the current context.',
       );
     }
 
-    final notifier = provider.notifiers.firstWhere(
-      (n) => n is T,
-      orElse: () => throw FlutterError(
-        'Notifier of type $T was not found in this MinMultiProvider.\n'
-        'Verify that you added this state notifier factory to the "create" parameter list.',
-      ),
+    final entry = inherited.instances.firstWhere(
+      (item) => item.notifier is T && item.tag == tag,
+      orElse: () {
+        throw FlutterError(
+          'MinMultiProvider: Notifier of type $T ${tag != null ? 'with tag "$tag"' : 'without a tag'} was not found.',
+        );
+      },
     );
 
-    return notifier as T;
+    return entry.notifier as T;
   }
 }
 
+/// The state class that handles initialization and lifecycle for multiple notifiers.
 class _MinMultiProviderState extends State<MinMultiProvider> {
-  late final List<ChangeNotifier> _notifiers = [];
+  // Holds the instantiated controllers and their associated tags
+  final List<({ChangeNotifier notifier, String? tag})> _instances = [];
 
   @override
   void initState() {
     super.initState();
 
-    // 1. Instantiates each notifier and triggers early lifecycle hooks if applicable.
-    for (final createFn in widget.create) {
-      final notifier = createFn();
-      if (notifier is MinNotifier) {
-        notifier.onInit();
-      }
-      _notifiers.add(notifier);
-    }
+    for (final item in widget.create) {
+      // 1. Resolve the factory function (if it is a function, execute it to get the instance or record)
+      final result = (item is Function) ? (item as Function)() : item;
 
-    // 2. Waits for the first frame to render before safely executing onReady hooks for MinNotifiers.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        for (final notifier in _notifiers) {
-          if (notifier is MinNotifier) {
-            notifier.onReady();
-          }
-        }
-      }
-    });
-  }
+      ChangeNotifier? notifier;
+      String? tag;
 
-  @override
-  void dispose() {
-    // 3. Automatically discards all managed instances to prevent RAM memory leaks.
-    for (final notifier in _notifiers) {
-      notifier.dispose();
+      // 2. Check if the result is a TaggedNotifier (a record containing a create function and a tag)
+      if (result is ({ChangeNotifier Function() create, String? tag})) {
+        notifier = result.create();
+        tag = result.tag;
+      }
+      // 3. Handle cases where the result is already a direct ChangeNotifier instance (untagged)
+      else if (result is ChangeNotifier) {
+        notifier = result;
+        tag = null;
+      }
+
+      if (notifier != null) {
+        // Initialize custom MinNotifier lifecycle if applicable
+        if (notifier is MinNotifier) notifier.onInit();
+
+        // Add the resolved notifier and its tag to the instance registry
+        _instances.add((notifier: notifier, tag: tag));
+      }
     }
-    _notifiers.clear();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // 4. Exposes the flat list of instantiated managers down the tree via the separate public InheritedWidget.
+    // Propagate the live instances to the inherited widget
     return MinMultiInherited(
-      notifiers: _notifiers,
+      instances: _instances,
       child: widget.child,
     );
+  }
+
+  @override
+  void dispose() {
+    // Clean up all instances when the provider is removed from the tree
+    for (final entry in _instances) {
+      entry.notifier.dispose();
+    }
+    super.dispose();
   }
 }

@@ -55,8 +55,9 @@
     <section class="multi-line-signature">
       
 <span class="returntype">T</span>
-<span class="name ">registerSingleton</span>&lt;<wbr><span class="type-parameter">T extends Object</span>&gt;(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="registerSingleton-param-instance"><span class="type-annotation">T</span> <span class="parameter-name">instance</span></span></li>
-</ol>)
+<span class="name ">registerSingleton</span>&lt;<wbr><span class="type-parameter">T extends Object</span>&gt;(<wbr><ol class="parameter-list"> <li><span class="parameter" id="registerSingleton-param-instance"><span class="type-annotation">T</span> <span class="parameter-name">instance</span>, {</span></li>
+<li><span class="parameter" id="registerSingleton-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span>, </span></li>
+</ol>})
 
       
 
@@ -64,18 +65,17 @@
     
 <section class="desc markdown">
   <p>Registers and stores an instance permanently in memory immediately.</p>
+<p>If <code>tag</code> is provided, this instance will be uniquely identified by its
+type and that specific tag.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">T registerSingleton&lt;T extends Object&gt;(T instance) {
-  final type = T;
-  if (!_instances.containsKey(type)) {
-    _instances[type] = instance;
-  }
-  return _instances[type] as T;
+  <pre class="language-dart"><code class="language-dart">T registerSingleton&lt;T extends Object&gt;(T instance, {String? tag}) {
+  _instances[(T, tag)] = instance;
+  return instance;
 }</code></pre>
 </section>
 
@@ -104,7 +104,7 @@
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

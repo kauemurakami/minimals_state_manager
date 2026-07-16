@@ -17,34 +17,48 @@ extension ProviderExtension on BuildContext {
   ///
   /// Example:
   /// ```dart
-  /// class MyViewModel extends `ChangeNotifier` { ... }
+  /// class MyNotifier extends `ChangeNotifier` { ... }
   /// or
-  /// class MyViewModel extends `MinNotifier` { ... }
+  /// class MyNotifier extends `MinNotifier` { ... }
   /// usage :
-  /// final myViewModel = context.watch<MyViewModel>();
+  /// final notifier = context.watch<MyNotNotifier>()
+  /// or using tag
+  /// final notifier = context.watch<MyNotNotifier>(tag: 'page1')
+  /// Optionally, you can provide a [tag] to perform a precise lookup. If the instance
+  /// is not found, it throws a descriptive [FlutterError].
   /// ```
-  T watch<T extends ChangeNotifier>() {
-    // 1. Tries to look up the single-provider channel
+  T watch<T extends ChangeNotifier>({String? tag}) {
+    // 1. Try to look up the single-provider channel
     final inheritedIndividual =
         dependOnInheritedWidgetOfExactType<MinInherited<T>>();
     if (inheritedIndividual != null && inheritedIndividual.notifier != null) {
       return inheritedIndividual.notifier!;
     }
 
-    // 2. If not found, falls back to the multi-provider flat registry
+    // 2. Fall back to the multi-provider flat registry
     final inheritedMulti =
         dependOnInheritedWidgetOfExactType<MinMultiInherited>();
     if (inheritedMulti != null) {
-      final notifier = inheritedMulti.notifiers.firstWhere(
-        (c) => c is T,
-        orElse: () => throw Exception(
-            'Notifier of type $T was not found in MinMultiProvider.'),
+      final entry = inheritedMulti.instances.firstWhere(
+        (item) => item.notifier is T && item.tag == tag,
+        orElse: () {
+          if (tag != null) {
+            throw FlutterError(
+                'MinMultiProvider: Notifier of type $T with tag "$tag" was not found.\n'
+                'Ensure you registered this specific notifier with .tag("$tag").');
+          } else {
+            throw FlutterError(
+                'MinMultiProvider: Notifier of type $T without a tag was not found.\n'
+                'Ensure you registered this notifier without calling .tag().');
+          }
+        },
       );
-      return notifier as T;
+      return entry.notifier as T;
     }
 
-    throw Exception(
-        'No MinProvider<$T> or MinMultiProvider found in the current context.');
+    throw FlutterError(
+        'No MinProvider<$T> or MinMultiProvider found in the current context.\n'
+        'Make sure a provider is positioned above this widget in the tree.');
   }
 
   /// Obtains a state notifier of type [T] from the nearest ancestor without
@@ -57,34 +71,48 @@ extension ProviderExtension on BuildContext {
   ///
   /// Example:
   /// ```dart
-  /// class MyViewModel extends ChangeNotifier { ... }
+  /// class MyNotifier extends ChangeNotifier { ... }
   /// or
-  /// class MyViewModel extends MinNotifier { ... }
+  /// class MyNotifier extends MinNotifier { ... }
   /// usage :
-  /// final myViewModel = context.read<MyViewModel>();
+  /// final notifier = context.read<MyNotifier>();
+  /// or using tag
+  /// final notifier = context.read<MyNotifier>(tag: 'page1');
   /// ```
-  T read<T extends ChangeNotifier>() {
-    // 1. Tries to look up the single-provider channel element
+  /// Optionally, you can provide a [tag] to perform a precise lookup. If the instance
+  /// is not found, it throws a descriptive [FlutterError].
+  T read<T extends ChangeNotifier>({String? tag}) {
+    // 1. Try to look up the single-provider channel element
     final elementIndividual =
         getElementForInheritedWidgetOfExactType<MinInherited<T>>();
     if (elementIndividual != null) {
       return (elementIndividual.widget as MinInherited<T>).notifier!;
     }
 
-    // 2. If not found, falls back to the multi-provider flat registry element
+    // 2. Fall back to the multi-provider flat registry element
     final elementMulti =
         getElementForInheritedWidgetOfExactType<MinMultiInherited>();
     if (elementMulti != null) {
-      final provider = elementMulti.widget as MinMultiInherited;
-      final notifier = provider.notifiers.firstWhere(
-        (c) => c is T,
-        orElse: () => throw Exception(
-            'Notifier of type $T was not found in MinMultiProvider.'),
+      final inherited = elementMulti.widget as MinMultiInherited;
+      final entry = inherited.instances.firstWhere(
+        (item) => item.notifier is T && item.tag == tag,
+        orElse: () {
+          if (tag != null) {
+            throw FlutterError(
+                'MinMultiProvider: Notifier of type $T with tag "$tag" was not found.\n'
+                'Ensure you registered this specific notifier with .tag("$tag").');
+          } else {
+            throw FlutterError(
+                'MinMultiProvider: Notifier of type $T without a tag was not found.\n'
+                'Ensure you registered this notifier without calling .tag().');
+          }
+        },
       );
-      return notifier as T;
+      return entry.notifier as T;
     }
 
-    throw Exception(
-        'No MinProvider<$T> or MinMultiProvider found in the current context.');
+    throw FlutterError(
+        'No MinProvider<$T> or MinMultiProvider found in the current context.\n'
+        'Make sure a provider is positioned above this widget in the tree.');
   }
 }

@@ -24,14 +24,14 @@ void main() {
     /// from the single-provider [MinProvider] hierarchy.
     /// {@endtemplate}
     testWidgets('watch should retrieve from MinInherited', (tester) async {
-      final controller = TestNotifier();
+      final notifier = TestNotifier();
 
       await tester.pumpWidget(
         MinProvider(
-          create: () => controller,
+          create: () => notifier,
           child: Builder(builder: (context) {
             final found = context.watch<TestNotifier>();
-            expect(found, controller);
+            expect(found, notifier);
             return Container();
           }),
         ),
@@ -45,14 +45,14 @@ void main() {
     /// from the `MinMultiProvider` registry.
     /// {@endtemplate}
     testWidgets('watch should retrieve from MinMultiProvider', (tester) async {
-      final controller = TestNotifier();
+      final notifier = TestNotifier();
 
       await tester.pumpWidget(
         MinMultiProvider(
-          create: [() => controller],
+          create: [() => notifier],
           child: Builder(builder: (context) {
             final found = context.watch<TestNotifier>();
-            expect(found, controller);
+            expect(found, notifier);
             return Container();
           }),
         ),
@@ -65,10 +65,15 @@ void main() {
     /// **Objective:** Assures that attempting to [watch] a notifier when no
     /// provider is present in the tree throws an [Exception].
     /// {@endtemplate}
-    testWidgets('watch should throw exception when not found', (tester) async {
+    testWidgets('watch should throw FlutterError when not found',
+        (tester) async {
       await tester.pumpWidget(
         Builder(builder: (context) {
-          expect(() => context.watch<TestNotifier>(), throwsException);
+          // Use isA<FlutterError> instead of throwsException
+          expect(
+            () => context.watch<TestNotifier>(),
+            throwsA(isA<FlutterError>()),
+          );
           return Container();
         }),
       );
@@ -81,14 +86,14 @@ void main() {
     /// from the single-provider [MinProvider] hierarchy.
     /// {@endtemplate}
     testWidgets('read should retrieve from MinInherited', (tester) async {
-      final controller = TestNotifier();
+      final notifier = TestNotifier();
 
       await tester.pumpWidget(
         MinProvider(
-          create: () => controller,
+          create: () => notifier,
           child: Builder(builder: (context) {
             final found = context.read<TestNotifier>();
-            expect(found, controller);
+            expect(found, notifier);
             return Container();
           }),
         ),
@@ -102,19 +107,49 @@ void main() {
     /// from the `MinMultiProvider` registry.
     /// {@endtemplate}
     testWidgets('read should retrieve from MinMultiProvider', (tester) async {
-      final controller = TestNotifier();
+      final notifier = TestNotifier();
 
       await tester.pumpWidget(
         MinMultiProvider(
-          create: [() => controller],
+          create: [() => notifier],
           child: Builder(builder: (context) {
             final found = context.read<TestNotifier>();
-            expect(found, controller);
+            expect(found, notifier);
             return Container();
           }),
         ),
       );
     });
+
+    /// {@template min_provider_extensions_test.tagged_lookup_error}
+    /// **Test Target:** Extension tagged lookup error
+    ///
+    /// **Objective:** Verifies that when searching for a tagged notifier, if the
+    /// provider of type [T] exists in the tree but the specific [tag] does not
+    /// match any registered instance, the extension throws a [FlutterError].
+    /// {@endtemplate}
+    testWidgets(
+      'Should throw FlutterError if specific tag lookup fails in extension',
+      (tester) async {
+        await tester.pumpWidget(
+          MinMultiProvider(
+            create: [
+              // Registra um notifier, mas SEM a tag solicitada
+              () => TestNotifier(),
+            ],
+            child: Builder(builder: (context) {
+              // A extensão encontrará o MinMultiProvider, mas a busca pela tag falhará
+              // disparando o throw FlutterError na linha 46
+              expect(
+                () => context.read<TestNotifier>(tag: 'invalid_tag'),
+                throwsA(isA<FlutterError>()),
+              );
+              return Container();
+            }),
+          ),
+        );
+      },
+    );
 
     /// {@template min_provider_extensions_test.read_not_found}
     /// **Test Target:** `read` Not Found Error
@@ -122,10 +157,15 @@ void main() {
     /// **Objective:** Assures that attempting to [read] a notifier when no
     /// provider is present in the tree throws an [Exception].
     /// {@endtemplate}
-    testWidgets('read should throw exception when not found', (tester) async {
+    testWidgets('read should throw FlutterError when not found',
+        (tester) async {
       await tester.pumpWidget(
         Builder(builder: (context) {
-          expect(() => context.read<TestNotifier>(), throwsException);
+          // Use isA<FlutterError> to catch the error thrown by your extension
+          expect(
+            () => context.read<TestNotifier>(),
+            throwsA(isA<FlutterError>()),
+          );
           return Container();
         }),
       );
@@ -138,13 +178,16 @@ void main() {
     /// within a `MinMultiProvider` throws the expected [Exception].
     /// {@endtemplate}
     testWidgets(
-        'Read should throw Exception if type is missing in MultiProvider',
+        'Read should throw FlutterError if type is missing in MultiProvider',
         (tester) async {
       await tester.pumpWidget(
         MinMultiProvider(
           create: [() => RegisteredNotifier()],
           child: Builder(builder: (context) {
-            expect(() => context.read<MissingNotifier>(), throwsException);
+            expect(
+              () => context.read<MissingNotifier>(),
+              throwsA(isA<FlutterError>()),
+            );
             return Container();
           }),
         ),
@@ -158,17 +201,188 @@ void main() {
     /// within a `MinMultiProvider` tree also throws the expected [Exception].
     /// {@endtemplate}
     testWidgets(
-        'Watch should throw Exception if type is missing in MultiProvider',
-        (tester) async {
-      await tester.pumpWidget(
-        MinMultiProvider(
-          create: [() => RegisteredNotifier()],
-          child: Builder(builder: (context) {
-            expect(() => context.watch<MissingNotifier>(), throwsException);
-            return Container();
-          }),
-        ),
-      );
+      'Watch should throw FlutterError if type is missing in MultiProvider',
+      (tester) async {
+        await tester.pumpWidget(
+          MinMultiProvider(
+            create: [() => RegisteredNotifier()],
+            child: Builder(builder: (context) {
+              expect(
+                () => context.watch<MissingNotifier>(),
+                throwsA(isA<FlutterError>()),
+              );
+              return Container();
+            }),
+          ),
+        );
+      },
+    );
+    group('ProviderExtension Tests  MinMultiProvider with Tags', () {
+      /// {@template min_provider_extensions_test.watch_tagged}
+      /// **Test Target:** `watch` with Tag
+      ///
+      /// **Objective:** Verifies that [watch] retrieves the correct instance
+      /// when a specific tag is provided.
+      /// {@endtemplate}
+      testWidgets('watch should retrieve tagged instance', (tester) async {
+        final notifier = TestNotifier();
+
+        await tester.pumpWidget(
+          MinMultiProvider(
+            create: [
+              () => notifier.tag('admin'),
+            ],
+            child: Builder(builder: (context) {
+              final found = context.watch<TestNotifier>(tag: 'admin');
+              expect(found, notifier);
+              return Container();
+            }),
+          ),
+        );
+      });
+
+      /// {@template min_provider_extensions_test.read_tagged}
+      /// **Test Target:** `read` with Tag
+      ///
+      /// **Objective:** Verifies that [read] retrieves the correct instance
+      /// using a tag lookup.
+      /// {@endtemplate}
+      testWidgets('read should retrieve tagged instance', (tester) async {
+        final notifier = TestNotifier();
+
+        await tester.pumpWidget(
+          MinMultiProvider(
+            create: [
+              () => notifier.tag('user'),
+            ],
+            child: Builder(builder: (context) {
+              final found = context.read<TestNotifier>(tag: 'user');
+              expect(found, notifier);
+              return Container();
+            }),
+          ),
+        );
+      });
+
+      /// {@template min_provider_extensions_test.wrong_tag_error}
+      /// **Test Target:** Wrong Tag Error
+      ///
+      /// **Objective:** Verifies that requesting a notifier with a tag that
+      /// does not exist (but the type does) throws a [FlutterError].
+      /// {@endtemplate}
+      testWidgets('should throw FlutterError when tag is incorrect',
+          (tester) async {
+        await tester.pumpWidget(
+          MinMultiProvider(
+            create: [
+              () => TestNotifier().tag('correct'),
+            ],
+            child: Builder(builder: (context) {
+              expect(
+                () => context.read<TestNotifier>(tag: 'wrong'),
+                throwsA(isA<FlutterError>()),
+              );
+              return Container();
+            }),
+          ),
+        );
+      });
+
+      /// {@template min_provider_extensions_test.untagged_requested_tagged_exists}
+      /// **Test Target:** Untagged Request for Tagged Provider
+      ///
+      /// **Objective:** Verifies that requesting an untagged instance when
+      /// only a tagged one exists throws a [FlutterError].
+      /// {@endtemplate}
+      testWidgets(
+          'should throw FlutterError when requesting untagged but only tagged exists',
+          (tester) async {
+        await tester.pumpWidget(
+          MinMultiProvider(
+            create: [
+              () => TestNotifier().tag('admin'),
+            ],
+            child: Builder(builder: (context) {
+              expect(
+                () => context.read<TestNotifier>(),
+                throwsA(isA<FlutterError>()),
+              );
+              return Container();
+            }),
+          ),
+        );
+      });
+    });
+    group('MinProvider Tests with Tags', () {
+      /// {@template min_provider_test.watch_tagged}
+      /// **Test Target:** `MinProvider.watch` with Tag
+      ///
+      /// **Objective:** Verifies that [watch] correctly navigates the inherited
+      /// tree to find the specifically tagged provider.
+      /// {@endtemplate}
+      testWidgets('watch should retrieve tagged MinProvider instance',
+          (tester) async {
+        final notifier = TestNotifier();
+
+        await tester.pumpWidget(
+          MinProvider(
+            create: () => notifier,
+            tag: 'admin', // Requires adding tag parameter to MinProvider
+            child: Builder(builder: (context) {
+              final found =
+                  MinProvider.watch<TestNotifier>(context, tag: 'admin');
+              expect(found, notifier);
+              return Container();
+            }),
+          ),
+        );
+      });
+
+      /// {@template min_provider_test.read_tagged}
+      /// **Test Target:** `MinProvider.read` with Tag
+      ///
+      /// **Objective:** Verifies that [read] correctly locates the tagged provider.
+      /// {@endtemplate}
+      testWidgets('read should retrieve tagged MinProvider instance',
+          (tester) async {
+        final notifier = TestNotifier();
+
+        await tester.pumpWidget(
+          MinProvider(
+            create: () => notifier,
+            tag: 'user', // Requires adding tag parameter
+            child: Builder(builder: (context) {
+              final found =
+                  MinProvider.read<TestNotifier>(context, tag: 'user');
+              expect(found, notifier);
+              return Container();
+            }),
+          ),
+        );
+      });
+
+      /// {@template min_provider_test.wrong_tag_error}
+      /// **Test Target:** MinProvider Wrong Tag Error
+      ///
+      /// **Objective:** Verifies that looking for a non-existent tag
+      /// throws a [FlutterError].
+      /// {@endtemplate}
+      testWidgets('MinProvider should throw FlutterError when tag is incorrect',
+          (tester) async {
+        await tester.pumpWidget(
+          MinProvider(
+            create: () => TestNotifier(),
+            tag: 'correct',
+            child: Builder(builder: (context) {
+              expect(
+                () => MinProvider.read<TestNotifier>(context, tag: 'wrong'),
+                throwsA(isA<FlutterError>()),
+              );
+              return Container();
+            }),
+          ),
+        );
+      });
     });
   });
 }

@@ -62,18 +62,23 @@
 <h2 id="features">Features</h2>
 <h3 id="minservice">MinService</h3>
 <h4 id="setup-and-registration">Setup and Registration</h4>
-<p><code>MinService</code> is an embedded service locator built directly into the package. If you are familiar with <code>GetIt</code>, you will feel right at home. It handles application-wide or lazy singletons cleanly without requiring external dependencies.</p>
+<p><code>MinService</code> is an embedded service locator built directly into the package. If you are familiar with <code>GetIt</code>, you will feel right at home. It handles application-wide or lazy singletons cleanly without requiring external dependencies.<br>
+The Power of Tags: You can use the <code>tag:'your-tag'</code>attribute when register your <code>singletons</code> or <code>lazySingletons</code> with any <code>notifier</code> to create isolated, context-aware instances (e.g., Admin vs Guest notifiers) without creating separate classes.</p>
 <pre class="language-dart"><code class="language-dart">import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/min_notifiers.dart';
 
 final min = MinService.instance;
 
 void setupLocator() {
+  //usage with global instance
   min.registerLazySingleton(() =&gt; AuthService());
   min.registerSingleton&lt;ThemeService&gt;(ThemeService());
-  or
+  //or use directly instance
   MinService.instance.registerLazySingleton(() =&gt; AuthService());
   MinService.instance.registerSingleton&lt;ThemeService&gt;(ThemeService());
+  //or using with tags
+  min.registerLazySingleton(() =&gt; AuthService(), tag: 'initial');
+  MinService.instance.registerSingleton&lt;AuthService&gt;(AuthService(), tag: 'global');
 
 }
 
@@ -84,10 +89,13 @@ void main() {
 }
 </code></pre>
 <h4 id="retrieving-and-managing-your-services">Retrieving and Managing your Services</h4>
-<pre class="language-dart"><code class="language-dart">final authService = min&lt;AuthService&gt;();
+<pre class="language-dart"><code class="language-dart">//usage with global instance
+final authService = min&lt;AuthService&gt;();
 final themeService = min.get&lt;ThemeService&gt;();
-or
+//or using directly instance
 final anotherService = MinService.instance&lt;MyService&gt;();
+//or using tags
+final authService = min&lt;AuthService&gt;(tag: 'global')
 
 bool exists = min.exists&lt;AuthService&gt;();
 
@@ -96,30 +104,40 @@ min.reset();
 </code></pre>
 <p>You can use a global instance <code>final min = MinService.instance</code> and reuse in global code escope or use directly <code>MinService.instance</code> to use any <code>MinService</code> method.<br>
 <strong>Benefits</strong>: Decouples your business logic from the UI layer, guarantees memory efficiency through lazy initialization, and speeds up testing.</p>
+<h4 id="more-about-tags">More about tags</h4>
+<p>Lookups are highly flexible and intuitive. If you search for a <code>notifier</code> or <code>service</code> without specifying a <code>tag</code>, the system will automatically look for the <code>default untagged instance</code> of that class. Tags act as strict qualifiers, meaning tagged instances remain completely isolated and will never interfere with your standard, untagged state declarations. If you attempt to retrieve a specific instance (tagged or untagged) that has not been registered or is not currently available within the lookup context, the system will <code>throw</code> a <code>FlutterError</code> to ensure you are alerted to missing dependencies during development.</p>
 <h3 id="providers">Providers</h3>
-<p>Providers manage the complete setup, lifecycle, and destruction of your state controllers in the widget tree.<br>
-Providers inject, govern, and bound your state controllers directly to specific segments of the Flutter Widget Tree. You don't need to be tied to our <code>MinNotifier</code>.<br>
-They are completely decoupled from any single state architecture: you can pass our specialized <code>MinNotifier</code>, a standard <code>ChangeNotifier</code>, a <code>ValueNotifier</code>, or any custom class implementing the native <code>Listenable</code> interface, not only our</p>
+<p>Providers manage the complete setup, <code>lifecycle</code>, and <code>destruction</code> of your state <code>notifier</code> in the widget tree.
+Providers inject, govern, and bound your state <code>notifiers</code> directly to specific segments of the Flutter Widget Tree. You don't need to be tied to our <code>MinNotifier``. They are completely decoupled from any single state architecture: you can pass our specialized MinNotifier, a standard </code>ChangeNotifier<code>, a </code>ValueNotifier<code>, or any custom class implementing the native </code>Listenable` interface.</p>
+<p>Additionally, Providers fully support <code>tags</code>, allowing you to register <code>multiple instances of the same class</code> within the widget tree. By appending the <code>tag</code> attribute to your <code>MinProvider</code>, you can create isolated, context-aware state instances (e.g., separating Admin and User <code>notifier</code>) without creating complex inheritance hierarchies or duplicating code.</p>
 <h4 id="single-provider">Single Provider</h4>
 <pre class="language-dart"><code class="language-dart">MinProvider&lt;HomeNotifier&gt;(
   create: () =&gt; HomeNotifier(),
   child: const HomePage(),
 );
 </code></pre>
+<pre class="language-dart"><code class="language-dart">MinProvider&lt;HomeNotifier&gt;(
+  create: () =&gt; HomeNotifier(),
+  tag: 'main-page',
+  child: const HomePage(),
+);
+</code></pre>
 <h4 id="multi-provider">Multi Provider</h4>
-<p>When a page requires multiple controllers, use <code>MinMultiProvider</code> to avoid deeply nested trees ("provider pyramids"):</p>
+<p>When a page requires <strong>multiple</strong> <code>notifiers, use MinMultiProvider</code> to avoid deeply nested trees <code>("provider pyramids")</code>. This allows you to centralize your state dependencies at the top of your widget tree, keeping your UI code clean and readable.</p>
+<p><code>MinMultiProvider</code> also features robust support for <code>tags</code>. By utilizing the <code>.tag()</code> method on your notifiers within the create list, you can register <code>multiple instances of the same type within a single provider</code>, enabling precise, isolated state management (e.g., distinguishing between different user roles or <code>multi-window contexts</code>) without any <code>lookup overhead</code>.</p>
 <pre class="language-dart"><code class="language-dart">MinMultiProvider(
   create: [
     () =&gt; CartNotifier(),
     () =&gt; HomeController(),
     () =&gt; UserProfileViewModel(),
     () =&gt; SettingsStore(),
+    () =&gt; SettingsStore().tag('global'),
   ],
   child: const HomePage(),
 )
 </code></pre>
-<p><strong>Benefits</strong>: Handles memory cleanup automatically. When the route is popped or destroyed, the controllers are safely disposed.</p>
-<h3 id="accessing-controllers-in-the-ui">Accessing Controllers in the UI</h3>
+<p><strong>Benefits</strong>: Handles memory cleanup automatically. When the route is popped or destroyed, the notifiers are safely disposed.</p>
+<h3 id="accessing-notifiers-in-the-ui">Accessing Notifiers in the UI</h3>
 <p>You can interact with your providers using either traditional static methods or sleek modern BuildContext extensions.</p>
 <h4 id="static-methods">Static Methods</h4>
 <pre class="language-dart"><code class="language-dart">final controller = MinProvider.watch&lt;HomeController&gt;(context);
@@ -127,15 +145,21 @@ final viewModel = MinProvider.read&lt;HomeViewModel&gt;(context);
 
 final notifier = MinMultiProvider.watch&lt;HomeNotifier(context);
 final store = MinMultiProvider.read&lt;HomeStore&gt;(context);
+// with tags
+final notifier = MinMultiProvider.watch&lt;HomeNotifier(context, tag: 'main');
+final store = MinMultiProvider.read&lt;HomeStore&gt;(context, tag: 'main');
 </code></pre>
 <h4 id="buildcontext-extensions-cleanest">BuildContext Extensions (Cleanest)</h4>
 <pre class="language-dart"><code class="language-dart">final viewModel = context.watch&lt;HomeViewModel&gt;();
 final controller = context.read&lt;HomeController&gt;();
+//or using tag
+final viewModel = context.watch&lt;HomeViewModel&gt;(ag: 'main-home-viewModel');
+final controller = context.read&lt;HomeController&gt;(tag: 'main-home-controller');
 </code></pre>
 <h3 id="minnotifier">MinNotifier</h3>
 <p>Minimals gives you absolute freedom when defining your business logic layers. You can use standard Flutter classes like <code>ChangeNotifier</code>, <code>ValueNotifier</code>, or any custom class that extends <code>Listenable</code>, its work with our <code>MinProvider</code>, <code>MinMultiProvider</code> and <code>MinService</code>.<br>
 However, by extending our specialized <strong><code>MinNotifier</code></strong>, you gain access to structured architectural lifecycles (<code>onInit</code> and <code>onReady</code>) along with built-in protection against asynchronous state update crashes.</p>
-<pre class="language-dart"><code class="language-dart">class HomeController extends MinNotifier {
+<pre class="language-dart"><code class="language-dart">class HomeNotifier extends MinNotifier {
   final repository = HomeRepository();
   List&lt;Item&gt; items = [];
 
@@ -169,7 +193,7 @@ However, by extending our specialized <strong><code>MinNotifier</code></strong>,
 
   @override
   void dispose() {
-    // Teardown local controller references or native subscriptions cleanly here
+    // Teardown local notifier references or native subscriptions cleanly here
     super.dispose();
   }
 }
@@ -206,7 +230,7 @@ When managing complex models, deep nested entities, or mutable data structures, 
 <p>This will be useful if you need to observe state changes in a complex object—such as <code>User</code> via our selector widget. To avoid developer boilerplate and the need to recreate object instances, you can simply extend <code>MinProps</code> in your model and implement the object's attributes, turning it into a record that can then be observed; you will understand this better in the next section.</p>
 <h3 id="granular-rebuild-isolation-via-the-selector-widget-">Granular Rebuild Isolation via the Selector Widget ($)</h3>
 <h4 id="selector-widget-">Selector widget $</h4>
-<p>The $ component serves as a precise layout gatekeeper. It hooks into an active controller, filters down to a targeted field variation using a selector function, and triggers an inner builder rebuild only when that specific selected item shifts values.</p>
+<p>The $ component serves as a precise layout gatekeeper. It hooks into an active notifier, filters down to a targeted field variation using a selector function, and triggers an inner builder rebuild only when that specific selected item shifts values.</p>
 <h4 id="filtering-primitive-state-mutations">Filtering Primitive State Mutations</h4>
 <pre class="language-dart"><code class="language-dart">$&lt;HomeController, bool&gt;(
   notifier: viewModel
@@ -281,49 +305,49 @@ import 'package:minimals_state_manager/min_widgets.dart';
   <span class="name"><a href="min_extensions/">min_extensions</a></span> 
 
 </dt>
-<dd>
+<dd>Provides extensions for <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> to simplify state access and management.
 </dd>
 
           <dt id="min_notifiers">
   <span class="name"><a href="min_notifiers/">min_notifiers</a></span> 
 
 </dt>
-<dd>
+<dd>Defines the notifier classes and base state management logic for the package.
 </dd>
 
           <dt id="min_observers">
   <span class="name"><a href="min_observers/">min_observers</a></span> 
 
 </dt>
-<dd>
+<dd>Contains the observable patterns and reactive utilities for state updates.
 </dd>
 
           <dt id="min_props">
   <span class="name"><a href="min_props/">min_props</a></span> 
 
 </dt>
-<dd>
+<dd>Defines property-based state management tools and configurations.
 </dd>
 
           <dt id="min_providers">
   <span class="name"><a href="min_providers/">min_providers</a></span> 
 
 </dt>
-<dd>
+<dd>Provides the core Provider components used to inject state into the widget tree.
 </dd>
 
           <dt id="min_services">
   <span class="name"><a href="min_services/">min_services</a></span> 
 
 </dt>
-<dd>
+<dd>Contains utility services and architectural helpers for your application.
 </dd>
 
           <dt id="min_widgets">
   <span class="name"><a href="min_widgets/">min_widgets</a></span> 
 
 </dt>
-<dd>
+<dd>Provides the core widgets required for reacting to state changes and rebuilding the UI.
 </dd>
 
           <dt id="minimals_state_manager">
@@ -367,7 +391,7 @@ import 'package:minimals_state_manager/min_widgets.dart';
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

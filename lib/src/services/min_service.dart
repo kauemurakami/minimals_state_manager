@@ -1,32 +1,33 @@
 import 'package:flutter/foundation.dart';
 
 /// A universal, contextless Service Locator designed to manage any type of instance
-/// (such as ChangeNotifier controllers, pure Dart classes, HTTP clients, or repositories)
+/// (such as ChangeNotifier notifiers, pure Dart classes, HTTP clients, or repositories)
 /// anywhere within your application.
 ///
-/// ### Traditional Usage (via Singleton instance):
+/// ### Registering Dependencies:
 /// ```dart
-/// // 1. Register your dependencies
-/// MinService.instance.registerSingleton(CartController());
-/// MinService.instance.registerLazySingleton(() => ApiService());
+/// // Singleton (Instant registration)
+/// MinService.instance.registerSingleton(Cartnotifier(), tag: 'cart');
 ///
-/// // 2. Retrieve your instances anywhere
-/// final cart = MinService.instance.get<CartController>();
+/// // Lazy Singleton (Registered only when first accessed)
+/// MinService.instance.registerLazySingleton(() => ApiService(), tag: 'api');
 /// ```
 ///
-/// ### Custom Global Alias Usage (Recommended for better DX):
-/// You can define your own global shortcut in your initialization file:
+/// ### Retrieving Dependencies:
+/// ```dart
+/// // Without tag
+/// final service = MinService.instance.get<MyService>();
+/// final service = MinService.instance.get<CartModel>();
+///
+/// // With tag
+/// final cart = MinService.instance.get<Cartnotifier>(tag: 'cart');
+/// ```
+///
+/// ### Using as a shortcut:
 /// ```dart
 /// final min = MinService.instance;
-///
-/// // Now you can use it fluidly:
-/// void setup() {
-///   min.registerSingleton(CartController());
-/// }
-///
-/// // Retrieve using the .get() method or the shortcut callable syntax:
-/// final cart = min.get<CartController>();
-/// final auth = min<AuthController>();
+/// final notifier = min<Cartnotifier>(tag: 'cart');
+/// final model = min<CartModel>(tag: 'cart');
 /// ```
 class MinService {
   static final MinService _internalInstance = MinService._();
@@ -34,60 +35,75 @@ class MinService {
   /// Retrieves the static singleton instance of [MinService].
   static MinService get instance => _internalInstance;
 
-  // Private constructor to prevent direct instantiation
   MinService._();
 
-  final Map<Type, Object> _instances = {};
-  final Map<Type, Object Function()> _builders = {};
+  // Registry for active instances: (Type, Tag) -> Instance
+  final Map<(Type, String?), Object> _instances = {};
 
-  /// Allows callable shortcut usage when assigned to a variable or instance pointer.
+  // Registry for lazy builders: (Type, Tag) -> Builder
+  final Map<(Type, String?), Object Function()> _builders = {};
+
+  /// Allows callable shortcut usage.
   ///
-  /// Example:
-  /// ```dart
-  /// final min = MinService.instance;
-  /// final controller = min<MyController>();
-  /// ```
-  T call<T extends Object>() => get<T>();
+  /// Example: `min<Mynotifier>(tag: 'admin');`
+  T call<T extends Object>({String? tag}) => get<T>(tag: tag);
 
   /// Registers and stores an instance permanently in memory immediately.
-  T registerSingleton<T extends Object>(T instance) {
-    final type = T;
-    if (!_instances.containsKey(type)) {
-      _instances[type] = instance;
-    }
-    return _instances[type] as T;
+  ///
+  /// If [tag] is provided, this instance will be uniquely identified by its
+  /// type and that specific tag.
+  T registerSingleton<T extends Object>(T instance, {String? tag}) {
+    _instances[(T, tag)] = instance;
+    return instance;
   }
 
   /// Registers a service lazily by storing its builder function.
-  void registerLazySingleton<T extends Object>(T Function() builder) {
-    _builders[T] = builder;
+  ///
+  /// The builder is only executed when [get] is called for the first time
+  /// with the matching [tag].
+  void registerLazySingleton<T extends Object>(T Function() builder,
+      {String? tag}) {
+    _builders[(T, tag)] = builder;
   }
 
-  /// Retrieves the registered instance of type [T] without needing a BuildContext.
-  T get<T extends Object>() {
-    final type = T;
+  /// Retrieves the registered instance of type [T].
+  ///
+  /// If [tag] is provided, it specifically searches for the instance
+  /// registered with that tag. If no [tag] is provided, it retrieves the
+  /// untagged instance.
+  ///
+  /// Throws an [Exception] if the requested type (or tag) has not been registered.
+  T get<T extends Object>({String? tag}) {
+    final key = (T, tag);
 
-    if (!_instances.containsKey(type) && _builders.containsKey(type)) {
-      _instances[type] = _builders[type]!();
+    // Try to build lazily if instance is missing
+    if (!_instances.containsKey(key) && _builders.containsKey(key)) {
+      _instances[key] = _builders[key]!();
     }
 
-    assert(_instances.containsKey(type),
-        'MinService: Instance of type $type has not been initialized. Make sure to call registerSingleton<$type>(...) or registerLazySingleton<$type>(...) first.');
+    if (!_instances.containsKey(key)) {
+      final tagMsg = tag != null ? ' with tag "$tag"' : ' without a tag';
+      throw Exception('MinService: Instance of type $T$tagMsg was not found. '
+          'Ensure you registered it using registerSingleton<$T>(..., tag: "$tag") '
+          'or registerLazySingleton<$T>(..., tag: "$tag").');
+    }
 
-    return _instances[type] as T;
+    return _instances[key] as T;
   }
 
-  /// Checks whether an active physical instance of type [T] is currently alive in memory.
-  bool exists<T extends Object>() {
-    return _instances.containsKey(T);
+  /// Checks whether an active physical instance of type [T] (optionally with [tag])
+  /// is currently alive in memory.
+  bool exists<T extends Object>({String? tag}) {
+    return _instances.containsKey((T, tag));
   }
 
   /// Disposes and completely removes the instance of type [T] from memory.
-  void destroy<T extends Object>() {
-    final type = T;
-    if (_instances.containsKey(type)) {
-      final instance = _instances[type];
-
+  ///
+  /// If [tag] is provided, only that specific instance is destroyed.
+  void destroy<T extends Object>({String? tag}) {
+    final key = (T, tag);
+    if (_instances.containsKey(key)) {
+      final instance = _instances[key];
       if (instance is ChangeNotifier) {
         instance.dispose();
       } else {
@@ -95,15 +111,12 @@ class MinService {
           (instance as dynamic).dispose();
         } catch (_) {}
       }
-
-      _instances.remove(type);
+      _instances.remove(key);
     }
-    if (_builders.containsKey(type)) {
-      _builders.remove(type);
-    }
+    _builders.remove(key);
   }
 
-  /// Clears all registered active services and lazy builders running their dipose processes.
+  /// Clears all registered active services and lazy builders.
   void destroyAll() {
     for (final instance in _instances.values) {
       if (instance is ChangeNotifier) {
@@ -118,6 +131,6 @@ class MinService {
     _builders.clear();
   }
 
-  /// Resets the locator, identical to [destroyAll], primarily for testing syntax familiarity.
+  /// Resets the locator, identical to [destroyAll].
   void reset() => destroyAll();
 }

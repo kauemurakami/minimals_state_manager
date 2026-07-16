@@ -108,7 +108,7 @@ class AuthPage extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => MinMultiProvider(create: [
                           () => MainController(),
-                          () => AnotherController()
+                          () => AnotherController().tag('another')
                         ], child: MainPage()),
                       ));
                 }
@@ -129,6 +129,7 @@ class AnotherController extends MinNotifier {
   @override
   void onInit() {
     debugPrint('AnotherController init');
+
     super.onInit();
   }
 
@@ -147,6 +148,8 @@ class MainController extends MinNotifier {
   @override
   void onInit() {
     super.onInit();
+    debugPrint('MainController init');
+
     getData();
   }
 
@@ -194,12 +197,16 @@ const TextStyle defaultStyle = TextStyle(color: Colors.white);
 class MainPage extends StatelessWidget {
   MainPage({super.key});
   final AuthService _authService = min<AuthService>();
+
   @override
   Widget build(BuildContext context) {
     final controller = context.read<MainController>();
     //or
     // ignore: unused_local_variable
-    final anotherController = MinMultiProvider.read<AnotherController>(context);
+    final anotherController =
+        MinMultiProvider.read<AnotherController>(context, tag: 'another');
+    //or
+    // final anotherController = context.read<AnotherController>(tag: 'another');
 
     return Scaffold(
         appBar: AppBar(

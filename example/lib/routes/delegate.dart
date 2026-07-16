@@ -47,7 +47,7 @@ abstract class GoRootDelegate {
             child: MinMultiProvider(
               create: [
                 () => DashController(),
-                () => CartController(),
+                () => CartController().tag('pages'),
               ],
               child: DashPage(child: child),
             ),

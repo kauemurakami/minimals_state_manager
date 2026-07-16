@@ -1,3 +1,14 @@
+# 2.3.0
+- Multi-Instance Notifier Support: Introduced the ability to register and retrieve multiple distinct instances of the same Notifier type within the same scope.
+  - Added support for tag-based identification in MinProvider, MinMultiProvider, and MinService.
+  - Implemented the .tag('your_tag') extension for create functions, enabling a fluent API for defining specific Notifier instances.
+  - Added tag parameter to context.read<T>(tag: 'your_tag') to allow precise retrieval of specific Notifier instances.
+- Unique Tag Validation: Added runtime checks to prevent duplicate registrations of the same - - Notifier type with the same tag, ensuring configuration safety.
+- Smart Resolution: MinProvider and MinMultiProvider now intelligently resolve between tagged and untagged Notifier instances, **maintaining full backward compatibility**.
+- Update benchmarks
+- Adding more tests to coverage
+- Update docs
+
 # 2.2.2
 - Fix README doc reference notifier, not controller
 

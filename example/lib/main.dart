@@ -129,6 +129,7 @@ class AnotherController extends MinNotifier {
   @override
   void onInit() {
     debugPrint('AnotherController init');
+
     super.onInit();
   }
 
@@ -196,6 +197,7 @@ const TextStyle defaultStyle = TextStyle(color: Colors.white);
 class MainPage extends StatelessWidget {
   MainPage({super.key});
   final AuthService _authService = min<AuthService>();
+
   @override
   Widget build(BuildContext context) {
     final controller = context.read<MainController>();

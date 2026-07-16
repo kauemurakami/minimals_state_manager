@@ -277,7 +277,7 @@ void main() {
     /// {@endtemplate}
     test('Should throw FlutterError if create list is empty', () {
       expect(
-        () => MinMultiProvider(create: [], child: Container()),
+        () => MinMultiProvider(create: const [], child: Container()),
         throwsA(isA<FlutterError>()),
       );
     });

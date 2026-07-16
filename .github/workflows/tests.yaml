@@ -4,12 +4,10 @@ run-name: Tests and benchmarks 🚀
 on:
   push:
     branches:
-      - main
       - dev
   pull_request:
     branches:
       - main
-      - dev
     types:
       - closed
 

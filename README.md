@@ -62,8 +62,8 @@ You can use a global instance `final min = MinService.instance` and reuse in glo
 
 
 ### Providers
-Providers manage the complete setup, lifecycle, and destruction of your state controllers in the widget tree.    
-Providers inject, govern, and bound your state controllers directly to specific segments of the Flutter Widget Tree. You don't need to be tied to our `MinNotifier`.  
+Providers manage the complete setup, lifecycle, and destruction of your state notifier in the widget tree.    
+Providers inject, govern, and bound your state notifiers directly to specific segments of the Flutter Widget Tree. You don't need to be tied to our `MinNotifier`.  
 They are completely decoupled from any single state architecture: you can pass our specialized `MinNotifier`, a standard `ChangeNotifier`, a `ValueNotifier`, or any custom class implementing the native `Listenable` interface, not only our 
 
 #### Single Provider
@@ -75,7 +75,7 @@ MinProvider<HomeNotifier>(
 ```
 
 #### Multi Provider
-When a page requires multiple controllers, use `MinMultiProvider` to avoid deeply nested trees ("provider pyramids"):  
+When a page requires multiple notifiers, use `MinMultiProvider` to avoid deeply nested trees ("provider pyramids"):  
 
 ```dart
 MinMultiProvider(
@@ -88,9 +88,9 @@ MinMultiProvider(
   child: const HomePage(),
 )
 ```
-**Benefits**: Handles memory cleanup automatically. When the route is popped or destroyed, the controllers are safely disposed.  
+**Benefits**: Handles memory cleanup automatically. When the route is popped or destroyed, the notifiers are safely disposed.  
 
-### Accessing Controllers in the UI
+### Accessing Notifiers in the UI
 You can interact with your providers using either traditional static methods or sleek modern BuildContext extensions.  
 
 #### Static Methods
@@ -147,7 +147,7 @@ class HomeController extends MinNotifier {
 
   @override
   void dispose() {
-    // Teardown local controller references or native subscriptions cleanly here
+    // Teardown local notifier references or native subscriptions cleanly here
     super.dispose();
   }
 }
@@ -189,7 +189,7 @@ This will be useful if you need to observe state changes in a complex object—s
 
 ### Granular Rebuild Isolation via the Selector Widget ($)
 #### Selector widget $
-The $ component serves as a precise layout gatekeeper. It hooks into an active controller, filters down to a targeted field variation using a selector function, and triggers an inner builder rebuild only when that specific selected item shifts values.  
+The $ component serves as a precise layout gatekeeper. It hooks into an active notifier, filters down to a targeted field variation using a selector function, and triggers an inner builder rebuild only when that specific selected item shifts values.  
 
 #### Filtering Primitive State Mutations
 ```dart

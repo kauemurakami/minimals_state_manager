@@ -23,7 +23,7 @@ jobs:
         run: flutter pub get
 
       - name: Run Tests with Coverage
-        run: flutter test --coverage
+        run: flutter test --coverage --coverage-path=coverage/lcov.info
 
       - name: Fix coverage file paths
         run: |

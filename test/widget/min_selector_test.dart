@@ -283,5 +283,52 @@ void main() {
       expect(find.text('User: Kauê | Whatever: 1'), findsOneWidget);
       expect(buildCount, 2);
     }, variant: TargetPlatformVariant.all());
+
+    // ==========================================
+    // 6. 6. LIFECYCLE & EDGE CASES
+    // ==========================================
+    testWidgets(
+        'didUpdateWidget should update listeners when the notifier instance changes',
+        (tester) async {
+      // Use o seu TestNotifier que já está definido no arquivo
+      final notifier1 = TestNotifier();
+      final notifier2 = TestNotifier();
+
+      await tester.pumpWidget(
+        $<TestNotifier, int>(
+          // Ou o nome da sua classe se for diferente
+          notifier: notifier1,
+          selector: (n) => n.whatever,
+          builder: (context, value) => Container(),
+        ),
+      );
+
+      await tester.pumpWidget(
+        $<TestNotifier, int>(
+          notifier: notifier2,
+          selector: (n) => n.whatever,
+          builder: (context, value) => Container(),
+        ),
+      );
+
+      expect(find.byType(Container), findsOneWidget);
+
+      // Force didUpdateWidget by changing the notifier instance
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Builder(builder: (context) {
+              return $<TestNotifier, int>(
+                notifier: notifier2,
+                selector: (n) => n.whatever,
+                builder: (context, val) => Text('$val'),
+              );
+            }),
+          ),
+        ),
+      );
+
+      expect(find.text('0'), findsOneWidget);
+    }, variant: TargetPlatformVariant.all());
   });
 }

@@ -1,3 +1,9 @@
+# 2.2.0
+- Add missing dart docs to get 100% covarage of the dart docs in pub score (before was 91.5%)
+- Generate dart doc api
+- Add missing tests and get 100% tests coverage (before was 89%)
+- Handle errors to `MinProvider.read` and `.watch`
+
 # 2.1.7
 - Remove dart docs in files that not more library
 - Generate dart doc api

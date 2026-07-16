@@ -55,25 +55,23 @@
     <section class="multi-line-signature">
       
 <span class="returntype">T</span>
-<span class="name ">call</span>&lt;<wbr><span class="type-parameter">T extends Object</span>&gt;(<wbr>)
+<span class="name ">call</span>&lt;<wbr><span class="type-parameter">T extends Object</span>&gt;(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="call-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span>, </span></li>
+</ol>})
 
       
 
     </section>
     
 <section class="desc markdown">
-  <p>Allows callable shortcut usage when assigned to a variable or instance pointer.</p>
-<p>Example:</p>
-<pre class="language-dart"><code class="language-dart">final min = MinService.instance;
-final controller = min&lt;MyController&gt;();
-</code></pre>
+  <p>Allows callable shortcut usage.</p>
+<p>Example: <code>min&lt;Mynotifier&gt;(tag: 'admin');</code></p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">T call&lt;T extends Object&gt;() =&gt; get&lt;T&gt;();</code></pre>
+  <pre class="language-dart"><code class="language-dart">T call&lt;T extends Object&gt;({String? tag}) =&gt; get&lt;T&gt;(tag: tag);</code></pre>
 </section>
 
 
@@ -101,7 +99,7 @@ final controller = min&lt;MyController&gt;();
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

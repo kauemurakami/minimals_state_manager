@@ -54,19 +54,15 @@
 
     
 <section class="desc markdown">
-  <p>A multi-provider widget that manages the lifecycle (<code>onInit</code>, <code>onReady</code>, and <code>dispose</code>)
-of a list of state management instances simultaneously.</p>
-<p>This widget acts as a shared lifecycle capsule for your state architecture. It accepts
-a heterogeneous list of factory functions returning either your custom <a href="../minimals_state_manager/MinNotifier-class.html">MinNotifier</a>
-controllers or standard Flutter <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a> classes (such as <code>ValueNotifier</code>).</p>
-<p>If a provided instance inherits from <a href="../minimals_state_manager/MinNotifier-class.html">MinNotifier</a>, its dedicated lifecycle hooks
-(<code>onInit</code> and <code>onReady</code>) will be executed automatically. Standard <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a>s
-will skip these steps safely while still benefiting from automated <code>dispose</code> cleanups.</p>
+  <p>A multi-provider widget that manages the lifecycle (initialization, readiness,
+and disposal) of a collection of state management instances simultaneously.</p>
+<p>It accepts a list of objects, supporting either raw factory functions <code>() =&gt; MyNotifier()</code>
+or tagged instances defined via <code>TaggedNotifier</code> (using the <code>.tag()</code> extension).</p>
 <p>Example usage:</p>
 <pre class="language-dart"><code class="language-dart">MinMultiProvider(
-  create: [
-    () =&gt; LoginController(),    // Extends MinNotifier
-    () =&gt; ValueNotifier&lt;int&gt;(0), // Standard Flutter ChangeNotifier subclass
+  notifiers: [
+    () =&gt; LoginController(),
+    () =&gt; LoginController().tag('admin'),
   ],
   child: const MyView(),
 )
@@ -104,12 +100,10 @@ will skip these steps safely while still benefiting from automated <code>dispose
     <h2>Constructors</h2>
     <dl class="constructor-summary-list">
         <dt id="MinMultiProvider.new" class="callable">
-          <span class="name"><a href="../minimals_state_manager/MinMultiProvider/MinMultiProvider.html">MinMultiProvider</a></span><span class="signature">({<span class="parameter" id="param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="param-create"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a> Function<span class="signature">()</span></span>&gt;</span></span> <span class="parameter-name">create</span>, </span><span class="parameter" id="param-child"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span> <span class="parameter-name">child</span></span>})</span>
+          <span class="name"><a href="../minimals_state_manager/MinMultiProvider/MinMultiProvider.html">MinMultiProvider</a></span><span class="signature">({<span class="parameter" id="param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="param-create"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> <span class="parameter-name">create</span>, </span><span class="parameter" id="param-child"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span> <span class="parameter-name">child</span></span>})</span>
         </dt>
         <dd>
-          Creates a <a href="../minimals_state_manager/MinMultiProvider-class.html">MinMultiProvider</a> to inject multiple controllers
-into the widget tree synchronously.
-            <div class="constructor-modifier features">const</div>
+          
         </dd>
     </dl>
   </section>
@@ -126,19 +120,19 @@ into the widget tree synchronously.
 
 </dt>
 <dd>
-  The widget subtree that will have access to the provided state managers.
+  
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
         <dt id="create" class="property">
   <span class="name"><a href="../minimals_state_manager/MinMultiProvider/create.html">create</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a> Function<span class="signature">()</span></span>&gt;</span></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span>
   
 
 </dt>
 <dd>
-  The list of factory functions used to instantiate the state notifiers or change notifiers.
+  
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -349,29 +343,28 @@ tools and by <a href="https://api.flutter.dev/flutter/foundation/DiagnosticsNode
     <h2>Static Methods</h2>
     <dl class="callables">
         <dt id="read" class="callable">
-  <span class="name"><a href="../minimals_state_manager/MinMultiProvider/read.html">read</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="read-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span>)
+  <span class="name"><a href="../minimals_state_manager/MinMultiProvider/read.html">read</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="read-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, {</span><span class="parameter" id="read-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span></span>})
     <span class="returntype parameter">&#8594; T</span>
   </span>
   
 
 </dt>
 <dd>
-  Obtains a state manager of type <code>T</code> from the nearest <a href="../minimals_state_manager/MinMultiProvider-class.html">MinMultiProvider</a> ancestor,
-without listening to future changes or triggering widget rebuilds.
+  Obtains a state manager of type <code>T</code> from the nearest <a href="../minimals_state_manager/MinMultiProvider-class.html">MinMultiProvider</a> ancestor.
   
 
 </dd>
 
         <dt id="watch" class="callable">
-  <span class="name"><a href="../minimals_state_manager/MinMultiProvider/watch.html">watch</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="watch-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span>)
+  <span class="name"><a href="../minimals_state_manager/MinMultiProvider/watch.html">watch</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="watch-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, {</span><span class="parameter" id="watch-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span></span>})
     <span class="returntype parameter">&#8594; T</span>
   </span>
   
 
 </dt>
 <dd>
-  Obtains a state manager of type <code>T</code> from the nearest <a href="../minimals_state_manager/MinMultiProvider-class.html">MinMultiProvider</a> ancestor,
-and registers this <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> to be dependent on it.
+  Obtains a state manager of type <code>T</code> and registers the <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a>
+to rebuild when the provider container triggers a notification.
   
 
 </dd>
@@ -403,7 +396,7 @@ and registers this <a href="https://api.flutter.dev/flutter/widgets/BuildContext
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

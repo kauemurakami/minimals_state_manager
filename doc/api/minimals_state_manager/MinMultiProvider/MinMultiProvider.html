@@ -27,7 +27,7 @@
     <li><a href="../../index.html">minimals_state_manager</a></li>
     <li><a href="../../minimals_state_manager/">minimals_state_manager.dart</a></li>
     <li><a href="../../minimals_state_manager/MinMultiProvider-class.html">MinMultiProvider</a></li>
-    <li class="self-crumb">MinMultiProvider.new const constructor</li>
+    <li class="self-crumb">MinMultiProvider.new constructor</li>
   </ol>
   <div class="self-name">MinMultiProvider.new</div>
   <form class="search navbar-right" role="search">
@@ -53,27 +53,27 @@
 </h1></div>
 
     <section class="multi-line-signature">
-      const
+      
       <span class="name ">MinMultiProvider</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span></li>
-<li><span class="parameter" id="param-create"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a> Function<span class="signature">()</span></span>&gt;</span></span> <span class="parameter-name">create</span>, </span></li>
+<li><span class="parameter" id="param-create"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> <span class="parameter-name">create</span>, </span></li>
 <li><span class="parameter" id="param-child"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span> <span class="parameter-name">child</span>, </span></li>
 </ol>})
     </section>
     
-<section class="desc markdown">
-  <p>Creates a <a href="../../minimals_state_manager/MinMultiProvider-class.html">MinMultiProvider</a> to inject multiple controllers
-into the widget tree synchronously.</p>
-</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">const MinMultiProvider({
-  super.key,
-  required this.create,
-  required this.child,
-});</code></pre>
+  <pre class="language-dart"><code class="language-dart">MinMultiProvider({super.key, required this.create, required this.child}) {
+  &#47;&#47; Validação que garante que a lista não esteja vazia
+  if (create.isEmpty) {
+    throw FlutterError(
+      &#39;MinMultiProvider: The &quot;create&quot; list cannot be empty. &#39;
+      &#39;You must provide at least one notifier provider.&#39;,
+    );
+  }
+}</code></pre>
 </section>
 
 
@@ -89,7 +89,7 @@ into the widget tree synchronously.</p>
     <li><a href="../../index.html">minimals_state_manager</a></li>
     <li><a href="../../minimals_state_manager/">minimals_state_manager</a></li>
     <li><a href="../../minimals_state_manager/MinMultiProvider-class.html">MinMultiProvider</a></li>
-    <li class="self-crumb">MinMultiProvider.new const constructor</li>
+    <li class="self-crumb">MinMultiProvider.new constructor</li>
 </ol>
 
     <h5>MinMultiProvider class</h5>
@@ -101,7 +101,7 @@ into the widget tree synchronously.</p>
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.1.6
+      2.3.0
   </span>
   
 </footer>

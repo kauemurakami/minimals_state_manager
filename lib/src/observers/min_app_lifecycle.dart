@@ -32,6 +32,9 @@ mixin class AppLifecycleMixin implements WidgetsBindingObserver {
   // ---------------------------------------------------------------------------
   // App Lifecycle Callbacks
   // ---------------------------------------------------------------------------
+  /// Creates a new instance of [AppLifecycleMixin] to observe
+  /// Flutter's application lifecycle states.
+  const AppLifecycleMixin(); // coverage:ignore-line
 
   /// Called when the application is visible and responding to user input.
   ///

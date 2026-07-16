@@ -93,6 +93,7 @@ class $<T extends Listenable, K> extends StatefulWidget {
   /// A function that builds the widget tree based on the selected value.
   final Widget Function(BuildContext context, K value) builder;
 
+  /// Creates a new instance of the [$] selector widget.
   const $({
     required this.notifier,
     required this.selector,

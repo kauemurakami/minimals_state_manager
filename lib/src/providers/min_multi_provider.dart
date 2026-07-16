@@ -19,9 +19,14 @@ import 'min_multi_inherited.dart';
 /// )
 /// ```
 class MinMultiProvider extends StatefulWidget {
+  /// The list of functions that create the notifiers to be provided.
   final List<Object> create;
+
+  /// The widget below this provider in the tree.
   final Widget child;
 
+  /// Creates a [MinMultiProvider] to inject multiple controllers
+  /// into the widget tree at once.
   MinMultiProvider({super.key, required this.create, required this.child}) {
     // Validação que garante que a lista não esteja vazia
     if (create.isEmpty) {

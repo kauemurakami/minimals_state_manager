@@ -217,8 +217,6 @@ void main() {
 
       debugPrint('- Riverpod Consumer Total Rebuilds: $riverpodBuildCount ');
       expect(riverpodBuildCount, equals(1001));
-
-      debugPrint('\n=== BENCHMARK EXECUTION COMPLETED ===\n');
     });
 
     testWidgets('All Observer Widget rebuild isolation test',

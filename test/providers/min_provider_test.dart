@@ -86,6 +86,111 @@ void main() {
       expect(rebuilds, 2);
     });
 
+    /// {@template min_provider_test.tagged_climbing}
+    /// **Test Target:** `MinProvider` tree traversal
+    ///
+    /// **Objective:** Verifies that `read` and `watch` can successfully
+    /// "climb" the tree to find a tagged provider that is not the immediate parent.
+    /// {@endtemplate}
+    testWidgets('read/watch should climb the tree to find a tagged instance',
+        (tester) async {
+      // 1. Create the instance once
+      final targetNotifier = TestNotifier();
+
+      await tester.pumpWidget(
+        MinProvider(
+          create: () => targetNotifier, // 2. Pass THIS specific instance
+          tag: 'target_tag',
+          child: MinProvider(
+            create: () =>
+                TestNotifier(), // Different instance (okay to be different here)
+            tag: 'other_tag',
+            child: Builder(builder: (context) {
+              final foundRead =
+                  MinProvider.read<TestNotifier>(context, tag: 'target_tag');
+
+              // 3. Now this will pass because they are the same memory reference
+              expect(foundRead, targetNotifier);
+              return Container();
+            }),
+          ),
+        ),
+      );
+    });
+
+    /// {@template min_multi_provider_test.tagged_lookup_success}
+    /// **Test Target:** Tagged lookup success
+    /// **Objective:** Verifies that requesting an existing tag returns the correct notifier.
+    /// {@endtemplate}
+    testWidgets('Read/Watch should return correct notifier when tag exists',
+        (tester) async {
+      final adminCart = TestNotifier();
+      final userCart = TestNotifier();
+
+      await tester.pumpWidget(
+        MinMultiProvider(
+          create: [
+            () => adminCart.tag('admin'),
+            () => userCart.tag('user'),
+          ],
+          child: Builder(builder: (context) {
+            expect(MinMultiProvider.read<TestNotifier>(context, tag: 'admin'),
+                adminCart);
+            expect(MinMultiProvider.read<TestNotifier>(context, tag: 'user'),
+                userCart);
+            return Container();
+          }),
+        ),
+      );
+    });
+
+    /// {@template min_multi_provider_test.untagged_lookup_success}
+    /// **Test Target:** Untagged lookup success
+    /// **Objective:** Verifies that requesting a notifier without a tag returns the untagged instance.
+    /// {@endtemplate}
+    testWidgets('Read/Watch should return correct notifier when no tag is used',
+        (tester) async {
+      final defaultNotifier = TestNotifier();
+
+      await tester.pumpWidget(
+        MinMultiProvider(
+          create: [() => defaultNotifier],
+          child: Builder(builder: (context) {
+            expect(
+                MinMultiProvider.read<TestNotifier>(context), defaultNotifier);
+            return Container();
+          }),
+        ),
+      );
+    });
+
+    /// {@template min_provider_test.tagged_climbing_not_found}
+    /// **Test Target:** `MinProvider` climbing not found
+    ///
+    /// **Objective:** Verifies that if the climb reaches the root and doesn't
+    /// find the tag, it throws the expected FlutterError (covering lines 168-173).
+    /// {@endtemplate}
+    testWidgets('read/watch should throw error if tag not found after climbing',
+        (tester) async {
+      await tester.pumpWidget(
+        MinProvider(
+          create: () => TestNotifier(),
+          tag: 'wrong_tag',
+          child: Builder(builder: (context) {
+            expect(
+              () => MinProvider.read<TestNotifier>(context, tag: 'target_tag'),
+              throwsA(isA<FlutterError>()),
+            );
+            expect(
+              () => MinProvider.watch<TestNotifier>(context, tag: 'target_tag'),
+              throwsA(isA<FlutterError>()),
+            );
+            return Container();
+          }),
+        ),
+      );
+    });
+
     /// {@template min_provider_test.dispose}
     /// **Test Target:** `MinProvider` Disposal
     ///
@@ -109,6 +214,40 @@ void main() {
       await tester.pumpWidget(Container());
 
       expect(notifier.disposeCalled, isTrue);
+    });
+
+    /// {@template min_provider_test.watch_tagged_climbing_rebuild}
+    /// **Test Target:** `MinProvider.watch` aspect subscription (Lines 177-180)
+    ///
+    /// **Objective:** Verifies that when watching a tagged provider that is NOT
+    /// the immediate parent, the system correctly locates the target and
+    /// subscribes to it (the `dependOnInheritedWidgetOfExactType` call).
+    /// {@endtemplate}
+    testWidgets('Watch should rebuild when notifier changes', (tester) async {
+      final targetNotifier = TestNotifier();
+      int rebuilds = 0;
+
+      await tester.pumpWidget(
+        MinProvider(
+          create: () => targetNotifier,
+          tag: 'target_tag',
+          child: Builder(builder: (context) {
+            // Se o watch encontrar o provider da raiz, ele se inscreve nele
+            final watch =
+                MinProvider.watch<TestNotifier>(context, tag: 'target_tag');
+            rebuilds++;
+            return Text('${watch.counter}', textDirection: TextDirection.ltr);
+          }),
+        ),
+      );
+
+      expect(rebuilds, 1);
+
+      targetNotifier.increment();
+
+      await tester.pump();
+
+      expect(rebuilds, 2);
     });
 
     /// {@template min_provider_test.error_handling}

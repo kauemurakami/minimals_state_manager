@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimals_state_manager/minimals_state_manager.dart';
 
-/// Dummy class for testing [MinProvider] lifecycle and state.
+/// A dummy [MinNotifier] implementation for testing lifecycle and state updates.
 class TestNotifier extends MinNotifier {
   bool onInitCalled = false;
   bool onReadyCalled = false;
@@ -33,7 +33,13 @@ class TestNotifier extends MinNotifier {
 
 void main() {
   group('MinProvider Tests', () {
-    testWidgets('Should execute lifecycle hooks and inject controller',
+    /// {@template min_provider_test.lifecycle}
+    /// **Test Target:** `MinProvider` Lifecycle
+    ///
+    /// **Objective:** Verifies that `onInit` and `onReady` are called correctly
+    /// when the provider is added to the widget tree.
+    /// {@endtemplate}
+    testWidgets('Should execute lifecycle hooks and inject notifier',
         (tester) async {
       final notifier = TestNotifier();
 
@@ -49,11 +55,16 @@ void main() {
       );
 
       expect(notifier.onInitCalled, isTrue);
-      // Wait for postFrameCallback
+      // Wait for postFrameCallback to trigger onReady
       await tester.pump();
       expect(notifier.onReadyCalled, isTrue);
     });
 
+    /// {@template min_provider_test.watch}
+    /// **Test Target:** `MinProvider.watch`
+    ///
+    /// **Objective:** Verifies that widgets rebuild when the state changes.
+    /// {@endtemplate}
     testWidgets('Should watch for changes and rebuild', (tester) async {
       final notifier = TestNotifier();
       int rebuilds = 0;
@@ -75,12 +86,16 @@ void main() {
       expect(rebuilds, 2);
     });
 
-    testWidgets('Should dispose controller when provider is removed',
+    /// {@template min_provider_test.dispose}
+    /// **Test Target:** `MinProvider` Disposal
+    ///
+    /// **Objective:** Verifies that the notifier is disposed when the provider
+    /// is removed from the tree.
+    /// {@endtemplate}
+    testWidgets('Should dispose notifier when provider is removed',
         (tester) async {
-      // Arrange: Create your controller
       final notifier = TestNotifier();
 
-      // Act: Mount the provider in the tree
       await tester.pumpWidget(
         MinProvider(
           create: () => notifier,
@@ -88,25 +103,42 @@ void main() {
         ),
       );
 
-      // Verify it's mounted
       expect(find.byType(Container), findsOneWidget);
 
-      // Act: Force removal by pumping an empty Container
-      // This triggers the dispose() method in the State class of MinProvider
+      // Force removal
       await tester.pumpWidget(Container());
 
-      // Assert: Check if the controller was disposed
       expect(notifier.disposeCalled, isTrue);
     });
 
-    testWidgets('Read/Watch should throw error if not found', (tester) async {
-      await tester.pumpWidget(Builder(builder: (context) {
-        expect(() => MinProvider.read<TestNotifier>(context),
-            throwsAssertionError);
-        expect(() => MinProvider.watch<TestNotifier>(context),
-            throwsAssertionError);
-        return Container();
-      }));
+    /// {@template min_provider_test.error_handling}
+    /// **Test Target:** `MinProvider` Error Handling
+    ///
+    /// **Objective:** Verifies that calling `read` or `watch` without a parent
+    /// provider throws a clear [FlutterError].
+    /// {@endtemplate}
+    testWidgets('Read/Watch should throw FlutterError if not found',
+        (tester) async {
+      late BuildContext capturedContext;
+
+      await tester.pumpWidget(
+        Builder(builder: (context) {
+          capturedContext = context;
+          return Container();
+        }),
+      );
+
+      // Verify read error
+      expect(
+        () => MinProvider.read<TestNotifier>(capturedContext),
+        throwsA(isA<FlutterError>()),
+      );
+
+      // Verify watch error
+      expect(
+        () => MinProvider.watch<TestNotifier>(capturedContext),
+        throwsA(isA<FlutterError>()),
+      );
     });
   });
 }

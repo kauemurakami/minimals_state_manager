@@ -46,8 +46,14 @@ class MinProvider<T extends ChangeNotifier> extends StatefulWidget {
   static T watch<T extends ChangeNotifier>(BuildContext context) {
     final inherited =
         context.dependOnInheritedWidgetOfExactType<MinInherited<T>>();
-    assert(inherited != null, 'No MinProvider<$T> found in context.');
-    return inherited!.notifier!;
+
+    if (inherited == null) {
+      throw FlutterError(
+        'MinProvider<$T> was not found in the current context.\n'
+        'Make sure MinProvider is positioned above this widget in the tree.',
+      );
+    }
+    return inherited.notifier!;
   }
 
   /// Accesses the controller without subscribing to changes.
@@ -55,8 +61,15 @@ class MinProvider<T extends ChangeNotifier> extends StatefulWidget {
   static T read<T extends ChangeNotifier>(BuildContext context) {
     final element =
         context.getElementForInheritedWidgetOfExactType<MinInherited<T>>();
-    assert(element != null, 'No MinProvider<$T> found in context.');
-    final inherited = element!.widget as MinInherited<T>;
+
+    if (element == null) {
+      throw FlutterError(
+        'MinProvider<$T> was not found in the current context.\n'
+        'Make sure MinProvider is positioned above this widget in the tree.',
+      );
+    }
+
+    final inherited = element.widget as MinInherited<T>;
     return inherited.notifier!;
   }
 

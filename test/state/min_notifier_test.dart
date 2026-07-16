@@ -44,6 +44,25 @@ class TestAsyncCrashNotifier extends MinNotifier {
 }
 
 void main() {
+  /// {@template min_notifier_test.disposal_status}
+  /// **Test Target:** `MinNotifier.isDisposed`
+  ///
+  /// **Objective:** Verifies that the internal disposal state is correctly tracked
+  /// by the `isDisposed` getter throughout the lifecycle.
+  /// {@endtemplate}
+  test('Should accurately reflect disposal status via isDisposed getter', () {
+    final notifier = TestMutationNotifier();
+
+    // Assert: Check initial state
+    expect(notifier.isDisposed, isFalse);
+
+    // Act: Dispose the notifier
+    notifier.dispose();
+
+    // Assert: Check post-disposal state
+    expect(notifier.isDisposed, isTrue);
+  });
+
   /// {@template min_notifier_test.update_mutation}
   /// **Test Target:** `MinNotifier.update` Atomic Mutation Helper
   ///
@@ -72,7 +91,7 @@ void main() {
   /// **Test Target:** `MinNotifier` Memory Crash & Async Ghost Protection
   ///
   /// **Objective:** Validates the exclusive async safety guard. If an asynchronous process
-  /// concludes *after* the controller is systematically disposed of, the notification must
+  /// concludes *after* the notifier is systematically disposed of, the notification must
   /// be aborted safely, preventing the classic Flutter 'notifyListeners called after dispose' memory crash.
   /// {@endtemplate}
   test(

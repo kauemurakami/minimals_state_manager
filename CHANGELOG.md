@@ -1,3 +1,6 @@
+# 2.3.2
+- Get 100% coverage in dart docs in pub dev
+
 # 2.3.1
 - fix dart docs pub dev
 

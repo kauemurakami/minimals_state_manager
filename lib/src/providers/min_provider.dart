@@ -14,14 +14,15 @@ import 'package:minimals_state_manager/src/providers/min_inherited.dart';
 ///   child: const MyView(),
 /// )
 /// ```
-///or
+/// or
 /// ```dart
 /// MinProvider(
 ///   create: () => MyViewModel(),
 ///   child: const MyView(),
 /// )
 /// ```
-/// or usage with tag
+/// ```dart
+/// //or usage with tag
 ///  MinProvider(
 ///   create: () => MyViewModel(),
 ///   tag: 'page1',
@@ -31,22 +32,21 @@ import 'package:minimals_state_manager/src/providers/min_inherited.dart';
 /// **Accessing state inside build() (Rebuilds on change):**
 /// ```dart
 /// final notifier = MinProvider.watch<MyNotifier>(context);
-/// with tag
+/// //with tag
 /// final notifier = MinProvider.watch<MyNotifier>(context, tag: 'page1');
 /// ```
 ///
 /// **Accessing state for callbacks/methods (No rebuilds):**
 /// ```dart
 /// final notifier = MinProvider.read<MyNotifier>(context);
-/// usage with tags
+/// //usage with tags
 /// final notifier = MinProvider.read<MyNotifier>(context, tag: 'page1');
 /// controller.doSomething();
 /// ```
-/// or use provider_extensions
+/// //or use provider_extensions
 /// ```dart
 /// final notifier = context.read<MyNotifier>(tag: 'page1');
 /// final notifier = context.watch<MyNotifier>(tag: 'page1');
-///
 /// ```
 class MinProvider<T extends ChangeNotifier> extends StatefulWidget {
   /// A function or instance that creates the notifier to be provided.

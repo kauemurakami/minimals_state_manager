@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:minimals_state_manager/min_notifiers.dart';
 import 'package:minimals_state_manager/min_services.dart';
 
 // --- Test Helper Classes ---
@@ -13,7 +14,7 @@ abstract class ThemeService {}
 class ThemeServiceImpl implements ThemeService {}
 
 /// Helper class to verify that [dispose] is correctly called.
-class TestChangeNotifier extends ChangeNotifier {
+class TestChangeNotifier extends MinNotifier {
   bool disposed = false;
 
   @override
@@ -30,6 +31,7 @@ void main() {
     min = MinService.instance;
     min.reset();
   });
+
   group('MinService without tag Tests', () {
     /// {@template min_service_test.registration_and_resolution}
     /// **Test Target:** `MinService` Registration & Type Resolution
@@ -46,7 +48,7 @@ void main() {
 
       // Act
       final theme1 = min.get<ThemeService>();
-      final theme2 = min<ThemeService>();
+      final theme2 = min.get<ThemeService>();
       final auth1 = min.get<AuthService>();
       final auth2 = min.get<AuthService>();
 
@@ -89,8 +91,22 @@ void main() {
     /// the expected [Exception].
     /// {@endtemplate}
     test('Should throw an exception when resolving an unregistered type', () {
-      // Agora usamos throwsException pois a classe dispara um throw Exception(...)
       expect(() => min.get<String>(), throwsException);
+    });
+
+    /// {@template min_service_test.async_not_found_error_handling}
+    /// **Test Target:** `MinService` Async Error Handling for Unregistered Types
+    ///
+    /// **Objective:** Verifies that calling `getAsync` on an unregistered type
+    /// throws the exception covering the unassigned async fallback lines.
+    /// {@endtemplate}
+    test(
+        'Should throw an exception when resolving an unregistered type via getAsync',
+        () async {
+      // This explicitly covers lines 154-156 (tagMsg and Exception throw in getAsync)
+      expect(() => min.getAsync<String>(), throwsException);
+      expect(() => min.getAsync<String>(tag: 'missing_async_tag'),
+          throwsException);
     });
 
     /// {@template min_service_test.disposable_handling}
@@ -105,7 +121,6 @@ void main() {
 
       expect(disposableService.disposed, isFalse);
 
-      // This triggers the lines 92 and 110 of your MinService
       min.destroy<TestChangeNotifier>();
 
       expect(disposableService.disposed, isTrue);
@@ -121,20 +136,13 @@ void main() {
     test(
         'Should fully clear builders and dispose all change notifiers on destruction',
         () {
-      // 1. Arrange: Register a lazy singleton and a singleton ChangeNotifier
       min.registerLazySingleton<AuthService>(() => AuthServiceImpl());
       final disposable = TestChangeNotifier();
       min.registerSingleton<TestChangeNotifier>(disposable);
 
-      // 2. Act: Destroy the lazy singleton
-      // This covers line 102: _builders.remove(type)
       min.destroy<AuthService>();
-
-      // 3. Act: Use destroyAll for the ChangeNotifier
-      // This covers line 110: instance.dispose()
       min.destroyAll();
 
-      // 4. Assert
       expect(min.exists<AuthService>(), isFalse);
       expect(disposable.disposed, isTrue);
     });
@@ -143,19 +151,14 @@ void main() {
     /// **Test Target:** `MinService.destroy` - Builder Removal
     ///
     /// **Objective:** Verifies that when `destroy<T>()` is called, the corresponding
-    /// builder function is removed from the internal `_builders` map.
+    /// builder function is removed from the internal maps.
     /// {@endtemplate}
-    test('Should remove lazy builder from _builders map when destroy is called',
+    test('Should remove lazy builder from builders map when destroy is called',
         () {
-      // Arrange: Register a lazy singleton
       min.registerLazySingleton<AuthService>(() => AuthServiceImpl());
 
-      // Act: Destroy the service.
-      // This explicitly triggers the 'if (_builders.containsKey(type))' block
-      // and the '_builders.remove(type)' line (Line 102).
       min.destroy<AuthService>();
 
-      // Assert: Verify builder is gone by trying to resolve it (should throw error)
       expect(() => min.get<AuthService>(), throwsException);
     });
 
@@ -166,23 +169,116 @@ void main() {
     /// instances and invokes `dispose()` on any registered `ChangeNotifier`.
     /// {@endtemplate}
     test('Should call dispose on all ChangeNotifiers during destroyAll', () {
-      // Arrange: Register multiple ChangeNotifier instances to ensure the loop
-      // in destroyAll (Line 108) runs and executes dispose (Line 110).
       final notifier1 = TestChangeNotifier();
       final notifier2 = TestChangeNotifier();
 
       min.registerSingleton<TestChangeNotifier>(notifier1);
-      // Registering as the base class to test the 'is ChangeNotifier' check
       min.registerSingleton<ChangeNotifier>(notifier2);
 
-      // Act: Invoke global destruction
       min.destroyAll();
 
-      // Assert: Verify that both notifiers were properly disposed of
       expect(notifier1.disposed, isTrue);
       expect(notifier2.disposed, isTrue);
     });
+
+    /// {@template min_service_test.async_registration_and_resolution}
+    /// **Test Target:** `MinService` Async Registration & Resolution
+    ///
+    /// **Objective:** Verifies that `registerSingletonAsync` and `getAsync`
+    /// successfully execute the asynchronous builder once, cache the instance,
+    /// and disallow synchronous `get()` access prior to resolution.
+    /// {@endtemplate}
+    test('Should register and resolve async singletons correctly via getAsync',
+        () async {
+      bool initialized = false;
+
+      min.registerSingletonAsync<AuthService>(() async {
+        await Future.delayed(const Duration(milliseconds: 10));
+        initialized = true;
+        return AuthServiceImpl();
+      });
+
+      expect(() => min.get<AuthService>(), throwsException);
+
+      expect(initialized, isFalse);
+
+      final instance1 = await min.getAsync<AuthService>();
+      expect(instance1, isA<AuthServiceImpl>());
+      expect(initialized, isTrue);
+
+      final instance2 = await min.getAsync<AuthService>();
+      expect(identityHashCode(instance1), equals(identityHashCode(instance2)));
+    });
+
+    /// {@template min_service_test.lazy_async_registration_and_resolution}
+    /// **Test Target:** `MinService` Lazy Async Registration & Resolution
+    ///
+    /// **Objective:** Verifies that `registerLazySingletonAsync` works precisely
+    /// like its eager counterpart, executing only on the first `getAsync()` call.
+    /// {@endtemplate}
+    test(
+        'Should register and resolve lazy async singletons correctly via getAsync',
+        () async {
+      int buildCount = 0;
+
+      min.registerLazySingletonAsync<ThemeService>(() async {
+        buildCount++;
+        await Future.delayed(const Duration(milliseconds: 10));
+        return ThemeServiceImpl();
+      });
+
+      expect(buildCount, equals(0));
+
+      final instance1 = await min.getAsync<ThemeService>();
+      expect(instance1, isA<ThemeServiceImpl>());
+      expect(buildCount, equals(1));
+
+      final instance2 = await min.getAsync<ThemeService>();
+      expect(identityHashCode(instance1), equals(identityHashCode(instance2)));
+      expect(buildCount, equals(1));
+    });
+
+    /// {@template min_service_test.async_concurrent_resolution}
+    /// **Test Target:** `MinService` Concurrent Async Resolution
+    ///
+    /// **Objective:** Verifies that multiple simultaneous calls to `getAsync()`
+    /// share the exact same pending initialization future without executing
+    /// the async builder multiple times.
+    /// {@endtemplate}
+    test('Should handle concurrent getAsync requests gracefully', () async {
+      int executionCount = 0;
+
+      min.registerSingletonAsync<AuthService>(() async {
+        executionCount++;
+        await Future.delayed(const Duration(milliseconds: 50));
+        return AuthServiceImpl();
+      });
+
+      final future1 = min.getAsync<AuthService>();
+      final future2 = min.getAsync<AuthService>();
+
+      final results = await Future.wait([future1, future2]);
+
+      expect(results[0], isA<AuthServiceImpl>());
+      expect(
+          identityHashCode(results[0]), equals(identityHashCode(results[1])));
+      expect(executionCount, equals(1));
+    });
+
+    /// {@template min_service_test.async_fallback_to_sync_get}
+    /// **Test Target:** `MinService` Async Fallback on Sync Get
+    ///
+    /// **Objective:** Verifies that calling `get()` on a lazy sync builder
+    /// resolves correctly even if async builders are registered in the locator.
+    /// {@endtemplate}
+    test('Should resolve sync lazy builder through getAsync cleanly', () async {
+      min.registerLazySingleton<AuthService>(() => AuthServiceImpl());
+
+      final instance = await min.getAsync<AuthService>();
+      expect(instance, isA<AuthServiceImpl>());
+    });
   });
+
   group('MinService Tagged Tests', () {
     /// {@template min_service_test.tagged_resolution}
     /// **Test Target:** `MinService` Tagged Resolution
@@ -199,7 +295,6 @@ void main() {
 
       expect(min.get<AuthService>(tag: 'primary'), equals(serviceA));
       expect(min.get<AuthService>(tag: 'secondary'), equals(serviceB));
-      // Verifies that tagged instances are indeed separate
       expect(min.get<AuthService>(tag: 'primary'),
           isNot(equals(min.get<AuthService>(tag: 'secondary'))));
     });
@@ -216,6 +311,23 @@ void main() {
       final instance = min.get<AuthService>(tag: 'lazy');
       expect(instance, isA<AuthServiceImpl>());
       expect(min.exists<AuthService>(tag: 'lazy'), isTrue);
+    });
+
+    /// {@template min_service_test.tagged_async_resolution}
+    /// **Test Target:** `MinService` Tagged Async Resolution
+    ///
+    /// **Objective:** Verifies that asynchronous registration works with tags
+    /// and isolates separate instances successfully.
+    /// {@endtemplate}
+    test('Should register and resolve tagged async singletons correctly',
+        () async {
+      min.registerSingletonAsync<AuthService>(() async {
+        return AuthServiceImpl();
+      }, tag: 'auth_tag');
+
+      final instance = await min.getAsync<AuthService>(tag: 'auth_tag');
+      expect(instance, isA<AuthServiceImpl>());
+      expect(min.exists<AuthService>(tag: 'auth_tag'), isTrue);
     });
 
     /// {@template min_service_test.tagged_error_handling}

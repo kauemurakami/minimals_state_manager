@@ -62,7 +62,7 @@
     </section>
     
 <section class="desc markdown">
-  <p>Clears all registered active services and lazy builders.</p>
+  <p>Clears all registered active services, lazy builders, and async loaders.</p>
 </section>
 
 
@@ -81,6 +81,8 @@
   }
   _instances.clear();
   _builders.clear();
+  _asyncBuilders.clear();
+  _asyncFutures.clear();
 }</code></pre>
 </section>
 
@@ -109,7 +111,7 @@
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.3.2
+      2.4.0
   </span>
   
 </footer>

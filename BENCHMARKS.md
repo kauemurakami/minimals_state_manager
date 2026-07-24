@@ -38,19 +38,37 @@ This document consolidates the benchmark results executed within the **Minimals 
 
 ---
 
-## 📦 4. Service Locator Dependency Injection (DI)
+### 📦 4. Service Locator Dependency Injection (DI) Benchmarks
+
 **On-Demand Factory Evaluation (Lazy Singletons)**
 | DI Engine | Runtime (μs) | Runtime (ms) | Multiplier (CPU Efficiency) |
 | :--- | :--- | :--- | :--- |
-| **Minimals (MinService)** | **2.81130 us** | **0.00281 ms** | **1.0x (Baseline)** |
-| GetIt - Lazy Singleton | 10.40901 us | 0.01041 ms | 3.70x slower |
+| **Minimals (MinService)** | **1.72240 us** | **0.00172 ms** | **1.0x (Baseline)** |
+| GetIt - Lazy Singleton | 9.88340 us | 0.00988 ms | 5.74x slower |
 
 **Pre-Allocated Map Lookups (Ready Singletons)**
 | DI Engine | Runtime (μs) | Runtime (ms) | Multiplier (CPU Efficiency) |
 | :--- | :--- | :--- | :--- |
-| **Minimals (MinService)** | **2.79872 us** | **0.00280 ms** | **1.0x (Baseline)** |
-| GetIt - Ready Singleton | 11.53752 us | 0.01154 ms | 4.12x slower |
+| **Minimals (MinService)** | **1.80228 us** | **0.00180 ms** | **1.0x (Baseline)** |
+| GetIt - Ready Singleton | 10.35187 us | 0.01035 ms | 5.74x slower |
 
+**Asynchronous Setup & Registration**
+| DI Engine | Runtime (μs) | Runtime (ms) | Multiplier (CPU Efficiency) |
+| :--- | :--- | :--- | :--- |
+| **Minimals (MinService)** | **0.02227 us** | **0.00002 ms** | **1.0x (Baseline)** |
+| GetIt - Async Singleton | 0.02220 us | 0.00002 ms | ~1.0x (Parity) |
+
+**Asynchronous Resolution Loop (`getAsync`)**
+| DI Engine | Runtime (μs) | Runtime (ms) | Multiplier (CPU Efficiency) |
+| :--- | :--- | :--- | :--- |
+| **Minimals (MinService)** | **6.06700 us** | **0.00607 ms** | **1.0x (Baseline)** |
+| GetIt - getAsync Loop | 8.34900 us | 0.00835 ms | 1.38x slower |
+
+**Lazy Asynchronous Setup & Registration**
+| DI Engine | Runtime (μs) | Runtime (ms) | Multiplier (CPU Efficiency) |
+| :--- | :--- | :--- | :--- |
+| **Minimals (MinService)** | **0.02270 us** | **0.00002 ms** | **1.0x (Baseline)** |
+| GetIt - Lazy Async Singleton | 0.02249 us | 0.00002 ms | ~1.0x (Parity) |
 ---
 
 ## ⚛️ 5. Atomic State Notification Cycle

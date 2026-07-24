@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the didChangeTextScaleFactor method from the AppLifecycleMixin class, for the Dart programming language.">
-  <title>didChangeTextScaleFactor method - AppLifecycleMixin class - minimals_state_manager library - Dart API</title>
+  <meta name="description" content="API docs for the registerLazySingletonAsync method from the MinService class, for the Dart programming language.">
+  <title>registerLazySingletonAsync method - MinService class - minimals_state_manager library - Dart API</title>
 
 
   
@@ -26,10 +26,10 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">minimals_state_manager</a></li>
     <li><a href="../../minimals_state_manager/">minimals_state_manager.dart</a></li>
-    <li><a href="../../minimals_state_manager/AppLifecycleMixin-class.html">AppLifecycleMixin</a></li>
-    <li class="self-crumb">didChangeTextScaleFactor method</li>
+    <li><a href="../../minimals_state_manager/MinService-class.html">MinService</a></li>
+    <li class="self-crumb">registerLazySingletonAsync&lt;<wbr><span class="type-parameter">T extends Object</span>&gt; method</li>
   </ol>
-  <div class="self-name">didChangeTextScaleFactor</div>
+  <div class="self-name">registerLazySingletonAsync</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -46,87 +46,38 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="minimals_state_manager&#47;AppLifecycleMixin-class-sidebar.html"
+    data-above-sidebar="minimals_state_manager&#47;MinService-class-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-method">didChangeTextScaleFactor</span> method 
+<h1><span class="kind-method">registerLazySingletonAsync&lt;<wbr><span class="type-parameter">T extends Object</span>&gt;</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
-  <div>
-    <ol class="annotation-list">
-        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
-    </ol>
-  </div>
 <span class="returntype">void</span>
-<span class="name ">didChangeTextScaleFactor</span>(<wbr>)
+<span class="name ">registerLazySingletonAsync</span>&lt;<wbr><span class="type-parameter">T extends Object</span>&gt;(<wbr><ol class="parameter-list"> <li><span class="parameter" id="registerLazySingletonAsync-param-asyncBuilder"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">asyncBuilder</span>(), {</span></li>
+<li><span class="parameter" id="registerLazySingletonAsync-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span>, </span></li>
+</ol>})
 
-      <div class="features"><span class="feature">override</span></div>
+      
 
     </section>
     
 <section class="desc markdown">
-  <p>Called when the platform's text scale factor changes.</p>
-<p>This typically happens as the result of the user changing system
-preferences, and it should affect all of the text sizes in the
-application.</p>
-<p>This method exposes notifications from
-<a href="https://api.flutter.dev/flutter/dart-ui/PlatformDispatcher/onTextScaleFactorChanged.html">dart:ui.PlatformDispatcher.onTextScaleFactorChanged</a>.</p>
-<p>{@tool snippet}</p>
-<pre class="language-dart"><code class="language-dart">class TextScaleFactorReactor extends StatefulWidget {
-  const TextScaleFactorReactor({super.key});
-
-  @override
-  State&lt;TextScaleFactorReactor&gt; createState() =&gt; _TextScaleFactorReactorState();
-}
-
-class _TextScaleFactorReactorState extends State&lt;TextScaleFactorReactor&gt;
-    with WidgetsBindingObserver {
-  double _lastTextScaleFactor =
-      WidgetsBinding.instance.platformDispatcher.textScaleFactor;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeTextScaleFactor() {
-    setState(() {
-      _lastTextScaleFactor =
-          WidgetsBinding.instance.platformDispatcher.textScaleFactor;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Text('Current scale factor: $_lastTextScaleFactor');
-  }
-}
-</code></pre>
-<p>{@end-tool}</p>
-<p>See also:</p>
-<ul>
-<li><a class="deprecated" href="https://api.flutter.dev/flutter/widgets/MediaQuery/textScaleFactorOf.html">MediaQuery.textScaleFactorOf</a>, which provides a similar service with less
-boilerplate.</li>
-</ul>
+  <p>Registers an asynchronous lazy singleton builder using <code>asyncBuilder</code>.</p>
+<p>The async builder is only executed when <a href="../../minimals_state_manager/MinService/getAsync.html">getAsync</a> is called for the first time
+with the matching <code>tag</code>.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@override
-void didChangeTextScaleFactor() {
-  onChangeTextScaleFactor();
+  <pre class="language-dart"><code class="language-dart">void registerLazySingletonAsync&lt;T extends Object&gt;(
+  Future&lt;T&gt; Function() asyncBuilder, {
+  String? tag,
+}) {
+  _asyncBuilders[(T, tag)] = asyncBuilder;
 }</code></pre>
 </section>
 
@@ -142,11 +93,11 @@ void didChangeTextScaleFactor() {
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">minimals_state_manager</a></li>
     <li><a href="../../minimals_state_manager/">minimals_state_manager</a></li>
-    <li><a href="../../minimals_state_manager/AppLifecycleMixin-class.html">AppLifecycleMixin</a></li>
-    <li class="self-crumb">didChangeTextScaleFactor method</li>
+    <li><a href="../../minimals_state_manager/MinService-class.html">MinService</a></li>
+    <li class="self-crumb">registerLazySingletonAsync&lt;<wbr><span class="type-parameter">T extends Object</span>&gt; method</li>
 </ol>
 
-    <h5>AppLifecycleMixin class</h5>
+    <h5>MinService class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">

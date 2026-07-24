@@ -23,7 +23,7 @@ A fastest, lightweight, high-performance, and boilerplate-free state management 
 ### MinService
 #### Setup and Registration
 `MinService` is an embedded service locator built directly into the package. If you are familiar with `GetIt`, you will feel right at home. It handles application-wide or lazy singletons cleanly without requiring external dependencies.  
-The Power of Tags: You can use the `tag:'your-tag'`attribute when register your `singletons` or `lazySingletons` with any `notifier` to create isolated, context-aware instances (e.g., Admin vs Guest notifiers) without creating separate classes.
+The Power of Tags: You can use the `tag:'your-tag'`attribute when register your `singletons`, `lazySingletons`, `async` `singletons` and `lazySingleton` with any `notifier` to create isolated, context-aware instances (e.g., Admin vs Guest notifiers) without creating separate classes.
 
 ```dart
 import 'package:flutter/material.dart';
@@ -42,6 +42,35 @@ void setupLocator() {
   min.registerLazySingleton(() => AuthService(), tag: 'initial');
   MinService.instance.registerSingleton<AuthService>(AuthService(), tag: 'global');
 
+  // async
+   //usage with global instance
+  min.registerLazySingletonAsync(() async => AuthService()..init());
+  min.registerSingletonAsync<ThemeService>(()async{
+    final themeService = ThemeService();
+    await themeService.init();
+    // if you use MinNOtifier in your Service you can use `onInit()` method
+    // await themeService.onInit();
+    return themeService;
+  });
+  //or use directly instance
+  MinService.instance.registerLazySingletonAsync(() async=> AuthService()..init());
+  MinService.instance.registerSingletonAsync<ThemeService>(()async{
+    final themeService = ThemeService();
+    await themeService.init();
+    // if you use MinNOtifier in your Service you can use `onInit()` method
+    // await themeService.onInit();
+    return themeService;
+  });
+  //or using with tags
+  min.registerLazySingletonAsync(() async => AuthService()..init(), tag: 'initial');
+  MinService.instance.registerSingletonAsync<AuthService>(()async{
+    final authService = AuthService();
+    await authService.init();
+    // if you use MinNOtifier in your Service you can use `onInit()` method
+    // await authService.onInit();
+    return authService;
+  }, tag: 'global');
+
 }
 
 void main() {
@@ -59,6 +88,9 @@ final themeService = min.get<ThemeService>();
 final anotherService = MinService.instance<MyService>();
 //or using tags
 final authService = min<AuthService>(tag: 'global')
+// get async singletons
+final authService = min.getAsync<MyService>()
+final authService = min.getAsync<AuthService>(tag: 'global')
 
 bool exists = min.exists<AuthService>();
 

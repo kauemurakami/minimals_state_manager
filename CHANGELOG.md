@@ -1,3 +1,10 @@
+# 2.4.0
+- Added async methods registers singletons in `MinService`
+- `registerSingletonAsync`
+- `registerLazeSingletonAsync`
+- and recovery async instances with `MinService.instance.getAsync<T>()` or `min.getAsync<T>()`
+- update banchmarks compare with `GetIt` same methods
+
 # 2.3.2
 - Get 100% coverage in dart docs in pub dev
 

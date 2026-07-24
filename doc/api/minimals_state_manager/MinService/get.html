@@ -78,8 +78,14 @@ untagged instance.</p>
   final key = (T, tag);
 
   &#47;&#47; Try to build lazily if instance is missing
-  if (!_instances.containsKey(key) &amp;&amp; _builders.containsKey(key)) {
-    _instances[key] = _builders[key]!();
+  if (!_instances.containsKey(key)) {
+    if (_builders.containsKey(key)) {
+      _instances[key] = _builders[key]!();
+    } else if (_asyncBuilders.containsKey(key)) {
+      throw Exception(
+          &#39;MinService: Instance of type $T was registered asynchronously. &#39;
+          &#39;You must use await MinService.instance.getAsync&lt;$T&gt;() instead of synchronous get().&#39;);
+    }
   }
 
   if (!_instances.containsKey(key)) {
@@ -118,7 +124,7 @@ untagged instance.</p>
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.3.2
+      2.4.0
   </span>
   
 </footer>

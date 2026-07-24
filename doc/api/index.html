@@ -63,7 +63,7 @@
 <h3 id="minservice">MinService</h3>
 <h4 id="setup-and-registration">Setup and Registration</h4>
 <p><code>MinService</code> is an embedded service locator built directly into the package. If you are familiar with <code>GetIt</code>, you will feel right at home. It handles application-wide or lazy singletons cleanly without requiring external dependencies.<br>
-The Power of Tags: You can use the <code>tag:'your-tag'</code>attribute when register your <code>singletons</code> or <code>lazySingletons</code> with any <code>notifier</code> to create isolated, context-aware instances (e.g., Admin vs Guest notifiers) without creating separate classes.</p>
+The Power of Tags: You can use the <code>tag:'your-tag'</code>attribute when register your <code>singletons</code>, <code>lazySingletons</code>, <code>async</code> <code>singletons</code> and <code>lazySingleton</code> with any <code>notifier</code> to create isolated, context-aware instances (e.g., Admin vs Guest notifiers) without creating separate classes.</p>
 <pre class="language-dart"><code class="language-dart">import 'package:flutter/material.dart';
 import 'package:minimals_state_manager/min_notifiers.dart';
 
@@ -79,6 +79,35 @@ void setupLocator() {
   //or using with tags
   min.registerLazySingleton(() =&gt; AuthService(), tag: 'initial');
   MinService.instance.registerSingleton&lt;AuthService&gt;(AuthService(), tag: 'global');
+
+  // async
+   //usage with global instance
+  min.registerLazySingletonAsync(() async =&gt; AuthService()..init());
+  min.registerSingletonAsync&lt;ThemeService&gt;(()async{
+    final themeService = ThemeService();
+    await themeService.init();
+    // if you use MinNOtifier in your Service you can use `onInit()` method
+    // await themeService.onInit();
+    return themeService;
+  });
+  //or use directly instance
+  MinService.instance.registerLazySingletonAsync(() async=&gt; AuthService()..init());
+  MinService.instance.registerSingletonAsync&lt;ThemeService&gt;(()async{
+    final themeService = ThemeService();
+    await themeService.init();
+    // if you use MinNOtifier in your Service you can use `onInit()` method
+    // await themeService.onInit();
+    return themeService;
+  });
+  //or using with tags
+  min.registerLazySingletonAsync(() async =&gt; AuthService()..init(), tag: 'initial');
+  MinService.instance.registerSingletonAsync&lt;AuthService&gt;(()async{
+    final authService = AuthService();
+    await authService.init();
+    // if you use MinNOtifier in your Service you can use `onInit()` method
+    // await authService.onInit();
+    return authService;
+  }, tag: 'global');
 
 }
 
@@ -96,6 +125,9 @@ final themeService = min.get&lt;ThemeService&gt;();
 final anotherService = MinService.instance&lt;MyService&gt;();
 //or using tags
 final authService = min&lt;AuthService&gt;(tag: 'global')
+// get async singletons
+final authService = min.getAsync&lt;MyService&gt;()
+final authService = min.getAsync&lt;AuthService&gt;(tag: 'global')
 
 bool exists = min.exists&lt;AuthService&gt;();
 
@@ -391,7 +423,7 @@ import 'package:minimals_state_manager/min_widgets.dart';
 <footer>
   <span class="no-break">
     minimals_state_manager
-      2.3.2
+      2.4.0
   </span>
   
 </footer>
